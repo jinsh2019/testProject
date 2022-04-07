@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "generatesignature": {
+      "commandName": "Project",
+      "commandLineArgs": "123456 fabercastelltest {\\\"searchDate\\\":\\\"2020-08-07\\\"}"
+    },
+    "generatesignaturePost": {
+      "commandName": "Executable"
+    }
+  }
+}
