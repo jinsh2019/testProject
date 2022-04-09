@@ -625,6 +625,272 @@ namespace MockTest
 
         #endregion
 
+        #region 动态规划问题
+        // 198. 打家劫舍
+        public static int Rob(int[] nums)
+        {
+            if (nums.Length == 0)
+                return 0;
+            // 子问题
+            // f(k) = 偷[0..k)房间中的最大金额
+
+            // f(0) = 0
+            // f(1)= nums[0]
+            // f(k) = max{rob(k-1), nums[k-1]+ rob(k-2)};
+            int N = nums.Length;
+            int[] dp = new int[N + 1];
+            dp[0] = 0;
+            dp[1] = nums[0];
+
+            for (int k = 2; k <= N; k++)
+            {
+                // 套用子问题的递推关系
+                dp[k] = Math.Max(dp[k - 1], nums[k - 1] + dp[k - 2]);
+            }
+
+            return dp[N];
+        }
+
+        public static int RobV1(int[] nums)
+        {
+            int prev = 0;
+            int curr = 0;
+
+            // 每次循环，计算「偷到当前房子为止的最大金额」
+            foreach (var i in nums)
+            {
+                // 循环开始时，curr 表示 dp[k-1]，prev 表示 dp[k-2]
+                int temp = Math.Max(curr, prev + i);
+                prev = curr;
+                curr = temp;
+            }
+
+            return curr;
+        }
+
+        // 1143. 最长公共子序列
+        public int LongestCommonSubsequence(string s, string t)
+        {
+            if (string.IsNullOrEmpty(s) || string.IsNullOrEmpty(t))
+            {
+                return 0;
+            }
+            // 子问题:
+            // f(i,j) = s[0..i] 和 t[0..j) 的最长公共子序列
+
+            // f(0,*) = 0
+            // f(*,0) = 0
+            // if s[i-1] == t[j-1] f(i,j) = f(i-1,j-1)+1,
+            //             otherwise max{
+            //                          f(i-1,j),
+            //                          f(i,j-1)
+            //                          }
+            int m = s.Length;
+            int n = t.Length;
+            int[,] dp = new int[m + 1, n + 1];
+            for (int i = 0; i <= m; i++)
+            {
+                for (int j = 0; j <= n; j++)
+                {
+                    if (i == 0 || j == 0)
+                        dp[i, j] = 0;
+                    else
+                    {
+                        if (s[i - 1] == t[j - 1])
+                        {
+                            // i-1,j-1相等，则需要对子问题+1 进行求解，找出最长子序列
+                            dp[i, j] = dp[i - 1, j - 1] + 1;
+                        }
+                        else
+                        {
+                            dp[i, j] = Math.Max(dp[i - 1, j], dp[i, j - 1]);
+                        }
+                    }
+                }
+            }
+            return dp[m, n];
+        }
+
+        // 72. 编辑距离
+        public static int MinDistance(string s, string t)
+        {
+            // 子问题:
+            // f(i,j) = s[0..i) 和 t[0..j)的编辑距离
+
+            // f(0,j) = j
+            // f(i,0) = i
+            // f(i,j) = f(i-1,j-1), if s[i-1] == t[j-1]
+            //        max: f(i-1,j) + 1
+            //             f(i,j-1) + 1
+            //             f(i-1,j-1)+ 1 if s[i-1] != t[j-1]
+
+            int m = s.Length;
+            int n = t.Length;
+            int[,] dp = new int[m + 1, n + 1];
+            for (int i = 0; i <= m; i++)
+            {
+                for (int j = 0; j <= n; j++)
+                {
+                    if (i == 0)
+                    {
+                        dp[i, j] = j;
+                    }
+                    else if (j == 0)
+                    {
+                        dp[i, j] = i;
+                    }
+                    else
+                    {
+                        if (s[i - 1] == t[j - 1])
+                        {
+                            dp[i, j] = dp[i - 1, j - 1];
+                        }
+                        else
+                        {
+                            dp[i, j] = 1 + min3(
+                                dp[i - 1, j], // 删除
+                                dp[i, j - 1], // 插入
+                                dp[i - 1, j - 1]// 替换
+                                );
+                        }
+                    }
+                }
+            }
+
+            return dp[m, n];
+        }
+
+        private static int min3(int x, int y, int z)
+        {
+            return Math.Min(x, Math.Min(y, z));
+        }
+
+        // 53. 最大子数组和
+        public int MaxSubArray(int[] nums)
+        {
+            // 子问题:
+            // f(k) = nums[0..k) 中 以nums[k-1]结尾的最大子数组和
+            // 原问题 = max{f(k)}, 0<=k<=N
+
+            // f(0) = 0
+            // f(k) = max{f(k-1),0} + nums[k-1]
+
+            int N = nums.Length;
+            int[] dp = new int[N + 1];
+            dp[0] = 0;
+
+            int res = int.MinValue;
+            for (int k = 1; k <= N; k++)
+            {
+                dp[k] = Math.Max(dp[k - 1], 0) + nums[k - 1];
+                res = Math.Max(res, dp[k]);
+            }
+            return res;
+        }
+
+        // 718. 最长重复子数组
+
+        public int FindLength(int[] s, int[] t)
+        {
+            // 子问题:
+            // f(i,j) = s[0..i) 和 t[0..j)中以s[i-1]和t[j-1]结尾的最长公共子数组
+
+            // f(0,*) = 0;
+            // f(*,0) = 0;
+            // f(i,j) = max:
+            //               f(i-1,j-1)+1, if s[i-1] == t[j-1]
+            //               0           , if s[i-1] != t[j-1]
+            int m = s.Length;
+            int n = t.Length;
+            int[,] dp = new int[m + 1, n + 1];
+
+            int res = 0;
+            for (int i = 0; i <= m; i++)
+            {
+                for (int j = 0; j <= n; j++)
+                {
+                    if (i == 0 || j == 0)
+                    {
+                        dp[i, j] = 0;
+                    }
+                    else
+                    {
+                        if (s[i - 1] == t[j - 1])
+                        {
+                            dp[i, j] = dp[i - 1, j - 1] + 1;
+                        }
+                        else
+                        {
+                            dp[i, j] = 0;
+                        }
+                    }
+                    res = Math.Max(res, dp[i, j]);
+                }
+            }
+
+            return res;
+        }
+
+        // 978. 最长湍流子数组
+        public int MaxTurbulenceSize(int[] A)
+        {
+            if (A.Length <= 1)
+                return A.Length;
+
+            int N = A.Length;
+
+            int[] f = new int[N + 1];
+            int[] g = new int[N + 1];
+            f[0] = 0;
+            g[0] = 0;
+            f[1] = 1;
+            g[1] = 1;
+
+            int res = 1;
+            for (int k = 2; k <= N; k++)
+            {
+                if (A[k - 2] < A[k - 1])
+                {
+                    f[k] = g[k - 1] + 1;
+                    g[k] = 1;
+                }
+                else if (A[k - 2] > A[k - 1])
+                {
+                    f[k] = 1;
+                    g[k] = f[k - 1] + 1;
+                }
+                else
+                {
+                    f[k] = 1;
+                    g[k] = 1;
+                }
+                res = Math.Max(res, f[k]);
+                res = Math.Max(res, g[k]);
+            }
+            return res;
+        }
+        // 度假问题
+        public static int vacation(int[] a, int[] b, int[] c)
+        {
+            int n = a.Length;
+            int[] f1 = new int[n + 1];
+            int[] f2 = new int[n + 1];
+            int[] f3 = new int[n + 1];
+            f1[0] = 0;
+            f2[0] = 0;
+            f3[0] = 0;
+
+            for (int k = 0; k <= n; k++)
+            {
+                f1[k] = a[k - 1] + Math.Max(f2[k - 1], f3[k - 1]);
+                f2[k] = b[k - 1] + Math.Max(f1[k - 1], f3[k - 1]);
+                f3[k] = c[k - 1] + Math.Max(f1[k - 1], f2[k - 1]);
+            }
+
+            return Math.Max(f1[n], Math.Max(f2[n], f3[n]));
+        }
+        #endregion
+
         #region tree_dfs
         private static void tree_dfs(TreeNode root)
         {
@@ -751,7 +1017,7 @@ namespace MockTest
         {
             // print
             visited[start] = true;
-            for (int i = 0; i < graph.adj[start].Count; i++)
+            for (int i = 0; i < graph.adjNoWeight[start].Count; i++)
             {
                 if (!visited[i])
                     graph_dfs(graph, i, visited);
@@ -770,7 +1036,7 @@ namespace MockTest
                     continue;
                 // print
                 visited[front] = true;
-                for (int i = 0; i < graph.adj[start].Count; i++)
+                for (int i = 0; i < graph.adjNoWeight[start].Count; i++)
                 {
                     queue.Enqueue(i);
                 }
@@ -1003,6 +1269,145 @@ namespace MockTest
 
         #endregion
 
+        #region Dijkstra Floyd
+        // 迪杰斯特拉算法
+        public static int[] Dijkstra(Graph graph, int startIndex)
+        {
+            // 顶点的数量
+            int size = graph.vertexes.Length;
+            // 距离表
+            int[] distances = new int[size];
+            // 顶点遍历状态
+            bool[] access = new bool[size];
+
+            // 初始化最短路径表，到达每个顶点的路径代价默认为无穷大
+            for (int i = 1; i < size; i++)
+                distances[i] = int.MaxValue;
+
+            // 遍历起点，刷新距离表
+            access[0] = true;
+            List<Edge> edgeFromStart = graph.adjWeight[startIndex];
+            for (int i = 0; i < edgeFromStart.Count; i++)
+                distances[i] = edgeFromStart[i].Weight;
+
+            // 主循环， 重复遍历最短距离顶点和刷新距离表的操作
+            for (int i = 1; i < size; i++)
+            {
+                // 寻找最短距离顶点
+                int minDistanceFromStart = int.MaxValue;
+                int minDistanceIndex = -1;
+                for (int j = 1; j < size; j++)
+                {
+                    if (!access[j] && (distances[j] < minDistanceFromStart))
+                    {
+                        minDistanceFromStart = distances[j]; // 已经访问
+                        minDistanceIndex = j;
+                    }
+                }
+
+                if (minDistanceIndex == -1)
+                    break;
+
+                // 遍历顶点，刷新距离表
+                access[minDistanceIndex] = true;
+                foreach (var edge in graph.adjWeight[minDistanceIndex])
+                {
+                    if (access[edge.Index])
+                        continue;
+                    int weight = edge.Weight;
+                    int preDistance = distances[edge.Index];
+                    if ((weight != int.MaxValue) && (minDistanceFromStart + weight) < preDistance)
+                    {
+                        distances[edge.Index] = minDistanceFromStart + weight;
+                    }
+                }
+            }
+            return distances;
+        }
+
+        public static int[] dijkstraV2(Graph graph, int startIndex)
+        {
+            int size = graph.vertexes.Length;
+            int[] distances = new int[size];
+            int[] prevs = new int[size];
+            bool[] access = new bool[size];
+
+            for (int i = 0; i < size; i++)
+                distances[i] = int.MaxValue;
+
+            access[0] = true;
+            List<Edge> edgesFromStart = graph.adjWeight[startIndex];
+
+            foreach (var edge in edgesFromStart)
+            {
+                distances[edge.Index] = edge.Weight;
+                prevs[edge.Index] = 0;
+            }
+
+            for (int i = 1; i < size; i++)
+            {
+                // 从i出发顶点寻找最短距离
+                int minDistanceFromStart = int.MaxValue;
+                int minDistanceIndex = -1;
+                for (int j = 1; j < size; j++)
+                {
+                    if (!access[j] && (distances[j] < minDistanceFromStart))
+                    {
+                        minDistanceFromStart = distances[j];
+                        minDistanceIndex = j;
+                    }
+                }
+                if (minDistanceIndex == -1)
+                    break;
+
+                // 查找最小距离的邻接表的边，刷新距离表
+                access[minDistanceIndex] = true;
+                foreach (var edge in graph.adjWeight[minDistanceIndex])
+                {
+                    if (access[edge.Index])
+                        continue;
+                    int weight = edge.Weight;
+                    int preDistance = distances[edge.Index];
+                    if ((weight != int.MaxValue) && ((minDistanceFromStart + weight) < preDistance))
+                    {
+                        distances[edge.Index] = minDistanceFromStart + weight;
+                        prevs[edge.Index] = minDistanceIndex;
+                    }
+                }
+            }
+
+            return prevs;
+        }
+
+
+        public static int INF = int.MaxValue;
+        // 弗洛伊德算法
+        public static void Floyd(int[,] matrix)
+        {
+            for (int k = 0; k < matrix.GetLength(0); k++)
+            {
+                for (int i = 0; i < matrix.GetLength(0); i++)
+                {
+                    for (int j = 0; j < matrix.GetLength(0); j++)
+                    {
+                        if (matrix[i, k] == INF || matrix[k, j] == INF)
+                            continue;
+                        matrix[i, j] = Math.Min(matrix[i, j], matrix[i, k] + matrix[k, j]);
+                    }
+                }
+            }
+            WriteLine("最短路径矩阵: \n");
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(0); j++)
+                {
+                    Write("  " + matrix[i, j]);
+                }
+                WriteLine();
+            }
+        }
+        #endregion
+
         static void Main(string[] args)
         {
 
@@ -1051,35 +1456,31 @@ namespace MockTest
             }
             #endregion
 
-
             MaxDistance(new int[][] { new int[] { 1, 0, 1 }, new int[] { 0, 0, 0 }, new int[] { 1, 0, 1 } });
             Graph graph = null;
             {
                 graph = new Graph(6);
-                graph.adj[0].Add(1);
-                graph.adj[0].Add(2);
-                graph.adj[0].Add(3);
-                graph.adj[1].Add(0);
-                graph.adj[1].Add(3);
-                graph.adj[1].Add(4);
-                graph.adj[2].Add(0);
-                graph.adj[3].Add(0);
-                graph.adj[3].Add(1);
-                graph.adj[3].Add(4);
-                graph.adj[3].Add(5);
-                graph.adj[4].Add(1);
-                graph.adj[4].Add(3);
-                graph.adj[4].Add(5);
-                graph.adj[5].Add(3);
-                graph.adj[5].Add(4);
+                graph.adjNoWeight[0].Add(1);
+                graph.adjNoWeight[0].Add(2);
+                graph.adjNoWeight[0].Add(3);
+                graph.adjNoWeight[1].Add(0);
+                graph.adjNoWeight[1].Add(3);
+                graph.adjNoWeight[1].Add(4);
+                graph.adjNoWeight[2].Add(0);
+                graph.adjNoWeight[3].Add(0);
+                graph.adjNoWeight[3].Add(1);
+                graph.adjNoWeight[3].Add(4);
+                graph.adjNoWeight[3].Add(5);
+                graph.adjNoWeight[4].Add(1);
+                graph.adjNoWeight[4].Add(3);
+                graph.adjNoWeight[4].Add(5);
+                graph.adjNoWeight[5].Add(3);
+                graph.adjNoWeight[5].Add(4);
             }
             // 图的深度优先遍历
             graph_dfs(graph, 0, new bool[graph.size]);
             // 图的广度优先遍历
             graph_bfs(graph, 0, new bool[graph.size], new Queue<int>());
-
-
-
 
             // 78. 子集
             int[] t5 = { 1, 2, 3 };
@@ -1103,9 +1504,63 @@ namespace MockTest
             int[] t9 = { 10, 1, 2, 7, 6, 1, 5 };
             combinationSum(t9, 8);
 
+            #region Graph 图
+            var g = new Graph(7);
+            initGraph(g);
+            Dijkstra(g, 0);
+
+            dijkstraV2(g, 0);
+
+            int[,] matrix ={
+                { 0,5,2,INF,INF,INF,INF},
+                { 5,0,INF,1,6,INF,INF},
+                { 2,INF,0,6,INF,8,INF},
+                { INF,1,6,0,1,2,INF},
+                { INF,6,INF,1,0,INF,7},
+                { INF,INF,8,2,INF,0,3},
+                { INF,INF,INF,INF,7,3,0 }
+                };
+            Floyd(matrix);
+            #endregion
+
+            MinDistance("Horse", "ros");
             WriteLine("Hello World!");
         }
 
+        #region private method
+        private static void initGraph(Graph graph)
+        {
+            // 初始化顶点
+            graph.vertexes[0] = new Vertex("A");
+            graph.vertexes[1] = new Vertex("B");
+            graph.vertexes[2] = new Vertex("C");
+            graph.vertexes[3] = new Vertex("D");
+            graph.vertexes[4] = new Vertex("E");
+            graph.vertexes[5] = new Vertex("F");
+            graph.vertexes[6] = new Vertex("G");
+
+            // 初始化邻接表
+            graph.adjWeight[0].Add(new Edge(1, 5));
+            graph.adjWeight[0].Add(new Edge(2, 2));
+            graph.adjWeight[1].Add(new Edge(0, 5));
+            graph.adjWeight[1].Add(new Edge(3, 1));
+            graph.adjWeight[1].Add(new Edge(4, 6));
+            graph.adjWeight[2].Add(new Edge(0, 2));
+            graph.adjWeight[2].Add(new Edge(3, 6));
+            graph.adjWeight[2].Add(new Edge(5, 8));
+            graph.adjWeight[3].Add(new Edge(1, 1));
+            graph.adjWeight[3].Add(new Edge(2, 6));
+            graph.adjWeight[3].Add(new Edge(4, 1));
+            graph.adjWeight[3].Add(new Edge(5, 2));
+            graph.adjWeight[4].Add(new Edge(1, 6));
+            graph.adjWeight[4].Add(new Edge(3, 1));
+            graph.adjWeight[4].Add(new Edge(6, 7));
+            graph.adjWeight[5].Add(new Edge(2, 8));
+            graph.adjWeight[5].Add(new Edge(3, 2));
+            graph.adjWeight[5].Add(new Edge(6, 3));
+            graph.adjWeight[6].Add(new Edge(4, 7));
+            graph.adjWeight[6].Add(new Edge(5, 3));
+        }
         public static int MaxDistance(int[][] multiArray)
         {
             int[,] grid = BuildTo2D(multiArray);
@@ -1182,11 +1637,11 @@ namespace MockTest
             }
             return ans;
         }
-
+        #endregion
     }
 
-
     #region public class
+    // 链表
     public class ListNode
     {
         public int val;
@@ -1197,7 +1652,7 @@ namespace MockTest
             this.next = next;
         }
     }
-
+    // 树
     //Definition for a binary tree node.
     public class TreeNode
     {
@@ -1213,36 +1668,68 @@ namespace MockTest
             this.right = right;
         }
     }
-
+    #region 图
+    // 顶点
     public class Vertex
     {
-        int data;
+        // 数字顶点
+        private int Data { get; set; }
+        // 字符串顶点
+        private string sData { get; set; }
         public Vertex(int data)
         {
-            this.data = data;
+            Data = data;
+        }
+        public Vertex(string sData)
+        {
+            this.sData = sData;
         }
     }
-
+    // 定义边
+    public class Edge
+    {
+        // 索引
+        public int Index { get; set; }
+        //权重
+        public int Weight { get; set; }
+        public Edge(int index, int weight)
+        {
+            this.Index = index;
+            this.Weight = weight;
+        }
+    }
+    // 图
     public class Graph
     {
         public int size { get; }
+        // 顶点
         public Vertex[] vertexes { get; }
-        public List<int>[] adj { get; }
+        // 无权重邻接表
+        public List<int>[] adjNoWeight { get; }
+        // 有权重邻接表
+        public List<Edge>[] adjWeight { get; }
 
         public Graph(int size)
         {
             this.size = size;
             vertexes = new Vertex[size];
-            adj = new List<int>[size];
+            adjNoWeight = new List<int>[size];
             for (int i = 0; i < size; i++)
             {
                 vertexes[i] = new Vertex(i);
-                adj[i] = new List<int>();
+                adjNoWeight[i] = new List<int>();
             }
 
+            adjWeight = new List<Edge>[size];
+            for (int i = 0; i < adjWeight.Length; i++)
+            {
+                adjWeight[i] = new List<Edge>();
+            }
         }
     }
+    #endregion
 
+    #region 并查集
     /// <summary>
     /// A UnionFindNode represents a set of nodes that it is a member of.
     /// 
@@ -1313,7 +1800,9 @@ namespace MockTest
             return true;
         }
     }
+    #endregion
 
+    // 链表扩展方法，交换元素
     static class IListExtensions
     {
         public static void Swap<T>(
@@ -1335,8 +1824,5 @@ namespace MockTest
         }
     }
     #endregion
-
-
-
 
 }

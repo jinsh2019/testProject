@@ -1,0 +1,14 @@
+D:\Users\jin.shi\source\repos\MockTest\bin\Debug\netcoreapp3.1\MockTest.exe
+D:\Users\jin.shi\source\repos\MockTest\bin\Debug\netcoreapp3.1\MockTest.deps.json
+D:\Users\jin.shi\source\repos\MockTest\bin\Debug\netcoreapp3.1\MockTest.runtimeconfig.json
+D:\Users\jin.shi\source\repos\MockTest\bin\Debug\netcoreapp3.1\MockTest.runtimeconfig.dev.json
+D:\Users\jin.shi\source\repos\MockTest\bin\Debug\netcoreapp3.1\MockTest.dll
+D:\Users\jin.shi\source\repos\MockTest\bin\Debug\netcoreapp3.1\MockTest.pdb
+D:\Users\jin.shi\source\repos\MockTest\obj\Debug\netcoreapp3.1\MockTest.csproj.AssemblyReference.cache
+D:\Users\jin.shi\source\repos\MockTest\obj\Debug\netcoreapp3.1\MockTest.GeneratedMSBuildEditorConfig.editorconfig
+D:\Users\jin.shi\source\repos\MockTest\obj\Debug\netcoreapp3.1\MockTest.AssemblyInfoInputs.cache
+D:\Users\jin.shi\source\repos\MockTest\obj\Debug\netcoreapp3.1\MockTest.AssemblyInfo.cs
+D:\Users\jin.shi\source\repos\MockTest\obj\Debug\netcoreapp3.1\MockTest.csproj.CoreCompileInputs.cache
+D:\Users\jin.shi\source\repos\MockTest\obj\Debug\netcoreapp3.1\MockTest.dll
+D:\Users\jin.shi\source\repos\MockTest\obj\Debug\netcoreapp3.1\MockTest.pdb
+D:\Users\jin.shi\source\repos\MockTest\obj\Debug\netcoreapp3.1\MockTest.genruntimeconfig.cache
