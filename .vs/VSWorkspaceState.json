@@ -1,13 +1,7 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\Algorithm\\bin",
-    "\\Algorithm\\bin\\Debug",
-    "\\Algorithm\\bin\\Debug\\netcoreapp3.1",
-    "\\AspNetCoreMiddlewareSample\\EmptyWeb",
-    "\\AspNetCoreMiddlewareSample\\MappedBranches",
-    "\\AspNetCoreMiddlewareSample\\MiddlewareSampleMvc"
+    ""
   ],
-  "SelectedNode": "\\arrProject",
+  "SelectedNode": "\\testProject.sln",
   "PreviewInSolutionExplorer": false
 }
