@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CDS;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using static System.Console;
@@ -644,7 +645,7 @@ namespace ThroughOut1
         public static List<string> letterCombinations(string digits)
         {
             List<string> ans = new List<string>();
-            if (digits.Length ==0)
+            if (digits.Length == 0)
                 return ans;
 
             // array, tree, graph, map
@@ -728,14 +729,14 @@ namespace ThroughOut1
 
             #region day3
             int[] t11 = { 1, 2, 3, 3, 4, 4, 5 };
-            ListNode lnode1 = BuildLinkNode(t11);
+            ListNode lnode1 = CommonHelper.BuildLinkNode(t11);
             DeleteDuplicates(lnode1);
             int[] t12 = { 1, 1, 1, 2, 3 };
-            ListNode lnode2 = BuildLinkNode(t12);
+            ListNode lnode2 = CommonHelper.BuildLinkNode(t12);
             DeleteDuplicates(lnode2);
 
             int[] t13 = { 1, 1 };
-            ListNode lnode3 = BuildLinkNode(t13);
+            ListNode lnode3 = CommonHelper.BuildLinkNode(t13);
             DeleteDuplicates(lnode3);
 
             int[] t14 = { -1, 0, 1, 2, -1, -4 };
@@ -839,7 +840,7 @@ namespace ThroughOut1
             ShortestPathIbnaryMaxtrix(matrix3);
 
             int[][] matrix = { new int[] { 0, 0, 0 }, new int[] { 1, 1, 0 }, new int[] { 1, 1, 0 } };
-            var test = BuildTo2D(matrix);
+            var test = CommonHelper.BuildTo2D(matrix);
             #endregion
 
             letterCombinations("23");
@@ -847,17 +848,6 @@ namespace ThroughOut1
         }
 
         #region Private Method
-        private static ListNode BuildLinkNode(int[] arr)
-        {
-            if (arr == null)
-                return null;
-
-            ListNode lnode = null;
-            for (int i = arr.Length - 1; i >= 0; i--)
-                lnode = lnode == null ? new ListNode(arr[i]) : new ListNode(arr[i], lnode);
-            return lnode;
-        }
-
         private void dfs(int[,] grid, int r, int c)
         {
             if (!inArea(grid, r, c))
@@ -874,10 +864,11 @@ namespace ThroughOut1
             dfs(grid, r, c + 1);
         }
 
-        bool inArea(int[,] grid, int r, int c)
+        private bool inArea(int[,] grid, int r, int c)
         {
             return 0 <= r && r < grid.Length && 0 <= c && c < grid.GetLength(1);
         }
+
         // 695 岛屿的最大面积
         public int MaxAreaOfIsland(int[,] grid)
         {
@@ -895,7 +886,8 @@ namespace ThroughOut1
             }
             return res;
         }
-        int area(int[,] grid, int r, int c)
+
+        private int area(int[,] grid, int r, int c)
         {
             if (!inArea(grid, r, c))
                 return 0;
@@ -912,115 +904,5 @@ namespace ThroughOut1
 
         }
         #endregion
-
-        private static int[,] BuildTo2D(int[][] my2DArray)
-        {
-            if (my2DArray == null)
-                return null;
-            int m = my2DArray.GetLength(0);
-            int n = my2DArray[0].GetLength(0);
-            int[,] ans = new int[m, n];
-            for (int i = 0; i < m; i++)
-            {
-                for (int j = 0; j < n; j++)
-                {
-                    ans[i, j] = my2DArray[i][j];
-                }
-            }
-            return ans;
-        }
-
     }
-
-    #region pre-definition class
-
-    // definition for singly-linked list.
-    public class ListNode
-    {
-        public int val { get; set; }
-        public ListNode next { get; set; }
-        public ListNode(int val = 0, ListNode next = null)
-        {
-            this.val = val;
-            this.next = next;
-        }
-    }
-
-    //Definition for a binary tree node.
-    public class TreeNode
-    {
-        public int val { get; set; }
-        public TreeNode left { get; set; }
-        public TreeNode right { get; set; }
-        TreeNode() { }
-        TreeNode(int val) { this.val = val; }
-        TreeNode(int val, TreeNode left, TreeNode right)
-        {
-            this.val = val;
-            this.left = left;
-            this.right = right;
-        }
-    }
-
-    // Definition for a Node.
-    public class Node
-    {
-        public int val;
-        public Node left;
-        public Node right;
-        public Node next;
-
-        public Node() { }
-
-        public Node(int _val)
-        {
-            val = _val;
-        }
-
-        public Node(int _val, Node _left, Node _right, Node _next)
-        {
-            val = _val;
-            left = _left;
-            right = _right;
-            next = _next;
-        }
-    }
-
-    class UnionFind
-    {
-        int[] roots;
-        int size; // 集合数量
-
-        public UnionFind(int n)
-        {
-            roots = new int[n];
-            for (int i = 0; i < n; i++)
-            {
-                roots[i] = i;
-            }
-            size = n;
-        }
-
-        public int find(int i)
-        {
-            if (i == roots[i])
-            {
-                return i;
-            }
-            return roots[i] = find(roots[i]);
-        }
-
-        public void union(int p, int q)
-        {
-            int pRoot = find(p);
-            int qRoot = find(q);
-            if (pRoot != qRoot)
-            {
-                roots[pRoot] = qRoot;
-                size--;
-            }
-        }
-    }
-
-    #endregion
 }

@@ -1,11 +1,7 @@
-﻿using System;
+﻿using CDS;
+using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Net.Http.Headers;
-using System.Net.Sockets;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Security.Cryptography;
 using System.Text;
 using static System.Console;
 namespace ThroughOut
@@ -1435,11 +1431,12 @@ namespace ThroughOut
             #endregion
 
             #region day5
-            MiddleNode1(getEven4Nodes());
-            MiddleNode1(getOdd3Nodes());
-
-            RemoveNthFromEn2(getEven4Nodes(), 2);
-
+            var note4 = CommonHelper.BuildLinkNode(new int[] { 1, 2, 3, 4 });
+            MiddleNode1(note4);
+            var note3 = CommonHelper.BuildLinkNode(new int[] { 1, 2, 3 });
+            MiddleNode1(note3);
+            var note4v = CommonHelper.BuildLinkNode(new int[] { 1, 2, 3, 4 });
+            RemoveNthFromEn2(note4v, 2);
             #endregion
 
             #region day6
@@ -1513,11 +1510,11 @@ namespace ThroughOut
 
             #region day8
             int[] t29 = { 1, 2, 3, 4, 5, 6, 7 };
-            var node1 = BuildNode(t29);
+            var node1 = CommonHelper.BuildNode(t29);
             Connect_bfs(node1); //  bsf
 
             int[] t30 = { 1, 2, 3, 4, 5, 6, 7 };
-            var node2 = BuildNode(t30);
+            var node2 = CommonHelper.BuildNode(t30);
             connectNextPointer(node2); // next指针
             #endregion
 
@@ -1560,105 +1557,6 @@ namespace ThroughOut
             WriteLine(ClimbStairs(25));
 
         }
-
-
-
-        #region private method
-        // 偶数个数
-        private static ListNode getEven4Nodes()
-        {
-            ListNode node4 = new ListNode(4);
-            ListNode node3 = new ListNode(3, node4);
-            ListNode node2 = new ListNode(2, node3);
-            ListNode node1 = new ListNode(1, node2);
-            return node1;
-        }
-        // 奇数个数
-        private static ListNode getOdd3Nodes()
-        {
-            ListNode node3 = new ListNode(3);
-            ListNode node2 = new ListNode(2, node3);
-            ListNode node1 = new ListNode(1, node2);
-            return node1;
-        }
-
-        private static ListNode BuildLinkNode(int[] arr)
-        {
-            if (arr == null)
-                return null;
-
-            ListNode lnode = null;
-            for (int i = arr.Length - 1; i >= 0; i--)
-                lnode = lnode == null ? new ListNode(arr[i]) : new ListNode(arr[i], lnode);
-            return lnode;
-        }
-
-        private static Node BuildNode(int[] arr)
-        {
-            if (arr == null)
-                return null;
-
-            Node node = null;
-            for (int i = arr.Length - 1; i >= 0; i--)
-                node = node == null ? new Node(arr[i]) : new Node(arr[i], null,null,null);
-            return node;
-        }
-        #endregion
-
     }
-    #region class
-    // definition for singly-linked list.
-    public class ListNode
-    {
-        public int val { get; set; }
-        public ListNode next { get; set; }
-        public ListNode(int val = 0, ListNode next = null)
-        {
-            this.val = val;
-            this.next = next;
-        }
-    }
-
-    //Definition for a binary tree node.
-    public class TreeNode
-    {
-        public int val { get; set; }
-        public TreeNode left { get; set; }
-        public TreeNode right { get; set; }
-        TreeNode() { }
-        TreeNode(int val) { this.val = val; }
-        TreeNode(int val, TreeNode left, TreeNode right)
-        {
-            this.val = val;
-            this.left = left;
-            this.right = right;
-        }
-    }
-
-
-    // Definition for a Node.
-    public class Node
-    {
-        public int val;
-        public Node left;
-        public Node right;
-        public Node next;
-
-        public Node() { }
-
-        public Node(int _val)
-        {
-            val = _val;
-        }
-
-        public Node(int _val, Node _left, Node _right, Node _next)
-        {
-            val = _val;
-            left = _left;
-            right = _right;
-            next = _next;
-        }
-    }
-    #endregion
 }
 

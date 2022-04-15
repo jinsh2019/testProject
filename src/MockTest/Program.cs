@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CDS;
+using System;
 using System.Collections.Generic;
 using static System.Console;
 
@@ -1504,6 +1505,7 @@ namespace MockTest
             #endregion
 
             MinDistance("Horse", "ros");
+
             WriteLine("Hello World!");
         }
 
@@ -1543,7 +1545,7 @@ namespace MockTest
         }
         public static int MaxDistance(int[][] multiArray)
         {
-            int[,] grid = BuildTo2D(multiArray);
+            int[,] grid = CommonHelper.BuildTo2D(multiArray);
             int N = grid.GetLength(0);
             Queue<int[]> queue = new Queue<int[]>();
 
@@ -1601,208 +1603,6 @@ namespace MockTest
 
             return distince;
         }
-        private static int[,] BuildTo2D(int[][] my2DArray)
-        {
-            if (my2DArray == null)
-                return null;
-            int m = my2DArray.GetLength(0);
-            int n = my2DArray[0].GetLength(0);
-            int[,] ans = new int[m, n];
-            for (int i = 0; i < m; i++)
-            {
-                for (int j = 0; j < n; j++)
-                {
-                    ans[i, j] = my2DArray[i][j];
-                }
-            }
-            return ans;
-        }
         #endregion
     }
-
-    #region public class
-    // 链表
-    public class ListNode
-    {
-        public int val;
-        public ListNode next;
-        public ListNode(int val = 0, ListNode next = null)
-        {
-            this.val = val;
-            this.next = next;
-        }
-    }
-    // 树
-    //Definition for a binary tree node.
-    public class TreeNode
-    {
-        public int val { get; set; }
-        public TreeNode left { get; set; }
-        public TreeNode right { get; set; }
-        TreeNode() { }
-        public TreeNode(int val) { this.val = val; }
-        public TreeNode(int val, TreeNode left, TreeNode right)
-        {
-            this.val = val;
-            this.left = left;
-            this.right = right;
-        }
-    }
-    #region 图
-    // 顶点
-    public class Vertex
-    {
-        // 数字顶点
-        private int Data { get; set; }
-        // 字符串顶点
-        private string sData { get; set; }
-        public Vertex(int data)
-        {
-            Data = data;
-        }
-        public Vertex(string sData)
-        {
-            this.sData = sData;
-        }
-    }
-    // 定义边
-    public class Edge
-    {
-        // 索引
-        public int Index { get; set; }
-        //权重
-        public int Weight { get; set; }
-        public Edge(int index, int weight)
-        {
-            this.Index = index;
-            this.Weight = weight;
-        }
-    }
-    // 图
-    public class Graph
-    {
-        public int size { get; }
-        // 顶点
-        public Vertex[] vertexes { get; }
-        // 无权重邻接表
-        public List<int>[] adjNoWeight { get; }
-        // 有权重邻接表
-        public List<Edge>[] adjWeight { get; }
-
-        public Graph(int size)
-        {
-            this.size = size;
-            vertexes = new Vertex[size];
-            adjNoWeight = new List<int>[size];
-            for (int i = 0; i < size; i++)
-            {
-                vertexes[i] = new Vertex(i);
-                adjNoWeight[i] = new List<int>();
-            }
-
-            adjWeight = new List<Edge>[size];
-            for (int i = 0; i < adjWeight.Length; i++)
-            {
-                adjWeight[i] = new List<Edge>();
-            }
-        }
-    }
-    #endregion
-
-    #region 并查集
-    /// <summary>
-    /// A UnionFindNode represents a set of nodes that it is a member of.
-    /// 
-    /// You can get the unique representative node of the set a given node is in by using the Find method.
-    /// Two nodes are in the same set when their Find methods return the same representative.
-    /// The IsUnionedWith method will check if two nodes' sets are the same (i.e. the nodes have the same representative).
-    ///
-    /// You can merge the sets two nodes are in by using the Union operation.
-    /// There is no way to split sets after they have been merged.
-    /// </summary>
-    public class UnionFindNode
-    {
-        private UnionFindNode _parent;
-        private uint _rank;
-
-        /// <summary>
-        /// Creates a new disjoint node, representative of a set containing only the new node.
-        /// </summary>
-        public UnionFindNode()
-        {
-            _parent = this;
-        }
-
-        /// <summary>
-        /// Returns the current representative of the set this node is in.
-        /// Note that the representative is only accurate untl the next Union operation.
-        /// </summary>
-        public UnionFindNode Find()
-        {
-            if (!ReferenceEquals(_parent, this)) _parent = _parent.Find();
-            return _parent;
-        }
-
-        /// <summary>
-        /// Determines whether or not this node and the other node are in the same set.
-        /// </summary>
-        public bool IsUnionedWith(UnionFindNode other)
-        {
-            if (other == null) throw new ArgumentNullException("other");
-            return ReferenceEquals(Find(), other.Find());
-        }
-
-        /// <summary>
-        /// Merges the sets represented by this node and the other node into a single set.
-        /// Returns whether or not the nodes were disjoint before the union operation (i.e. if the operation had an effect).
-        /// </summary>
-        /// <returns>True when the union had an effect, false when the nodes were already in the same set.</returns>
-        public bool Union(UnionFindNode other)
-        {
-            if (other == null) throw new ArgumentNullException("other");
-            var root1 = this.Find();
-            var root2 = other.Find();
-            if (ReferenceEquals(root1, root2)) return false;
-
-            if (root1._rank < root2._rank)
-            {
-                root1._parent = root2;
-            }
-            else if (root1._rank > root2._rank)
-            {
-                root2._parent = root1;
-            }
-            else
-            {
-                root2._parent = root1;
-                root1._rank++;
-            }
-            return true;
-        }
-    }
-    #endregion
-
-    // 链表扩展方法，交换元素
-    static class IListExtensions
-    {
-        public static void Swap<T>(
-            this IList<T> list,
-            int firstIndex,
-            int secondIndex
-        )
-        {
-            //Contract.Requires(list != null);
-            //Contract.Requires(firstIndex >= 0 && firstIndex < list.Count);
-            //Contract.Requires(secondIndex >= 0 && secondIndex < list.Count);
-            if (firstIndex == secondIndex)
-            {
-                return;
-            }
-            T temp = list[firstIndex];
-            list[firstIndex] = list[secondIndex];
-            list[secondIndex] = temp;
-        }
-    }
-    #endregion
-
 }
