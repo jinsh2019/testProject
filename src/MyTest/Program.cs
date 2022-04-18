@@ -1,6 +1,8 @@
 ﻿using CDS;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using static System.Console;
 
 namespace MyTest
@@ -128,6 +130,7 @@ namespace MyTest
         }
         #endregion
 
+        #region 大象编程 链表部分
         //  27. 移除元素
         public int RemoveElement(int[] nums, int val)
         {
@@ -243,184 +246,242 @@ namespace MyTest
             }
         }
 
-        // 22. 括号生成
-        public IList<string> GenerateParenthesis(int n)
-        {
-            List<string> res = new List<string>();
-            if (n == 0) return res;
-            helper(res, "", n, n);
+        #endregion
 
+        // 看算法小炒21天
+        #region day1
+        // 数组遍历 链表遍历  二叉树遍历  N 叉树的遍历
+        // 动态规划解题套路框架
+
+        // 124. 二叉树中的最大路径和
+        public int MaxPathSum(TreeNode root)
+        {
+            int[] arr = { int.MinValue };
+            MaxPathSum(root, arr);
+
+            return arr[0];
+        }
+
+        /// <summary>
+        /// 从root出发，更新全局最大值
+        /// </summary>
+        /// <param name="root">根节点</param>
+        /// <param name="arr">全局最大值</param>
+        /// <returns>返回：两个方向，二选一，选择最大</returns>
+        private int MaxPathSum(TreeNode root, int[] arr)
+        {
+            if (root == null) return 0;
+
+            int left_max = Math.Max(0, MaxPathSum(root.left, arr));
+            int right_max = Math.Max(0, MaxPathSum(root.right, arr));
+
+            arr[0] = Math.Max(root.val + left_max + right_max, arr[0]); // 更新全局最大值
+
+            return Math.Max(left_max, right_max) + root.val;// 两个方向，二选一，选择最大
+        }
+
+        // 322. 零钱兑换
+        public int CoinChange(int[] coins, int amount)
+        {
+            // 题目要求的最终结果是dp(amount)
+            return dp(coins, amount);
+        }
+        // 定义： 要凑出金额n,至少要dp(coins,n)个硬币
+        private int dp(int[] coins, int amount)
+        {
+            // base case
+            if (amount == 0) return 0;
+            if (amount < 0) return -1;
+
+            int res = int.MaxValue;
+            foreach (var coin in coins)
+            {
+                // 计算子问题的结果
+                int subProblem = dp(coins, amount - coin);
+                // 子问题无解则跳过
+                if (subProblem == -1) continue;
+                // 在子问题中选择最优，然后加1
+                res = Math.Min(res, subProblem + 1);
+            }
+
+            return res == int.MaxValue ? -1 : res;
+        }
+        // withMemo
+        int CoinChangeWithMemo(int[] coins, int amount)
+        {
+            int[] memo = new int[amount + 1];
+            // 备忘录初始化一个不会被取到的特殊值，代表还未被计算
+            Array.Fill(memo, -666);
+
+            return dpWithMemo(coins, amount, memo);
+        }
+        // 定义： 要凑出金额m,至少要dp(coins,m)个硬币
+        int dpWithMemo(int[] coins, int amount, int[] memo)
+        {
+            if (amount == 0) return 0;
+            if (amount < 0) return -1;
+            // 查备忘录，防止重复计算
+            if (memo[amount] != -666)
+                return memo[amount];
+
+            int res = int.MaxValue;
+            foreach (var coin in coins)
+            {
+                // 计算子问题的结果
+                int subProblem = dpWithMemo(coins, amount - coin, memo);
+                // 子问题无解则跳过
+                if (subProblem == -1) continue;
+                // 在子问题中选择最优解，然后加一
+                res = Math.Min(res, subProblem + 1);
+            }
+            // 把计算结果存入备忘录
+            memo[amount] = (res == int.MaxValue) ? -1 : res;
+            return memo[amount];
+        }
+
+        int CoinChangeWithDP(int[] coins, int amount)
+        {
+            int[] dp = new int[amount + 1];
+            // 数组大小为amount+1, 初始值也为 amount + 1
+            Array.Fill(dp, amount + 1);
+
+            // base case
+            dp[0] = 0;
+            // 外层 for 循环在遍历所有状态的所有取值
+            for (int i = 0; i < dp.Length; i++)
+            {
+                // 内层 for 循环在所有选择的最小值
+                foreach (var coin in coins)
+                {
+                    // 子问题无解，跳过
+                    if (i - coin < 0)
+                        continue;
+                    dp[i] = Math.Min(dp[i], 1 + dp[i - coin]);
+                }
+
+            }
+            return (dp[amount] == amount + 1) ? -1 : dp[amount];
+        }
+        #endregion
+
+        #region day2
+        // 46. 全排列
+        // 回溯算法
+        public IList<IList<int>> Permute(int[] nums)
+        {
+            // 结果
+            IList<IList<int>> res = new List<IList<int>>();
+            // 记录「路径」
+            List<int> track = new List<int>();
+            // 「路径」中的元素会被标记为 true，避免重复使用
+            bool[] used = new bool[nums.Length];
+
+            backtrack(nums, track, used, res);
             return res;
         }
 
-        private void helper(List<string> res, string s, int left, int right)
+        // 路径：记录在 path 中
+        // 选择列表：nums 中不存在于 path 的那些元素（used[i] 为 false）
+        // 结束条件：nums 中的元素全都在 path 中出现
+        private void backtrack(int[] nums, List<int> path, bool[] used, IList<IList<int>> res)
         {
-            if (left > right)// 轮到右括号了  (=> () 
+            // 触发结束条件
+            if (path.Count == nums.Length)
             {
+                res.Add(new List<int>(path));
                 return;
             }
-            if (left == 0 && right == 0)
-            {
-                res.Add(s);
-                return;
-            }
-            if (left > 0)
-            {
-                helper(res, s + "(", left - 1, right);
-            }
-            if (right > 0)
-            {
-                helper(res, s + ")", left, right - 1);
-            }
-        }
-
-        // 79. 单词搜索
-        public bool Exist(char[][] board, string word)
-        {
-            for (int i = 0; i < board.Length; i++)
-            {
-                for (int j = 0; j < board[0].Length; j++)
-                {
-                    if (Exist(board, i, j, word, 0))
-                        return true;
-                }
-            }
-            return false;
-        }
-
-        private bool Exist(char[][] board, int i, int j, string word, int start)
-        {
-            if (start >= word.Length) return true;
-            if (i < 0 || i >= board.Length || j < 0 || j >= board[0].Length) return false;
-            if (board[i][j] == word[start++])
-            {
-                char c = board[i][j];
-                board[i][j] = '#'; // marked
-                bool res = Exist(board, i - 1, j, word, start) ||
-                    Exist(board, i + 1, j, word, start) ||
-                    Exist(board, i, j - 1, word, start) ||
-                    Exist(board, i, j + 1, word, start);
-
-                board[i][j] = c; // backing
-                return res;
-            }
-
-            return false;
-        }
-        // house rober
-        public int rob(int[] nums)
-        {
-            if (nums.Length == 0)
-                return 0;
-            // 子问题
-            // f(k) = 偷[0..k)房间中的最大金额
-
-            // f(0) = 0
-            // f(1)= nums[0]
-            // f(k) = max{rob(k-1), nums[k-1]+ rob(k-2)};
-            int N = nums.Length;
-            int[] dp = new int[N + 1];
-            dp[0] = 0;
-            dp[1] = nums[0];
-
-            for (int k = 2; k <= N; k++)
-            {
-                // 套用子问题的递推关系
-                dp[k] = Math.Max(dp[k - 1], nums[k - 1] + dp[k - 2]);
-            }
-
-            return dp[N];
-        }
-
-        // 213. 打家劫舍 II
-        public int rob2(int[] nums)
-        {
-            int N = nums.Length;
-            if (N == 1) return nums[0];
-
-            // 动态规划数组
-            int[] f = new int[N + 1];
-            int[] g = new int[N + 1];
-            // 定义起始位置
-            f[1] = nums[0]; // 第一个房间作为起点
-            g[2] = nums[1]; // 第二个房子作为起点
-
-            for (int i = 2; i <= N - 1; i++)
-            {
-                f[i] = Math.Max(f[i - 1], f[i - 2] + nums[i - 1]);
-            }
-
-            for (int i = 3; i <= N; i++)
-            {
-                g[i] = Math.Max(g[i - 1], g[i - 2] + nums[i - 1]);
-            }
-
-            return Math.Max(f[N - 1], g[N]);
-        }
-
-        // 55. 跳跃游戏
-        public bool CanJump(int[] nums)
-        {
-            // dp[i] 表示i位置可以到达
-            bool[] dp = new bool[nums.Length];
-            dp[0] = true;
 
             for (int i = 0; i < nums.Length; i++)
             {
-                for (int j = 0; j < i; j++)
+                // 排除不合法的选择
+                if (used[i])
                 {
-                    // 1. 达到j位置；
-                    // 2. nums[j] 的步长 + j位置 如果可以到达i位置，则dp[i]为true
-                    if (dp[j] && nums[j] + j >= i)
-                    {
-                        dp[i] = true;
-                        break;
-                    }
+                    // nums[i] 已经在track中，跳过
+                    continue;
                 }
+                // 做选择
+                path.Add(nums[i]);
+                used[i] = true;
+                // 进入下一层决策树
+                backtrack(nums, path, used, res);
+                // 取消选择
+                path.RemoveAt(path.Count - 1);
+                used[i] = false;
             }
-            return dp[nums.Length - 1];
         }
 
-
-        public bool CanJump_greedy(int[] nums)
+        // 51. N 皇后
+        /* 输入棋盘边长 n，返回所有合法的放置 */
+        public IList<IList<string>> SolveNQueens(int n)
         {
-            if (nums.Length == 1)
-            {
-                return true;
-            }
-
-            // 取最大覆盖跨度
-            int cover = nums[0];
-            for (int i = 1; i <= cover; i++)
-            {
-                cover = Math.Max(cover, i + nums[i]);
-                if (cover >= nums.Length - 1)
-                    return true;
-            }
-
-            return false;
-        }
-
-        // 201. 数字范围按位与
-        public int RangeBitwiseAnd(int m, int n)
-        {
-            //m 要赋值给 i，所以提前判断一下
-            if (m == int.MaxValue)
-            {
-                return m;
-            }
-            int res = m;
-            for (int i = m + 1; i <= n; i++)
-            {
-                res &= i;
-                if (res == 0 || i == int.MaxValue)
-                {
-                    break;
-                }
-            }
+            IList<IList<string>> res = new List<IList<string>>();
+            // '.' 表示空，'Q' 表示皇后，初始化空棋盘。
+            List<StringBuilder> board = new List<StringBuilder>(Enumerable.Repeat(new StringBuilder("."), n));
+            backtrack_NQueue(board, n, res);
             return res;
-
         }
+
+        // 路径：board 中小于 row 的那些行都已经成功放置了皇后
+        // 选择列表：第 row 行的所有列都是放置皇后的选择
+        // 结束条件：row 超过 board 的最后一行
+        private void backtrack_NQueue(List<StringBuilder> board, int row, IList<IList<string>> res)
+        {
+            // 触发结束条件
+            if (row == board.Count)
+            {
+                List<string> path = board.Select(x => x.ToString()).ToList();
+                res.Add(path);
+                return;
+            }
+
+            int n = board[row].Length;
+            for (int col = 0; col < n; col++)
+            {
+                // 排除不合法选择
+                if (!IsValid(board, row, col))
+                {
+                    continue;
+                }
+                // 做选择
+                board[row][col] = 'Q';
+                // 进入下一行决策
+                backtrack_NQueue(board, row + 1, res);
+                // 撤销选择
+                board[row][col] = '.';
+            }
+        }
+
+        /* 是否可以在 board[row][col] 放置皇后？ */
+        private bool IsValid(List<StringBuilder> board, int row, int col)
+        {
+            int n = board.Count;
+            // 检查列是否有皇后互相冲突
+            for (int i = 0; i < n; i++)
+            {
+                if (board[i][col] == 'Q')
+                    return false;
+            }
+
+            // 检查右上方是否有皇后互相冲突
+            for (int i = row - 1, j = col + 1;
+                i >= 0 && j < n; i--, j++)
+            {
+                if (board[i][j] == 'Q')
+                    return false;
+            }
+            // 检查左上方是否有皇后互相冲突
+            for (int i = row - 1, j = col - 1; i >= 0 && j >= 0;
+                i--, j--)
+            {
+                if (board[i][j] == 'Q')
+                    return false;
+            }
+
+            return true;
+        }
+        #endregion
+
         static void Main(string[] args)
         {
             #region 一句话的代码
@@ -454,5 +515,72 @@ namespace MyTest
 
             WriteLine("Hello World!");
         }
+
+        #region 总览 11天
+        // 数组遍历 链表遍历  二叉树遍历  N 叉树的遍历
+        // 动态规划解题套路框架
+
+        // 回溯算法
+
+        // BFS 算法解题
+
+        // 二叉树
+
+        // 回溯算法
+
+        // 双指针
+
+        // 二分搜索
+
+        // 滑动窗口
+
+        // 股票买卖 打家劫舍 
+
+        // nSum 问题
+
+        // 空间复杂度和时间复杂度分析
+        #endregion
+
+        #region Chapter 1 5天
+        // 链表算法
+
+        // 数组算法
+
+        // 二叉树算法
+
+        // 图
+
+        // 综合
+        #endregion
+
+        #region Chapter 2 5天
+        // dp 基本技巧
+
+        // 子序列问题
+
+        // 背包问题
+
+        // 综合游戏
+
+        // 贪心问题
+        #endregion
+
+        #region Chapter 3 3天
+        // 暴力搜索
+
+        // 数学运算
+
+        // 经典面试
+
+        #endregion
+
+        #region Chapter 4 5天
+        // 杂项
+        #endregion
+
+        #region Review 10天
+
+        #endregion
+
     }
 }

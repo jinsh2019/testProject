@@ -639,7 +639,6 @@ namespace ThroughOut1
             }
             return -1;
         }
-        #endregion
 
         // 17. 电话号码的字母组合
         public static List<string> letterCombinations(string digits)
@@ -684,6 +683,413 @@ namespace ThroughOut1
             }
         }
 
+        #endregion
+
+        #region day13 day14
+
+        // 695 岛屿的最大面积
+        public int MaxAreaOfIsland(int[,] grid)
+        {
+            int res = 0;
+            for (int r = 0; r < grid.GetLength(0); r++)
+            {
+                for (int c = 0; c < grid.GetLength(1); c++)
+                {
+                    if (grid[r, c] == 1)
+                    {
+                        int a = area(grid, r, c);
+                        res = Math.Max(res, a);
+                    }
+                }
+            }
+            return res;
+        }
+
+        private int area(int[,] grid, int r, int c)
+        {
+            if (!inArea(grid, r, c))
+                return 0;
+
+            if (grid[r, c] != 1) // 岛屿的边界条件
+                return 0;
+
+            grid[r, c] = 2;
+            return 1
+                + area(grid, r - 1, c)
+                + area(grid, r + 1, c)
+                + area(grid, r, c - 1)
+                + area(grid, r, c + 1);
+
+        }
+
+        // 22. 括号生成
+        public IList<string> GenerateParenthesis(int n)
+        {
+            List<string> res = new List<string>();
+            if (n == 0) return res;
+            helper(res, "", n, n);
+
+            return res;
+        }
+
+        private void helper(List<string> res, string s, int left, int right)
+        {
+            if (left > right)// 轮到右括号了  (=> () 
+            {
+                return;
+            }
+            if (left == 0 && right == 0)
+            {
+                res.Add(s);
+                return;
+            }
+            if (left > 0)
+            {
+                helper(res, s + "(", left - 1, right);
+            }
+            if (right > 0)
+            {
+                helper(res, s + ")", left, right - 1);
+            }
+        }
+
+        // 79. 单词搜索
+        public bool Exist(char[][] board, string word)
+        {
+            for (int i = 0; i < board.Length; i++)
+            {
+                for (int j = 0; j < board[0].Length; j++)
+                {
+                    if (Exist(board, i, j, word, 0))
+                        return true;
+                }
+            }
+            return false;
+        }
+
+        private bool Exist(char[][] board, int i, int j, string word, int start)
+        {
+            if (start >= word.Length) return true;
+            if (i < 0 || i >= board.Length || j < 0 || j >= board[0].Length) return false;
+            if (board[i][j] == word[start++])
+            {
+                char c = board[i][j];
+                board[i][j] = '#'; // marked
+                bool res = Exist(board, i - 1, j, word, start) ||
+                    Exist(board, i + 1, j, word, start) ||
+                    Exist(board, i, j - 1, word, start) ||
+                    Exist(board, i, j + 1, word, start);
+
+                board[i][j] = c; // backing
+                return res;
+            }
+
+            return false;
+        }
+        // house rober
+        public int rob(int[] nums)
+        {
+            if (nums.Length == 0)
+                return 0;
+            // 子问题
+            // f(k) = 偷[0..k)房间中的最大金额
+
+            // f(0) = 0
+            // f(1)= nums[0]
+            // f(k) = max{rob(k-1), nums[k-1]+ rob(k-2)};
+            int N = nums.Length;
+            int[] dp = new int[N + 1];
+            dp[0] = 0;
+            dp[1] = nums[0];
+
+            for (int k = 2; k <= N; k++)
+            {
+                // 套用子问题的递推关系
+                dp[k] = Math.Max(dp[k - 1], nums[k - 1] + dp[k - 2]);
+            }
+
+            return dp[N];
+        }
+
+        // 213. 打家劫舍 II
+        public int rob2(int[] nums)
+        {
+            int N = nums.Length;
+            if (N == 1) return nums[0];
+
+            // 动态规划数组
+            int[] f = new int[N + 1];
+            int[] g = new int[N + 1];
+            // 定义起始位置
+            f[1] = nums[0]; // 第一个房间作为起点
+            g[2] = nums[1]; // 第二个房子作为起点
+
+            for (int i = 2; i <= N - 1; i++)
+            {
+                f[i] = Math.Max(f[i - 1], f[i - 2] + nums[i - 1]);
+            }
+
+            for (int i = 3; i <= N; i++)
+            {
+                g[i] = Math.Max(g[i - 1], g[i - 2] + nums[i - 1]);
+            }
+
+            return Math.Max(f[N - 1], g[N]);
+        }
+
+        // 55. 跳跃游戏
+        public bool CanJump(int[] nums)
+        {
+            // dp[i] 表示i位置可以到达
+            bool[] dp = new bool[nums.Length];
+            dp[0] = true;
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                for (int j = 0; j < i; j++)
+                {
+                    // 1. 达到j位置；
+                    // 2. nums[j] 的步长 + j位置 如果可以到达i位置，则dp[i]为true
+                    if (dp[j] && nums[j] + j >= i)
+                    {
+                        dp[i] = true;
+                        break;
+                    }
+                }
+            }
+            return dp[nums.Length - 1];
+        }
+
+
+        public bool CanJump_greedy(int[] nums)
+        {
+            if (nums.Length == 1)
+            {
+                return true;
+            }
+
+            // 取最大覆盖跨度
+            int cover = nums[0];
+            for (int i = 1; i <= cover; i++)
+            {
+                cover = Math.Max(cover, i + nums[i]);
+                if (cover >= nums.Length - 1)
+                    return true;
+            }
+
+            return false;
+        }
+
+        // 201. 数字范围按位与
+        public int RangeBitwiseAnd(int m, int n)
+        {
+            //m 要赋值给 i，所以提前判断一下
+            if (m == int.MaxValue)
+            {
+                return m;
+            }
+            int res = m;
+            for (int i = m + 1; i <= n; i++)
+            {
+                res &= i;
+                if (res == 0 || i == int.MaxValue)
+                {
+                    break;
+                }
+            }
+            return res;
+
+        }
+
+        // 202. 快乐数
+        int bitSquareSum(int n)
+        {
+            int sum = 0;
+            while (n > 0)
+            {
+                int bit = n % 10;
+                sum += bit * bit;
+                n = n / 10;
+            }
+            return sum;
+        }
+        // n = 19 or 2
+        // 整体思路是： slow == fast 有 1 或 非1 两种情况
+        bool isHappy(int n)
+        {
+            int slow = n, fast = n;
+            do
+            {
+                slow = bitSquareSum(slow); // 82
+                fast = bitSquareSum(fast); // 68
+                fast = bitSquareSum(fast); // 100
+            } while (slow != fast);
+
+            return slow == 1;
+        }
+
+        // 62. 不同路径
+        public int UniquePaths(int m, int n)
+        {
+            int[,] dp = new int[m, n];
+
+            for (int i = 0; i < m; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    if (i == 0 || j == 0)
+                    {
+                        dp[i, j] = 1;
+                    }
+                    else
+                    {
+                        dp[i, j] = dp[i - 1, j] + dp[i, j - 1];
+                    }
+                }
+            }
+
+            return dp[m - 1, n - 1];
+        }
+
+        // 322. 零钱兑换
+
+        public int CoinChange(int[] nums, int n)
+        {
+            if (nums.Length == 0)
+                return -1;
+
+            int[] dp = new int[n + 1];
+            dp[0] = 0;
+            for (int i = 1; i <= n; i++)
+            {
+                int min = int.MaxValue;
+                for (int j = 0; j < nums.Length; j++)
+                {
+                    if (i - nums[j] >= 0 && dp[i - nums[j]] < min)
+                    {
+                        min = dp[i - nums[j]] + 1; // 状态转移方程
+                    }
+                }
+                // memo[i] = (min == Integer.MAX_VALUE ? Integer.MAX_VALUE : min);
+                dp[i] = min;
+            }
+
+            return dp[n] == int.MaxValue ? -1 : dp[n];
+        }
+
+        // 343. 整数拆分
+        public int IntegerBreak(int n)
+        {
+            if (n <= 3) return n - 1;
+            int a = n / 3, b = n % 3;
+            if (b == 0) return (int)Math.Pow(3, a);
+            if (b == 1) return (int)Math.Pow(3, a - 1) * 4;
+            return (int)Math.Pow(3, a) * 2;
+        }
+
+        // 300. 最长递增子序列
+        public int LengthOfLIS(int[] nums)
+        {
+            int[] dp = new int[nums.Length];
+            int res = 0;
+
+            foreach (var num in nums)
+            {
+                int i = 0, j = res;
+                while (i < j)
+                {
+                    int m = (i + j) / 2;
+                    if (dp[m] < num) i = m + 1;
+                    else j = m;
+                }
+                dp[i] = num;
+                if (res == j) res++;
+            }
+            return res;
+        }
+
+        // 91. 解码方法
+        public int NumDecodings(String s)
+        {
+            int n = s.Length;
+            int[] f = new int[n + 1];
+            f[0] = 1;
+            for (int i = 1; i <= n; ++i)
+            {
+                if (s[i - 1] != '0')
+                {
+                    f[i] += f[i - 1];
+                }
+                if (i > 1 && s[i - 2] != '0' && ((s[i - 2] - '0') * 10 + (s[i - 1] - '0') <= 26))
+                {
+                    f[i] += f[i - 2];
+                }
+            }
+            return f[n];
+        }
+
+
+        public String LongestPalindrome(String s)
+        {
+            int len = s.Length;
+            if (len < 2)
+            {
+                return s;
+            }
+
+            int maxLen = 1;
+            int begin = 0;
+            // dp[i,j] 表示 s[i..j] 是否是回文串
+            bool[,] dp = new bool[len, len];
+            // 初始化：所有长度为 1 的子串都是回文串
+            for (int i = 0; i < len; i++)
+            {
+                dp[i, i] = true;
+            }
+
+            char[] charArray = s.ToCharArray();
+            // 递推开始
+            // 先枚举子串长度
+            for (int L = 2; L <= len; L++)
+            {
+                // 枚举左边界，左边界的上限设置可以宽松一些
+                for (int i = 0; i < len; i++)
+                {
+                    // 由 L 和 i 可以确定右边界，即 j - i + 1 = L 得
+                    int j = L + i - 1;
+                    // 如果右边界越界，就可以退出当前循环
+                    if (j >= len)
+                    {
+                        break;
+                    }
+
+                    if (charArray[i] != charArray[j])
+                    {
+                        dp[i, j] = false;
+                    }
+                    else
+                    {
+                        if (j - i < 3)
+                        {
+                            dp[i, j] = true;
+                        }
+                        else
+                        {
+                            dp[i, j] = dp[i + 1, j - 1];
+                        }
+                    }
+
+                    // 只要 dp[i,L] == true 成立，就表示子串 s[i..L] 是回文，此时记录回文长度和起始位置
+                    if (dp[i, j] && j - i + 1 > maxLen)
+                    {
+                        maxLen = j - i + 1;
+                        begin = i;
+                    }
+                }
+            }
+            return s.Substring(begin, begin + maxLen);
+        }
+        #endregion
 
         // 并查集
         static void Main(string[] args)
@@ -867,41 +1273,6 @@ namespace ThroughOut1
         private bool inArea(int[,] grid, int r, int c)
         {
             return 0 <= r && r < grid.Length && 0 <= c && c < grid.GetLength(1);
-        }
-
-        // 695 岛屿的最大面积
-        public int MaxAreaOfIsland(int[,] grid)
-        {
-            int res = 0;
-            for (int r = 0; r < grid.GetLength(0); r++)
-            {
-                for (int c = 0; c < grid.GetLength(1); c++)
-                {
-                    if (grid[r, c] == 1)
-                    {
-                        int a = area(grid, r, c);
-                        res = Math.Max(res, a);
-                    }
-                }
-            }
-            return res;
-        }
-
-        private int area(int[,] grid, int r, int c)
-        {
-            if (!inArea(grid, r, c))
-                return 0;
-
-            if (grid[r, c] != 1) // 岛屿的边界条件
-                return 0;
-
-            grid[r, c] = 2;
-            return 1
-                + area(grid, r - 1, c)
-                + area(grid, r + 1, c)
-                + area(grid, r, c - 1)
-                + area(grid, r, c + 1);
-
         }
         #endregion
     }
