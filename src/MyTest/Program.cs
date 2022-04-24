@@ -482,6 +482,640 @@ namespace MyTest
         }
         #endregion
 
+        #region day3
+        // BFS 算法解题
+        // 111. 二叉树的最小深度
+        public int MinDepth(TreeNode root)
+        {
+            if (root == null)
+                return 0;
+            Queue<TreeNode> q = new Queue<TreeNode>();
+            q.Enqueue(root);
+            // root 本身就是一层, depth 初始化为1
+            int depth = 1;
+
+            while (q.Count != 0)
+            {
+                int sz = q.Count;
+                /* 将当前队列中的所有结点向四周扩散 */
+                for (int i = 0; i < sz; i++)
+                {
+                    TreeNode cur = q.Dequeue();
+                    /* 判断是否达到终点 */
+                    if (cur.left == null && cur.right == null)
+                    {
+                        return depth;
+                    }
+                    /* 将 cur 的相邻结点加入队列 */
+                    if (cur.left != null)
+                        q.Enqueue(cur.left);
+                    if (cur.right != null)
+                        q.Enqueue(cur.right);
+                }
+                /* 这里增加深度 */
+                depth++;
+            }
+            return depth;
+        }
+
+        // 752. 打开转盘锁
+        // 将 s[j] 向上拨动一次
+        string PlusOne(string s, int j)
+        {
+            char[] ch = s.ToCharArray();
+            if (ch[j] == '9')
+                ch[j] = '0';
+            else
+                ch[j] = (char)(ch[j] + 1);
+            return new string(ch);
+        }
+        // 将 s[j] 向下拨动一次
+        string minusOne(string s, int j)
+        {
+            char[] ch = s.ToCharArray();
+            if (ch[j] == '0')
+                ch[j] = '9';
+            else
+                ch[j] = (char)(ch[j] - 1);
+            return new string(ch);
+        }
+        // BFS 框架， 打印出所有可能的密码
+        void BFS(string target)
+        {
+            Queue<string> q = new Queue<string>();
+            q.Enqueue("0000");
+
+            while (q.Count != 0)
+            {
+                int sz = q.Count;
+                /* 将当前队列中的所有结点向周围扩散 */
+                for (int i = 0; i < sz; i++)
+                {
+                    string cur = q.Dequeue();
+
+                    /* 判断是否到达终点 */
+                    Console.WriteLine(cur);
+
+                    /* 将一个结点的相邻结点加入队列 */
+                    for (int j = 0; j < 4; j++)
+                    {
+                        string up = PlusOne(cur, j);
+                        string down = minusOne(cur, j);
+                        q.Enqueue(up);
+                        q.Enqueue(down);
+                    }
+                }
+                /* 在这里增加步数 */
+            }
+        }
+        int openLock(string[] deadends, string target)
+        {
+            // 记录需要跳过的死亡密码
+            HashSet<string> deads = new HashSet<string>();
+            foreach (var s in deadends)
+            {
+                deads.Add(s);
+            }
+            // 记录已经穷举过的密码，防止走回头路
+            HashSet<string> visited = new HashSet<string>();
+            Queue<string> q = new Queue<string>();
+            // 从起点开始启动广度优先搜索
+            int step = 0;
+            q.Enqueue("0000");
+            visited.Add("0000");
+
+            while (q.Count != 0)
+            {
+                int sz = q.Count;
+                /* 将当前队列中的所有结点向周围扩散 */
+                for (int i = 0; i < sz; i++)
+                {
+                    string cur = q.Dequeue();
+
+                    /* 判断是否达到终点 */
+                    if (deads.Contains(cur))
+                        continue;
+                    if (cur.Equals(target))
+                        return step;
+
+                    /* 将一个结点的未遍历相邻结点加入队列 */
+                    for (int j = 0; j < 4; j++)
+                    {
+                        string up = PlusOne(cur, j);
+                        if (!visited.Contains(up))
+                        {
+                            q.Enqueue(up);
+                            visited.Add(up);
+                        }
+                        string down = minusOne(cur, j);
+                        if (!visited.Contains(down))
+                        {
+                            q.Enqueue(down);
+                            visited.Add(down);
+                        }
+                    }
+                }
+                /* 在这里增加步数 */
+                step++;
+            }
+            // 如果穷举完都没有找到目标密码，那就是找不到了
+            return -1;
+        }
+
+
+        // 二叉树
+        // 迭代遍历数组
+        void travers(int[] arr)
+        {
+            for (int i = 0; i < arr.Length; i++)
+            {
+
+            }
+        }
+        // 递归遍历数组
+        void traverse(int[] arr, int i)
+        {
+            if (i == arr.Length)
+                return;
+            // 前序位置
+            traverse(arr, i + 1);
+            // 后序位置
+        }
+
+        // 迭代遍历单链表
+        void traverse(ListNode head)
+        {
+            for (ListNode p = head; p != null; p = p.next)
+            {
+
+            }
+        }
+        // 递归遍历单链表
+        void traverse1(ListNode head)
+        {
+            if (head != null)
+                return;
+            // 前序位置
+            traverse1(head);
+            // 后序位置
+        }
+
+        void traverse(TreeNode root)
+        {
+            if (root == null)
+            {
+                return;
+            }
+            // 前序位置
+            traverse(root.left);
+            // 中序位置
+            traverse(root.right);
+            // 后序位置
+        }
+
+
+
+        // 104. 二叉树的最大深度
+        // 记录最大深度
+        static int res_MaxDepth = 0;
+        // 记录遍历到的节点的深度 （使用外部变量获取结果,有回溯那味了）
+        static int depth = 0;
+        static int maxDepth_traverse(TreeNode root)
+        {
+            traverse_maxDepth(root);
+            return res_MaxDepth;
+        }
+        private static void traverse_maxDepth(TreeNode root)
+        {
+            if (root == null)
+            {
+                // 到达叶子节点，更新最大深度
+                res_MaxDepth = Math.Max(res_MaxDepth, depth);
+                return;
+            }
+
+            // 前序位置
+            depth++;
+            traverse_maxDepth(root.left);
+            traverse_maxDepth(root.right);
+            // 后序位置
+            depth--;
+        }
+
+        // 二叉树遍历框架 (使用返回值获取结果)
+        int maxDepth_recur(TreeNode root)
+        {
+            if (root == null)
+                return 0;
+
+            int leftMax = maxDepth_recur(root.left);
+            int rightMax = maxDepth_recur(root.right);
+
+            int res = Math.Max(leftMax, rightMax) + 1;
+            return res;
+        }
+        #endregion
+
+        #region day4
+        // 定义: 输入一棵二叉树的根节点，返回这棵树的前序遍历结果
+        List<int> preorderTraverse(TreeNode root)
+        {
+            List<int> res = new List<int>();
+            if (root == null)
+                return res;
+            // 前序遍历的结果，root.val 在第一个
+            res.Add(root.val);
+            // 利用函数定义，后面接着左子树的前序遍历结果
+            res.AddRange(preorderTraverse(root.left));
+            // 利用函数定义，最后接着柚子树的前序遍历结果
+            res.AddRange(preorderTraverse(root.right));
+            return res;
+        }
+        // 二叉树遍历函数
+        void traverse_level(TreeNode root, int level)
+        {
+            if (root == null)
+                return;
+            // 前序位置
+            System.Console.WriteLine($"Node {root} is on level {level}");
+            traverse_level(root.left, level + 1);
+            traverse_level(root.right, level + 1);
+        }
+        // 定义: 输入一棵二叉树，返回这颗二叉树的节点总数
+        int count(TreeNode root)
+        {
+            if (root == null)
+                return 0;
+            int leftCount = count(root.left);
+            int rightCount = count(root.right);
+            // 后序位置
+            WriteLine($"节点{root} 的左子树有{leftCount}个节点，右子树有{rightCount}个节点");
+
+            return leftCount + rightCount + 1;
+        }
+        // 记录最大直径的长度
+        int maxDiameter = 0;
+
+        public int diameterOfBinaryTree(TreeNode root)
+        {
+            // 对每个节点计算直径，求最大直径
+            traverse_diameter(root);
+            return maxDiameter;
+
+        }
+        // 遍历二叉树
+        private void traverse_diameter(TreeNode root)
+        {
+            if (root == null)
+                return;
+
+            // 对每个节点计算直径
+            //int leftMax = maxDepth_traverse(root.left);
+            //int rightMax = maxDepth_traverse(root.right);
+            int leftMax = maxDepth_recur(root.left);
+            int rightMax = maxDepth_recur(root.right);
+            int myDiameter = leftMax + rightMax;
+            // 更新全局最大直径
+            maxDiameter = Math.Max(maxDiameter, myDiameter);
+
+            traverse_diameter(root.left);
+            traverse_diameter(root.right);
+        }
+
+        int maxDepth_postTraverse(TreeNode root)
+        {
+            if (root == null)
+                return 0;
+
+            int leftMax = maxDepth_postTraverse(root.left);
+            int rightMax = maxDepth_postTraverse(root.right);
+            // 后序位置，顺便计算最大直径
+            int myDiameter = leftMax + rightMax;
+            maxDiameter = Math.Max(maxDiameter, myDiameter);
+
+            return 1 + Math.Max(leftMax, rightMax);
+        }
+        // 输入一棵二叉树的根节点，层序遍历这颗二叉树
+        void levelTraverse(TreeNode root)
+        {
+            if (root == null) return;
+            Queue<TreeNode> q = new Queue<TreeNode>();
+            q.Enqueue(root);
+
+            // 从上到下遍历二叉树的每一层
+            while (q.Count > 0)
+            {
+                int sz = q.Count;
+                for (int i = 0; i < sz; i++)
+                {
+                    // 从左到右遍历每一层的每个节点
+                    TreeNode cur = q.Dequeue();
+                    // 将下一层节点放入队列
+                    if (cur.left != null)
+                        q.Enqueue(cur.left);
+                    if (cur.right != null)
+                        q.Enqueue(cur.right);
+                }
+            }
+
+        }
+        #endregion
+
+        #region day5
+        // 排列、组合、子集问题汇总
+        IList<IList<int>> res = new List<IList<int>>();
+        Stack<int> track = new Stack<int>();
+
+        public IList<IList<int>> subSets(int[] nums)
+        {
+            backtrack(nums, 0);
+            return res;
+        }
+        //  回溯算法核心函数，遍历子集问题的回溯树
+        private void backtrack(int[] nums, int start)
+        {
+            // 前序位置，每个节点的值都是一个子集
+            res.Add(new List<int>(track));
+
+            // 回溯算法标准框架
+            for (int i = start; i < nums.Length; i++)
+            {
+                // 做选择
+                track.Push(nums[i]);
+                // 通过 start 参数控制树枝的遍历，避免产生重复的子集
+                backtrack(nums, i + 1);
+                // 撤销选择
+                track.Pop();
+            }
+        }
+
+        public IList<IList<int>> combine(int n, int k)
+        {
+            backtrack_combine(1, n, k);
+            return res;
+        }
+
+        private void backtrack_combine(int start, int n, int k)
+        {
+            // base case
+            if (k == track.Count)
+            {
+                // 遍历到了第k层，收集当前结点的值
+                res.Add(new List<int>(track));
+                return;
+            }
+            for (int i = start; i <= n; i++)
+            {
+                // 选择
+                track.Push(i);
+                // 通过 start 参数控制树枝的遍历，避免产生重复的子集
+                backtrack_combine(i + 1, n, k);
+                // 撤销选择
+                track.Pop();
+            }
+
+        }
+
+        #endregion
+
+        #region day6
+
+        #endregion
+
+        #region day7
+        // 46. 全排列
+        IList<IList<int>> res_permute = new List<IList<int>>();
+        // 记录回溯算法的递归路径
+        Stack<int> track_permute = new Stack<int>();
+        // track  中的元素会被标记为 true
+        bool[] used;
+        // 主函数， 输入一组不重复的数字，返回他们的全排列
+        public IList<IList<int>> Permute1(int[] nums)
+        {
+            used = new bool[nums.Length];
+            backtrack_Permute(nums);
+            return res;
+        }
+        // 回溯算法核心函数
+        private void backtrack_Permute(int[] nums)
+        {
+            // base case, 到达叶子结点
+            if (track_permute.Count == nums.Length)
+            {
+                // 收集叶子结点上的值
+                res.Add(new List<int>(track_permute));
+                return;
+            }
+
+            // 回溯算法标准框架
+            for (int i = 0; i < nums.Length; i++)
+            {
+                // 已经存在 track 中的元素， 不能重复选择
+                if (used[i])
+                    continue;
+
+                // 做选择
+                used[i] = true;
+                track_permute.Push(nums[i]);
+                // 进入下一层回溯树
+                backtrack_Permute(nums);
+                // 取消选择
+                track_permute.Pop();
+                used[i] = false;
+            }
+        }
+
+
+        /* 仅收集第 k 层的节点值 */
+        //// 回溯算法核心函数
+        //void backtrack(int[] nums, int k)
+        //{
+        //    // base case，到达第 k 层，收集节点的值
+        //    if (track.size() == k)
+        //    {
+        //        // 第 k 层节点的值就是大小为 k 的排列
+        //        res.add(new LinkedList(track));
+        //        return;
+        //    }
+
+        //    // 回溯算法标准框架
+        //    for (int i = 0; i < nums.length; i++)
+        //    {
+        //        // ...
+        //        backtrack(nums, k);
+        //        // ...
+        //    }
+        //}
+
+        /*  */
+        // 90. 子集 II
+        IList<IList<int>> res_dup = new List<IList<int>>();
+        LinkedList<int> track_dup = new LinkedList<int>();
+        public IList<IList<int>> SubsetsWithDup(int[] nums)
+        {
+            // 先排序， 让相同的元素靠在一起
+            Array.Sort(nums);
+            backtrack_Dup(nums, 0);
+            return res_dup;
+        }
+
+        private void backtrack_Dup(int[] nums, int start)
+        {
+            // 前序位置， 每个节点的值都是一个子集
+            res_dup.Add(new List<int>(track_dup));
+
+            for (int i = start; i < nums.Length; i++)
+            {
+                // 剪枝逻辑，值相同的相邻树枝，只遍历一条
+                if (i > start && nums[i] == nums[i - 1])
+                {
+                    continue;
+                }
+
+                track_dup.AddLast(nums[i]);
+                backtrack_Dup(nums, i + 1);
+                track_dup.RemoveLast();
+            }
+        }
+
+        // 40. 组合总和 II
+        IList<IList<int>> res_CS2 = new List<IList<int>>();
+        // 记录回溯路径
+        LinkedList<int> track_CS2 = new LinkedList<int>();
+        // 记录track中的元素之和
+        int trackSum = 0;
+        public IList<IList<int>> CombinationSum2(int[] candidates, int target)
+        {
+            if (candidates.Length == 0)
+                return res_CS2;
+
+            // 先排序，让相同的元素靠在一起
+            Array.Sort(candidates);
+            backtrack_CS2(candidates, 0, target);
+            return res_CS2;
+        }
+        // 回溯算法主函数
+        private void backtrack_CS2(int[] nums, int start, int target)
+        {
+            // base case， 到达目标和，找到符合条件的组合
+            if (trackSum == target)
+            {
+                res_CS2.Add(new List<int>(track_CS2));
+                return;
+            }
+            // base case, 超过目标和，直接结束
+            if (trackSum > target)
+                return;
+
+            // 回溯算法标准框架
+            for (int i = start; i < nums.Length; i++)
+            {
+                // 剪枝逻辑，值相同的树枝，只遍历第一条
+                if (i > start && nums[i] == nums[i - 1])
+                {
+                    continue;
+                }
+                // 做选择
+                track_CS2.AddLast(nums[i]);
+                trackSum += nums[i];
+                // 递归遍历下一层回溯树
+                backtrack_CS2(nums, i + 1, target);
+                // 撤销选择
+                track_CS2.RemoveLast();
+                trackSum -= nums[i];
+            }
+        }
+        #endregion
+
+        #region day8
+        // 47. 全排列 II
+        IList<IList<int>> res_PUnique = new List<IList<int>>();
+        LinkedList<int> track_PUnique = new LinkedList<int>();
+
+        public IList<IList<int>> PermuteUnique(int[] nums)
+        {
+            // 先排序， 让相同的元素靠在一起
+            Array.Sort(nums);
+            used = new bool[nums.Length];
+            backtrack_Punique(nums);
+            return res_PUnique;
+
+        }
+
+        private void backtrack_Punique(int[] nums)
+        {
+            if (track.Count == nums.Length)
+            {
+                res.Add(new List<int>(track_PUnique));
+                return;
+            }
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (used[i])
+                {
+                    continue;
+                }
+                // 新添加的剪枝逻辑，固定相同的元素在排列中的相对位置
+                if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1])
+                {
+                    // 如果前面的相邻相等元素没有用过，则跳过
+                    continue;
+                }
+                // 选择 nums[i]
+                track_PUnique.AddLast(nums[i]);
+                used[i] = true;
+                // 递归遍历下一层回溯树
+                backtrack_Punique(nums);
+                // 撤销选择
+                track_PUnique.RemoveLast();
+                used[i] = false;
+            }
+        }
+        // 39. 组合总和
+        IList<IList<int>> res_cSum = new List<IList<int>>();
+        // 记录回溯的路径
+        LinkedList<int> track_cSum = new LinkedList<int>();
+        // 记录 track中的路径和
+        int trackSum_cSum = 0;
+
+        public IList<IList<int>> CombinationSum1(int[] candidates, int target)
+        {
+            if (candidates.Length == 0)
+                return res;
+            backtrack_cSum(candidates, 0, target);
+            return res_cSum;
+        }
+        // 回溯算法主函数
+        private void backtrack_cSum(int[] nums, int start, int target)
+        {
+            // base case, 找到目标和，记录结果
+            if (trackSum == target)
+            {
+                res_cSum.Add(new List<int>(track_cSum));
+                return;
+            }
+            // base case, 超过目标和，停止向下遍历
+            if (trackSum > target)
+                return;
+
+            // 回溯算法标准框架
+            for (int i = start; i < nums.Length; i++)
+            {
+                // 选择 nums[i]
+                trackSum_cSum += nums[i];
+                track_cSum.AddLast(nums[i]);
+                // 递归遍历下一层回溯树
+                // 同一元素可重复使用，注意参数
+                backtrack_cSum(nums, i, target);
+                // 撤销选择 nums[i]
+                trackSum_cSum -= nums[i];
+                track_cSum.RemoveLast();
+            }
+        }
+        #endregion
+
+
         static void Main(string[] args)
         {
             #region 一句话的代码
@@ -513,6 +1147,8 @@ namespace MyTest
 
             reverseList1(CommonHelper.BuildLinkNode(new int[] { 1, 2, 3 }));
 
+            day9 _day9 = new day9();
+            _day9.minWindow("ADOBECODEBANC", "ABC");
             WriteLine("Hello World!");
         }
 
