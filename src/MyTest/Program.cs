@@ -879,10 +879,6 @@ namespace MyTest
         #endregion
 
         #region day6
-
-        #endregion
-
-        #region day7
         // 46. 全排列
         IList<IList<int>> res_permute = new List<IList<int>>();
         // 记录回溯算法的递归路径
@@ -1027,7 +1023,7 @@ namespace MyTest
         }
         #endregion
 
-        #region day8
+        #region day7
         // 47. 全排列 II
         IList<IList<int>> res_PUnique = new List<IList<int>>();
         LinkedList<int> track_PUnique = new LinkedList<int>();
@@ -1149,30 +1145,66 @@ namespace MyTest
 
             day9 _day9 = new day9();
             _day9.minWindow("ADOBECODEBANC", "ABC");
+
+            day10 _day10 = new day10();
+            _day10.TwoSum(new int[] { 3, 2, 4 }, 6);
             WriteLine("Hello World!");
+
+
+            NumArray numArray = new NumArray(new int[] { -2, 0, 3, -5, 2, -1 });
+            numArray.SumRange(2, 5);
+
+            NumMatrix numMatrix = new NumMatrix(new int[,] {
+            { 3,0,1,4,2},
+            { 5,6,3,2,1},
+            { 1,2,0,1,5},
+            { 4,1,0,1,7},
+            { 1,0,3,0,5},
+            });
+            var res = numMatrix.sumRegion(2, 1, 4, 3);
+
+            int[] p = { 1, 2, 3 };
+            testArray(ref p);
+
+
+
+            day13 day13 = new day13();
+            int[][] matrix = new int[][] {
+            new int[] { 1, 2, 3 },
+            new int[]{ 4,5,6},
+            new int[]{ 7, 8, 9 }
+            };
+            day13.SpiralOrder(matrix);
+
+            day13.GenerateMatrix(3);
+        }
+        public static void testArray(ref int[] nums)
+        {
+            int[] tmp = { 4, 5, 6 };
+            nums = tmp;
         }
 
         #region 总览 11天
         // 数组遍历 链表遍历  二叉树遍历  N 叉树的遍历
-        // 动态规划解题套路框架
+        // 动态规划解题套路框架 day1
 
-        // 回溯算法
+        // 回溯算法 day2
 
-        // BFS 算法解题
+        // BFS 算法解题 day3
 
-        // 二叉树
+        // 二叉树 day3
 
-        // 回溯算法
+        // 回溯算法 day4 day5 day6
 
-        // 双指针
+        // 双指针 day8
 
-        // 二分搜索
+        // 二分搜索 day9
 
-        // 滑动窗口
+        // 滑动窗口 day9
 
         // 股票买卖 打家劫舍 
 
-        // nSum 问题
+        // nSum 问题 day10
 
         // 空间复杂度和时间复杂度分析
         #endregion
