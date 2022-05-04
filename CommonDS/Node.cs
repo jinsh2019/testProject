@@ -5,6 +5,7 @@
     public class Node
     {
         public int val;
+        public int key;
         public Node left;
         public Node right;
         public Node next;
@@ -12,6 +13,11 @@
         public Node() { }
 
         public Node(int _val)
+        {
+            val = _val;
+        }
+
+        public Node(int key, int _val)
         {
             val = _val;
         }

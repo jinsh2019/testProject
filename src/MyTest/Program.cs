@@ -1177,6 +1177,31 @@ namespace MyTest
             day13.SpiralOrder(matrix);
 
             day13.GenerateMatrix(3);
+
+            day14 day14 = new day14();
+            TreeNode node1 = new TreeNode(1);
+            TreeNode node3 = new TreeNode(3);
+            TreeNode node2 = new TreeNode(2, node1, node3);
+            TreeNode node6 = new TreeNode(6);
+            TreeNode node9 = new TreeNode(9);
+            TreeNode node7 = new TreeNode(7, node6, node9);
+            TreeNode node4 = new TreeNode(4, node2, node7);
+            day14.InvertTree1(node4);
+
+            day14.constructMaximumBinaryTree(new int[] { 3, 2, 1, 6, 0, 5 });
+
+            day16 day16 = new day16();
+            day16.GenerateTrees(3);
+            // day16.NumTree(3);
+
+            day17 day17 = new day17();
+            int[][] graph = new int[4][] {
+            new int[]{ 1,2},
+            new int[]{ 3},
+            new int[]{ 3},
+            new int[]{ }
+            };
+            day17.AllPathsSourceTarget(graph);
         }
         public static void testArray(ref int[] nums)
         {
