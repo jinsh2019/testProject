@@ -1202,6 +1202,20 @@ namespace MyTest
             new int[]{ }
             };
             day17.AllPathsSourceTarget(graph);
+
+            Trie trie = new Trie();
+            trie.insert("bad");
+            trie.insert("dad");
+            trie.insert("mad");
+            trie.search("pad");
+            trie.search("bad");
+            trie.hasKeyWithPattern(".ad");
+            trie.hasKeyWithPattern("b..");
+            //trie.search(".ad");
+            //trie.search("b..");
+
+            day18 day18 = new day18();
+            day18.NextGreaterElement(new int[] { 2, 1, 2, 4, 3 });
         }
         public static void testArray(ref int[] nums)
         {
