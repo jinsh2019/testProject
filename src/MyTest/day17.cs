@@ -308,7 +308,7 @@ namespace MyTest
         //}
 
         // 输入起点，进行 BFS 搜索
-        public int BSF(Node start)
+        public int BFS(Node start)
         {
             //Queue<Node> q = new Queue<Node>();
             //HashSet<Node> visited = new HashSet<Node>();

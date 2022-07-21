@@ -1251,6 +1251,12 @@ namespace ThroughOut1
 
             letterCombinations("23");
             WriteLine("Hello World!");
+
+            Dictionary<char, char> dic = new Dictionary<char, char>();
+            dic.Add('(', ')');
+            dic.Add('[',']');
+            dic.Add('{','}');
+
         }
 
         #region Private Method

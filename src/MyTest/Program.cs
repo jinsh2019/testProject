@@ -1216,6 +1216,11 @@ namespace MyTest
 
             day18 day18 = new day18();
             day18.NextGreaterElement(new int[] { 2, 1, 2, 4, 3 });
+
+            {
+                int[] nums = new int[] { 5, 1, 1, 2, 0, 0 };
+                MergeSort.sort(nums);
+            }
         }
         public static void testArray(ref int[] nums)
         {
