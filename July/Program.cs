@@ -2,10 +2,13 @@
 //Console.WriteLine("Hello, World!");
 using CDS;
 using July.algorithms.day2;
+using July.algorithms.day22;
 using July.algorithms.day4;
 using July.daily;
 using System.Collections;
 using System.Text;
+using Node = CDS.Node;
+
 {
     day1 d1 = new day1();
     int[] nums = { };
@@ -141,7 +144,7 @@ using System.Text;
 }
 {
     int[] nums = new int[] { 1, 2, 3 };
-    MySet mySet = new MySet();
+    July.algorithms.day22.MySet mySet = new July.algorithms.day22.MySet();
     mySet.Subsets(nums);
 }
 {
@@ -374,4 +377,203 @@ using System.Text;
         { 1,1}
     };
     Console.Write(Math.Pow(2, 3));
+}
+{
+    day23 day23 = new day23();
+    int[] nums = { 76, 76, 76 };
+    day23.DailyTemperatures(nums);
+    Console.WriteLine();
+    for (int i = 0; i < 2 * nums.Length - 1; i++)
+    {
+        Console.Write(nums[i % nums.Length]);
+    }
+}
+
+{
+    day23 day23 = new day23();
+    int[] nums = { 2, 6, 4, 8, 10, 9, 15 };
+    day23.FindUnsortedSubarray(nums);
+}
+
+{
+    day23 day23 = new day23();
+    int[] nums = { 1, 1, 1, -2, 1 };
+    day23.SubarraySum(nums, 1);
+}
+{
+
+    List<TreeNode> nodes = new List<TreeNode>();
+    for (int i = 0; i < 10; i++)
+    {
+        nodes.Add(new TreeNode(i));
+    }
+
+    nodes[1].left = nodes[2];
+    nodes[1].right = nodes[3];
+    nodes[2].left = nodes[4];
+    nodes[2].right = nodes[5];
+    day23 day23 = new day23();
+    day23.DiameterOfBinaryTree(nodes[1]);
+}
+{
+    Console.WriteLine();
+
+
+    List<TreeNode> nodes = new List<TreeNode>();
+    for (int i = 0; i < 20; i++)
+    {
+        nodes.Add(new TreeNode(i));
+    }
+    nodes[5].left = nodes[4];
+    nodes[5].right = nodes[8];
+    nodes[4].left = nodes[11];
+    nodes[11].left = nodes[7];
+    nodes[11].right = nodes[2];
+    nodes[8].left = nodes[13];
+    nodes[8].right = nodes[14];
+    nodes[14].val = 4;
+    nodes[15].val = 5;
+    nodes[14].left = nodes[15];
+    nodes[14].right = nodes[1];
+
+
+    day23 day23 = new day23();
+    day23.PathSum(nodes[5], 22);
+}
+{
+    List<TreeNode> nodes = new List<TreeNode>();
+    for (int i = 0; i < 20; i++)
+    {
+        nodes.Add(new TreeNode(i));
+    }
+    nodes[10].left = nodes[5];
+    nodes[10].right = nodes[15];
+    nodes[5].left = nodes[3];
+    nodes[5].right = nodes[7];
+    nodes[15].left = nodes[18];
+    day24 day24 = new day24();
+    day24.RangeSumBST(nodes[10], 7, 15);
+}
+{
+
+    day24 day24 = new day24();
+    int[][] prerequisites = new int[4][];
+    prerequisites[0] = new int[] { 1, 0 };
+    prerequisites[1] = new int[] { 2, 0 };
+    prerequisites[2] = new int[] { 3, 1 };
+    prerequisites[3] = new int[] { 3, 2 };
+    day24.CanFinish(4, prerequisites);
+}
+
+{
+    int[] nums = { 1, 2, 3, 4, 5 };
+    day25 day25 = new day25();
+    List<ListNode> lnodes = new List<ListNode>();
+    for (int i = 0; i < 10; i++)
+    {
+        lnodes.Add(new ListNode(i));
+    }
+    lnodes[1].next = lnodes[2];
+    lnodes[2].next = lnodes[3];
+    lnodes[3].next = lnodes[4];
+    lnodes[4].next = lnodes[5];
+
+    day25.ReverseKGroup(lnodes[1], 2);
+}
+{
+    Console.WriteLine();
+    day25 day25 = new day25();
+    day25.Permutation(new int[] { 1, 2, 3 });
+}
+
+{
+    Console.WriteLine();
+    day25 day25 = new day25();
+    day25.Subsets(new int[] { 1, 2, 3 });
+}
+{
+    Console.WriteLine();
+    day25 day25 = new day25();
+    day25.Combine(3, 2);
+}
+{
+    Console.WriteLine();
+    day25 day25 = new day25();
+
+    day25.CombinationSum2(new int[] { 10, 1, 2, 7, 6, 1, 5 }, 8);
+}
+{
+    day25 day25 = new day25();
+    day25.NextPermutation(new int[] { 1, 2, 3 });
+}
+{
+    day25 day25 = new day25();
+    day25.LengthOfLongestSubstring("abcabcbb");
+}
+{
+    day25 day25 = new day25();
+    day25.LengthOfLongestSubstringTwoDistinct("eceba");
+}
+{
+    day25 day25 = new day25();
+    day25.LengthOfLongestSubstringKDistinct("eceba", 2);
+}
+{
+    day25 day25 = new day25();
+    day25.MaxSubArray(new int[] { -2, 1, -3, 4, -1, 2, 1, -5, 4 });
+}
+{
+    day25 day25 = new day25();
+    int[][] matrix = new int[3][];
+    matrix[0] = new int[3] { 1, 2, 3 };
+    matrix[1] = new int[3] { 4, 5, 6 };
+    matrix[2] = new int[3] { 7, 8, 9 };
+    day25.Rotate(matrix);
+}
+{
+    day25 day25 = new day25();
+    day25.LongestPalindrome("babad");
+}
+{
+    day25 day25 = new day25();
+    day25.ReverseWords("example   good a");
+}
+{
+    day25 day25 = new day25();
+    day25.Search(new int[] { 5, 1, 3 }, 3);
+}
+
+{
+    StringBuilder sb = new StringBuilder();
+
+    //int[][] intervals = new int[2][];
+    //Array.Sort(intervals, (a, b) => a[0].CompareTo(b[0]));
+    //List<int[]> total = new List<int[]>();
+}
+{
+    day25 day25 = new day25();
+    day25.SearchRange(new int[] { 5, 7, 7, 8, 8, 10 }, 8);
+}
+
+{
+    day25 day25 = new day25();
+    string[] matrix = new string[3] { "ABCE", "SFCS", "ADEE" };
+    day25.searchWord(matrix, "ABCCED");
+}
+
+{
+
+    int[] nums = new int[] { 5, 2, 6 };//{2,3,8,1,4,9,10,7,16,14};
+    HeapSort heapSort = new HeapSort();
+    heapSort.sort(nums);
+
+}
+{
+    var P = new string('U', 5);
+    StringBuilder sb = new StringBuilder(); 
+    //sb.Remove()
+}
+{
+    HashSet<int> hashset = new HashSet<int>();
+    hashset.Add(1);
 }

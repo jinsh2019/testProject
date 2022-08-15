@@ -63,5 +63,41 @@ namespace july2.date
             backtrack(left, right - 1);
             track.RemoveLast();
         }
+
+        public static int Search(int[] nums, int target)
+        {
+            int n = nums.Length;
+            // base Case 
+            if (n == 0) return -1;
+            if (n == 1) return nums[0] == target ? 0 : -1;
+
+            int left = 0, right = n - 1;
+            while (left <= right)
+            {
+                int mid = left + (right - left) / 2;
+                if (nums[mid] == target)
+                {
+                    return mid;
+                }
+                // 判断左侧有序还是右侧有序
+                // 根据有序，对left和right进行判断
+                if (nums[0] <= nums[mid])
+                {
+                    if (nums[0] <= target && target < nums[mid])
+                        right = mid - 1;
+                    else
+                        left = mid + 1;
+                }
+                else
+                {
+                    if (nums[mid] < target && target <= nums[n - 1])
+                        left = mid + 1;
+                    else
+                        right = mid - 1;
+                }
+            }
+            return -1;
+        }
+
     }
 }

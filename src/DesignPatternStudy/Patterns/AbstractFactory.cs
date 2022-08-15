@@ -70,14 +70,14 @@ namespace DesignPatternStudy.Patterns.AbstractFactory
     #endregion
 
     #region AbstractFactory
-
+    // 抽象工厂
 
     public abstract class AbstractFactory
     {
         public abstract Color getColor(String color);
         public abstract Shape getShape(String shape);
     }
-
+    // 具体工厂shape
     public class ShapeFactory : AbstractFactory
     {
         public override Shape getShape(String shapeType)
@@ -106,15 +106,17 @@ namespace DesignPatternStudy.Patterns.AbstractFactory
             return null;
         }
     }
-
+    /// <summary>
+    /// 具体工厂color
+    /// </summary>
     public class ColorFactory : AbstractFactory
     {
-
+        // 重新1
         public override Shape getShape(String shapeType)
         {
             return null;
         }
-
+        // 重写2
         public override Color getColor(String color)
         {
             if (color == null)
@@ -136,7 +138,9 @@ namespace DesignPatternStudy.Patterns.AbstractFactory
             return null;
         }
     }
-
+    /// <summary>
+    ///  封装工厂的生产者
+    /// </summary>
     public class FactoryProducer
     {
         public static AbstractFactory getFactory(String choice)

@@ -29,9 +29,7 @@ namespace LinearTest
         public void insert(int data, int index)
         {
             if (index < 0 || index > size)
-            {
                 throw new IndexOutOfRangeException();
-            }
 
             Node insertedNode = new Node(data);
             if (size == 0)

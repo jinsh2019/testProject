@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Data.SqlTypes;
-using System.Globalization;
-using System.Threading;
-using System.Xml;
 using static System.Console;
 
 namespace EnumTest
@@ -40,6 +36,7 @@ namespace EnumTest
         // 自然数组的排序
 
         #region 自然数组的排序
+        // 根据条件将value-1 看成索引
         public static void sort1(int[] arr)
         {
             int tmp = 0;
@@ -55,7 +52,7 @@ namespace EnumTest
                 }
             }
         }
-
+        // 思路与上面一致
         public static void sort2(int[] arr)
         {
             for (int i = 0; i < arr.Length; i++)
@@ -95,15 +92,16 @@ namespace EnumTest
 
         }
         // 子数组的最大累加和
+        // 根据自然数的性质：
+        //  如果是负数，重新计算累加cur， 之前的和是最大。
         public static int maxSum(int[] arr)
         {
-            if (arr == null || arr.Length == 0)
-                return 0;
+            if (arr == null || arr.Length == 0) return 0;
+
 
             int max = int.MinValue;
             int cur = 0;
-            for (int i = 0; i < arr.Length; i++)
-            {
+            for (int i = 0; i < arr.Length; i++){
                 cur += arr[i];
                 max = Math.Max(max, cur); // 如果没有正数，取最大值即可； 如果正负均存在，找到最大值即可
                 cur = cur < 0 ? 0 : cur;
@@ -111,34 +109,23 @@ namespace EnumTest
 
             return max;
         }
+
         // 在数组中找到一个局部最小的位置
         public static int getLessIndex(int[] arr)
         {
-            if (arr == null || arr.Length == 0)
-                return -1;//不存在
+            if (arr == null || arr.Length == 0) return -1;//不存在
 
-            if (arr.Length == 1 || arr[0] < arr[1])
-            {
-                return 0;
-            }
-            if (arr[arr.Length - 1] < arr[arr.Length - 2])
-            {
-                return arr.Length - 1;
-            }
+            if (arr.Length == 1 || arr[0] < arr[1]) return 0;
+
+            if (arr[arr.Length - 1] < arr[arr.Length - 2]) return arr.Length - 1;
 
             int left = 1;
             int right = arr.Length - 2;
             while (left < right)
             {
                 int mid = (left + right) / 2;
-                if (arr[mid] > arr[mid - 1])
-                {
-                    right = mid - 1;
-                }
-                else if (arr[mid] > arr[mid + 1])
-                {
-                    left = mid + 1;
-                }
+                if (arr[mid] > arr[mid - 1]) right = mid - 1;
+                else if (arr[mid] > arr[mid + 1]) left = mid + 1;
                 else
                     return mid;
             }
@@ -191,11 +178,9 @@ namespace EnumTest
         // 不包含本位置值的累乘数组
         public static int[] product2(int[] arr)
         {
-            if (arr == null || arr.Length < 2)
-                return null;
+            if (arr == null || arr.Length < 2) return null;
             int[] res = new int[arr.Length];
-            res[0] = arr[0]
-               ;
+            res[0] = arr[0];
             for (int i = 1; i < arr.Length; i++)
             {
                 res[i] = res[i - 1] * arr[i]; //0:arr[0]; 1: arr[0]*arr[1]; 2: arr[0]*arr[1]*res[2]
@@ -207,17 +192,16 @@ namespace EnumTest
                 tmp *= arr[i]; // 从end进行累乘
             }
             res[0] = tmp; // 第一个是所有的乘积
-            return res;
 
+            return res;
         }
 
         // partition 调整
         public void leftUnique(int[] arr) // 有序数组实现左边 partition
         {
             if (arr == null || arr.Length < 2)
-            {
                 return;
-            }
+
             int u = 0;
             int i = 1;
             while (i != arr.Length)

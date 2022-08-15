@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace GreedyTest
 {
+    // 贪心算法
     public class Goods
     {
         private int capacity;
