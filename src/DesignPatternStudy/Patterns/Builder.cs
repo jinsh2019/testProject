@@ -10,7 +10,6 @@ namespace DesignPatternStudy.Patterns
         protected string mDisplay;
         protected string mOs;
 
-
         protected Pad()
         {
         }
@@ -38,7 +37,9 @@ namespace DesignPatternStudy.Patterns
                     '}';
         }
     }
-
+    /// <summary>
+    /// pad的实现类
+    /// </summary>
     public class MacBook : Pad
     {
         public MacBook()
@@ -50,7 +51,7 @@ namespace DesignPatternStudy.Patterns
             mOs = "Mac OS X 12";
         }
     }
-
+    // 抽象建造者角色
     public abstract class Builder
     {
         public abstract void buildBoard(String board);
@@ -59,7 +60,9 @@ namespace DesignPatternStudy.Patterns
         public abstract Pad build();
 
     }
-
+    /// <summary>
+    /// 具体建造者   MacBook的实现
+    /// </summary>
     public class MacBookBuilder : Builder
     {
         private Pad mComputer = new MacBook();
@@ -85,6 +88,7 @@ namespace DesignPatternStudy.Patterns
         }
     }
 
+    // 指导者
     public class Director
     {
         Builder mBuilser = null;

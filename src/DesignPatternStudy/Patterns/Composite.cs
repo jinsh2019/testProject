@@ -25,23 +25,19 @@ namespace DesignPatternStudy.Patterns
             subordinates = new List<Employee>();
         }
 
-        public void add(Employee e)
-        {
+        public void add(Employee e){
             subordinates.Add(e);
         }
 
-        public void remove(Employee e)
-        {
+        public void remove(Employee e){
             subordinates.Remove(e);
         }
 
-        public List<Employee> getSubordinates()
-        {
+        public List<Employee> getSubordinates(){
             return subordinates;
         }
 
-        public override string ToString()
-        {
+        public override string ToString(){
             return ("Employee :[ Name : " + name
             + ", dept : " + dept + ", salary :"
             + salary + " ]");

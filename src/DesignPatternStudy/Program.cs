@@ -53,12 +53,15 @@ namespace DesignPatternStudy
                 computer.accept(new ComputerPartDisplayVisitor()); // 可以传入 1.电脑部件访问者实现1； 2. 电脑部件访问者实现2
             }
             { // Bridge Pattern
-                // 将具体实现传入，执行时，根据具体的类执行
-                Patterns.Bridge.Shape redCircle = new Patterns.Bridge.Circle(100, 100, 10, new Patterns.Bridge.RedCircle());
-                Patterns.Bridge.Shape greenCircle = new Patterns.Bridge.Circle(100, 100, 10, new Patterns.Bridge.GreenCircle());
+              // 将具体实现传入，执行时，根据具体的类执行
+                var redCircle = new Patterns.Bridge.RedCircle();
+                Patterns.Bridge.Shape redCircleInst = new Patterns.Bridge.Circle(100, 100, 10, redCircle);
+                redCircleInst.draw();
 
-                redCircle.draw();
-                greenCircle.draw();
+                var greenCircle = new Patterns.Bridge.GreenCircle();
+                Patterns.Bridge.Shape greenCircleInst = new Patterns.Bridge.Circle(100, 100, 10, greenCircle);
+                greenCircleInst.draw();
+
             }
             { // ChainofResponsibility
                 AbstractLogger loggerChain = getChainOfLoggers(); // 设置链表

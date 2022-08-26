@@ -13,9 +13,9 @@ namespace DesignPatternStudy.Patterns
 
         protected int level;
 
-        //责任链中的下一个元素
+        // 责任链的下一个元素
         protected AbstractLogger nextLogger;
-
+        // 由客户端设置责任链
         public void setNextLogger(AbstractLogger nextLogger)
         {
             this.nextLogger = nextLogger;
@@ -23,11 +23,11 @@ namespace DesignPatternStudy.Patterns
 
         public void logMessage(int level, String message)
         {
-            if (this.level <= level)
+            if (this.level <= level) // info，warn，error， 
             {
                 write(message);
             }
-            if (nextLogger != null)
+            if (nextLogger != null) 
             {
                 nextLogger.logMessage(level, message);
             }

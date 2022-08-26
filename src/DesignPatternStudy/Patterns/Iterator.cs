@@ -5,13 +5,13 @@ using System.Text;
 
 namespace DesignPatternStudy.Patterns
 {
-
+    // 迭代器模式
     public interface Iterator
     {
         public bool hasNext();
         public Object next();
     }
-
+    
     public interface Container
     {
         public Iterator getIterator();
@@ -26,11 +26,11 @@ namespace DesignPatternStudy.Patterns
             return new NameIterator(names);
         }
     }
-
+    
     internal class NameIterator : Iterator
     {
 
-        int index;
+        int index; 
         private String[] _names;
         public NameIterator(String[] names)
         {

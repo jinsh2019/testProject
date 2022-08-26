@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "LinkNodeProject": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:54177;http://localhost:54186"
+    }
+  }
+}

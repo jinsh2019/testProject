@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using static System.Console;
 namespace DesignPatternStudy.Patterns.AbstractFactory
 {
+    // 抽象工厂，这个写的有问题
     #region Shape serial
     public interface Shape
     {
@@ -71,10 +70,12 @@ namespace DesignPatternStudy.Patterns.AbstractFactory
 
     #region AbstractFactory
     // 抽象工厂
-
     public abstract class AbstractFactory
     {
+        // 此工厂做两件事情
+        // 制造颜色
         public abstract Color getColor(String color);
+        // 制造形状
         public abstract Shape getShape(String shape);
     }
     // 具体工厂shape

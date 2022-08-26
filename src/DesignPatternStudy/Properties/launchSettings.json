@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "DesignPatternStudy": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:54180;http://localhost:54181"
+    }
+  }
+}
