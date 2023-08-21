@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading;
 using static System.Console;
 
-namespace DesignPatternStudy.Patterns
+namespace DesignPatternStudy.Patterns 
 {
     // Observer 把订阅者的指针传到订阅者身上，把订阅者自己挂到订阅者列表上
     // 发布者
@@ -54,6 +54,7 @@ namespace DesignPatternStudy.Patterns
             this.subject.attach(this);
         }
 
+        // 不同的观察者，做出不同的行为 
         public override void update()
         {
             WriteLine("Binary String: " + Convert.ToString(subject.getState(), 2));
@@ -68,6 +69,7 @@ namespace DesignPatternStudy.Patterns
             this.subject.attach(this);
         }
 
+        // 不同的观察者，做出不同的行为 
         public override void update()
         {
             WriteLine("Octal String: " + Convert.ToString(subject.getState(), 10));
@@ -83,6 +85,7 @@ namespace DesignPatternStudy.Patterns
             this.subject.attach(this);
         }
 
+        // 不同的观察者，做出不同的行为 
         public override void update()
         {
             WriteLine("Hex String: " + Convert.ToString(subject.getState(), 16));

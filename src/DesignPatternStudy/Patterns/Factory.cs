@@ -4,9 +4,10 @@ using System.Text;
 using static System.Console;
 namespace DesignPatternStudy.Patterns.Factory
 {
+    // https://www.runoob.com/design-pattern/factory-pattern.html
     public interface Shape
     {
-        public void draw();
+        public void draw(); 
     }
 
     public class Rectangle : Shape
@@ -35,7 +36,6 @@ namespace DesignPatternStudy.Patterns.Factory
 
     public class ShapeFactory
     {
-
         //使用 getShape 方法获取形状类型的对象
         public Shape getShape(String shapeType)
         {

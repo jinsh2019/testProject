@@ -1,11 +1,12 @@
-﻿namespace July.algorithms.day11
+﻿namespace August.algorithms.day26
 {
     internal class MySet
     {
         IList<IList<int>> res = new List<IList<int>>();
         LinkedList<int> track = new LinkedList<int>();
 
-        #region subsets
+        #region 子集，组合，排列
+        // 子集
         public IList<IList<int>> Subsets(int[] nums)
         {
             backtrack(nums, 0);
@@ -24,9 +25,8 @@
             }
         }
         //[[],[1],[1,2],[1,2,3],[1,3],[2],[2,3],[3]] 
-        #endregion
 
-        #region combine C n k
+        // 组合
         public IList<IList<int>> Combine(int n, int k)
         {
             backtrack(1, n, k);
@@ -38,7 +38,6 @@
             if (k == track.Count)
             {
                 res.Add(new List<int>(track));
-                return;
             }
 
             for (int i = start; i <= n; i++)
@@ -48,10 +47,11 @@
                 track.RemoveLast();
             }
         }
+        // 4,2
+        // [[1,2],[1,3],[1,4],[2,3],[2,4],[3,4]]
 
-        #endregion
 
-        #region Permute P n k
+        // 排列
         public IList<IList<int>> Permute(int[] nums)
         {
             backtrack(nums);
@@ -66,18 +66,20 @@
                 return;
             }
 
-            for (int i = 0; i < nums.Length; i++) // 从0开始，一直到 nums.Length
+            for (int i = 0; i < nums.Length; i++)
             {
-                if (track.Contains(nums[i])) // 排除已经在track中的数字
+                // 排除已经在track中的数字
+                if (track.Contains(nums[i]))
                     continue;
+
                 track.AddLast(nums[i]);
                 backtrack(nums);
                 track.RemoveLast();
             }
         }
+        // [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
         #endregion
 
-        #region traverse int[][] && List<int>[]
 
         // 797. 所有可能的路径
         public IList<IList<int>> AllPathSourceTarget(int[][] graph)
@@ -90,32 +92,35 @@
         {
             track.AddLast(s);
             int n = graph.Length;
-            if (s == n - 1)
+            if (s == n - 1) // 到达某点
             {
                 res.Add(new List<int>(track));
-                track.RemoveLast(); // can del these 2 lines
+                track.RemoveLast();
                 return;
             }
 
-            foreach (int v in graph[s])
+            foreach (var v in graph[s])
                 traverse(graph, v);
             track.RemoveLast();
         }
 
-        bool[] onPath, visited;
-        bool hasCycle = false;
-        public bool Canfinish(int numCourses, int[][] prerequisites)
+        //207. 课程表
+        private bool[] onPath;
+        private bool[] visited;
+        private bool hasCycle = false;
+        // main函数
+        public bool Canfinish(int numsCourses, int[][] prerequisites)
         {
-            List<int>[] graph = buildGraph(numCourses, prerequisites);
-            visited = new bool[numCourses];
-            onPath = new bool[numCourses];
-            for (int i = 0; i < numCourses; i++)
+            List<int>[] graph = buildGraph(numsCourses, prerequisites);
+            visited = new bool[numsCourses];
+            onPath = new bool[numsCourses];
+            for (int i = 0; i < numsCourses; i++)
             {
                 traverse(graph, i);
             }
             return !hasCycle;
         }
-
+        // 遍历图
         private void traverse(List<int>[] graph, int s)
         {
             if (onPath[s])
@@ -124,67 +129,30 @@
             if (visited[s] || hasCycle)
                 return;
 
-            // mark visited
             visited[s] = true;
-
-            // below is backtrack
-            onPath[s] = true;
-            foreach (int v in graph[s])
+            onPath[s] = true; // track
+            foreach (var v in graph[s])
+            {
                 traverse(graph, v);
-            onPath[s] = false;
+            }
+            onPath[s] = false;// back
         }
-
-        private List<int>[] buildGraph(int numCourses, int[][] prerequisites)
+        //  建立邻接表
+        private List<int>[] buildGraph(int numsCourses, int[][] prerequisites)
         {
-            List<int>[] graph = new List<int>[numCourses];
-            for (int i = 0; i < numCourses; i++)
+            List<int>[] graph = new List<int>[numsCourses];
+            for (int i = 0; i < numsCourses; i++)
+            {
                 graph[i] = new List<int>();
+            }
 
             foreach (int[] edge in prerequisites)
             {
-                int from = edge[1], to = edge[0];
+                int from = edge[1];
+                int to = edge[0];
                 graph[from].Add(to);
             }
             return graph;
-        }
-        #endregion
-        // 遍历二维数组
-        public int NumIslands(char[][] grid)
-        {
-            int res = 0;
-            int m = grid.Length, n = grid[0].Length;
-            for (int i = 0; i < m; i++)
-            {
-                for (int j = 0; j < n; j++)
-                {
-                    if (grid[i][j] == '1')
-                    {
-                        res++;
-                        dfs(grid, i, j);
-                    }
-                }
-            }
-            return res;
-        }
-
-        private void dfs(char[][] grid, int i, int j)
-        {
-            int m = grid.Length, n = grid[0].Length;
-            if (i < 0 || j < 0 || i >= m || j >= n)
-            {
-                return;
-            }
-            if (grid[i][j] == '0')
-            {
-                return;
-            }
-
-            grid[i][j] = '0';
-            dfs(grid, i + 1, j);
-            dfs(grid, i, j + 1);
-            dfs(grid, i - 1, j);
-            dfs(grid, i, j - 1);
-
         }
     }
 }

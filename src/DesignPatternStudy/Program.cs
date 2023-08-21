@@ -161,9 +161,9 @@ namespace DesignPatternStudy
                 WriteLine(context.getState().ToString()); // 获取当前状态
             }
 
-            {// 发布者/订阅者
+            {   // 发布者/订阅者
                 // 观察者去订阅主题
-                // 当主题进行变更时，同时所有的主题
+                // 当主题进行变更时，通知所有的观察者
                 Subject subject = new Subject();
 
                 new HexaObserver(subject);
@@ -215,19 +215,19 @@ namespace DesignPatternStudy
                 AbstractFactory shapeFactory = FactoryProducer.getFactory("SHAPE");
 
                 //获取形状为 Circle 的对象
-                Patterns.AbstractFactory.Shape shape1 = shapeFactory.getShape("CIRCLE");
+                Patterns.AbstractFactory.Shape shape1 = shapeFactory.SetShape("CIRCLE");
 
                 //调用 Circle 的 draw 方法
                 shape1.draw();
 
                 //获取形状为 Rectangle 的对象
-                Patterns.AbstractFactory.Shape shape2 = shapeFactory.getShape("RECTANGLE");
+                Patterns.AbstractFactory.Shape shape2 = shapeFactory.SetShape("RECTANGLE");
 
                 //调用 Rectangle 的 draw 方法
                 shape2.draw();
 
                 //获取形状为 Square 的对象
-                Patterns.AbstractFactory.Shape shape3 = shapeFactory.getShape("SQUARE");
+                Patterns.AbstractFactory.Shape shape3 = shapeFactory.SetShape("SQUARE");
 
                 //调用 Square 的 draw 方法
                 shape3.draw();
@@ -236,23 +236,35 @@ namespace DesignPatternStudy
                 AbstractFactory colorFactory = FactoryProducer.getFactory("COLOR");
 
                 //获取颜色为 Red 的对象
-                Color color1 = colorFactory.getColor("RED");
+                Color color1 = colorFactory.SetColor("RED");
 
                 //调用 Red 的 fill 方法
                 color1.fill();
 
                 //获取颜色为 Green 的对象
-                Color color2 = colorFactory.getColor("Green");
+                Color color2 = colorFactory.SetColor("Green");
 
                 //调用 Green 的 fill 方法
                 color2.fill();
 
                 //获取颜色为 Blue 的对象
-                Color color3 = colorFactory.getColor("BLUE");
+                Color color3 = colorFactory.SetColor("BLUE");
 
                 //调用 Blue 的 fill 方法
                 color3.fill();
 
+                // 系统的产品有多于一个的产品族，而系统只消费其中某一族的产品
+                // 获取一族具体工厂 （画图工厂【商务】，填色工厂【时尚】）
+                // 具体工厂进行生产  商务类生产【上身】，也进行填色【下身】
+                //                 时尚类生产【上身】，也进行填色【下身】）
+
+            }
+            {
+                AbstractFactoryHW HW = new HuaWeiFactory();
+                IProduct P30 = HW.CreatePhone("P30");
+                Console.WriteLine(P30.GetName());
+                IProduct mateBook15 = HW.CreateComputer("MateBook15");
+                WriteLine(mateBook15.GetName());
             }
             {
                 // Adapter
@@ -299,6 +311,43 @@ namespace DesignPatternStudy
                 ConcretePrototype2 p2 = new ConcretePrototype2("II");
                 ConcretePrototype2 c2 = (ConcretePrototype2)p2.Clone();
                 WriteLine("Cloned: {0}", c2.Id);
+            }
+            {
+                // ProxyPattern
+                Image image = new ProxyImage("test_10mb.jpg");
+                // load from disk
+                Console.WriteLine("load from disk");
+                image.Display();
+                Console.WriteLine("loading from cache");
+                // loading from cache
+                image.Display();
+
+            }
+            {
+                User robert = new User("Robert");
+                User john = new User("John");
+
+                robert.sendMessage("Hi! John!");
+                john.sendMessage("Hello! Robert!");
+            }
+            {
+                // https://www.runoob.com/design-pattern/memento-patte  rn.html
+
+                Originator originator = new Originator();
+                CareTaker careTaker = new CareTaker();
+                originator.State = "State #1";
+                originator.State = "State #2";
+                careTaker.add(originator.saveStateToMemento());
+                originator.State = "State #3";
+                careTaker.add(originator.saveStateToMemento());
+                originator.State = "State #4";
+
+                Console.WriteLine($"Current State: " + originator.State);
+                originator.getStateFromMemento(careTaker.get(0));
+                Console.WriteLine("First saved State: " + originator.State);
+
+                originator.getStateFromMemento(careTaker.get(0));
+                Console.WriteLine("Second saved State: " + originator.State);
             }
         }
 

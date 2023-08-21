@@ -12,7 +12,7 @@ namespace DesignPatternStudy.Patterns
         public abstract void endPlay();
 
         //模板
-        public void play()
+        public void play() 
         {
 
             //初始化游戏

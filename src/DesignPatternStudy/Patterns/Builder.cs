@@ -96,7 +96,7 @@ namespace DesignPatternStudy.Patterns
         {
             this.mBuilser = builer;
         }
-
+        // 可以把参数抽象为类Item {name，price}
         public void construct(String board, String display)
         {
             mBuilser.buildDisplay(display);

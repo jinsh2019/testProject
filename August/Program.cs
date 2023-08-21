@@ -16,7 +16,6 @@ namespace August
             {
                 var P = new string('U', 5);
             }
-
             {
                 //["Twitter","postTweet","postTweet","postTweet","postTweet","postTweet","postTweet","postTweet","postTweet","postTweet","postTweet","getNewsFeed","follow","getNewsFeed"]
                 //[[],[2,5],[1,3],[1,101],[2,13],[2,10],[1,2],[2,94],[2,505],[1,333],[1,22],[2],[2,1],[2]]
@@ -38,7 +37,6 @@ namespace August
                 twitter.Follow(2, 1);
                 twitter.GetNewsFeed(2);
             }
-
             {
                 List<int> list = new List<int>(10);
                 list.ForEach(x => x = -1);
@@ -64,9 +62,8 @@ namespace August
                 //});
                 //Console.ReadLine();
             }
-
             {
-                August.day5 day5 = new August.day5();
+                day5 day5 = new August.day5();
                 TreeNode treeNode1 = new TreeNode(1);
                 TreeNode treeNode2 = new TreeNode(2);
                 TreeNode treeNode3 = new TreeNode(3);
@@ -80,6 +77,12 @@ namespace August
                 treeNode2.left = treeNode1;
                 day5.InorderSuccessor(treeNode5, treeNode4);
             }
+            {
+                QuickSort qs = new QuickSort();
+                int[] nums = { 2, 5, 1, 4, 7, 8, 3, 6 };
+                qs.sort(nums);
+            }
+
         }
 
         private static object Sum(int a, int b, int c)
@@ -87,4 +90,4 @@ namespace August
             return a + b + c;
         }
     }
-}   
+}

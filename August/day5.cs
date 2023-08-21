@@ -38,7 +38,7 @@ namespace August
             {
                 successor = InorderSuccessor(root.left, p);
                 // 父节点收到 null 的话说明自己是 successor
-                if (successor == null)  
+                if (successor == null)
                     successor = root;
             }
             if (root.val < p.val)

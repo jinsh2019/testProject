@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using System.Text;
 
-namespace DesignPatternStudy.Patterns
+namespace DesignPatternStudy.Patterns 
 {
     // 迭代器模式
     public interface Iterator

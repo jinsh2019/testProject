@@ -1,7 +1,4 @@
-﻿using System.Data.SqlTypes;
-using System.Net.NetworkInformation;
-
-namespace July.algorithms.day22;
+﻿namespace July.algorithms.day22;
 
 public class MySet
 {
@@ -99,16 +96,17 @@ public class MySet
         track.RemoveLast();
     }
 
+    //207. 课程表
     private bool[] onPath;
     private bool[] visited;
     private bool hasCycle = false;
 
-    public bool Canfinish(int numsCousrce, int[][] prerequisites)
+    public bool Canfinish(int numsCourses, int[][] prerequisites)
     {
-        List<int>[] graph = buildGraph(numsCousrce, prerequisites);
-        visited = new bool[numsCousrce];
-        onPath = new bool[numsCousrce];
-        for (int i = 0; i < numsCousrce; i++)
+        List<int>[] graph = buildGraph(numsCourses, prerequisites);
+        visited = new bool[numsCourses];
+        onPath = new bool[numsCourses];
+        for (int i = 0; i < numsCourses; i++)
             traverse(graph, i);
 
         return !hasCycle;

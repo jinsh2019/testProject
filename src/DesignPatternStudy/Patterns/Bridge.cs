@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using static System.Console;
 
-namespace DesignPatternStudy.Patterns.Bridge
+namespace DesignPatternStudy.Patterns.Bridge 
 {
     public interface DrawAPI
     {

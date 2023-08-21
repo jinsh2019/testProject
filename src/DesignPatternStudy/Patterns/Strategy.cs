@@ -6,7 +6,7 @@ using System.Text;
 /// 策略模式
 /// https://www.runoob.com/design-pattern/strategy-pattern.html
 /// </summary>
-namespace DesignPatternStudy.Patterns.Strategy
+namespace DesignPatternStudy.Patterns.Strategy 
 {
     // Base
     public interface IStrategy

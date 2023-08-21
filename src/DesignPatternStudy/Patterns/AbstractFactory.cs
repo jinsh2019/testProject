@@ -2,12 +2,16 @@
 using static System.Console;
 namespace DesignPatternStudy.Patterns.AbstractFactory
 {
-    // 抽象工厂，这个写的有问题
-    #region Shape serial
+    // https://www.runoob.com/design-pattern/abstract-factory-pattern.html
+    // 抽象工厂
+    #region Shape serial 画形状
     public interface Shape
     {
         void draw();
     }
+
+    // 具体形状
+    // 长方形，
     public class Rectangle : Shape
     {
         public void draw()
@@ -15,15 +19,15 @@ namespace DesignPatternStudy.Patterns.AbstractFactory
             WriteLine("Inside Rectangle::draw() method.");
         }
     }
+    // 正方形
     public class Square : Shape
     {
-
         public void draw()
         {
             WriteLine("Inside Square::draw() method.");
         }
     }
-
+    // 圆形
     public class Circle : Shape
     {
         public void draw()
@@ -34,15 +38,15 @@ namespace DesignPatternStudy.Patterns.AbstractFactory
 
     #endregion
 
-    #region Color Serial
+    #region Color Serial 填充颜色
     public interface Color
     {
         void fill();
     }
-
+    // 具体颜色
+    // 红色
     public class Red : Color
     {
-
         public void fill()
         {
             WriteLine("Inside Red::fill() method.");
@@ -69,19 +73,19 @@ namespace DesignPatternStudy.Patterns.AbstractFactory
     #endregion
 
     #region AbstractFactory
-    // 抽象工厂
+    // 抽象工厂封装:两个动作::勾画形状,填充颜色;
+    // 返回操作接口
     public abstract class AbstractFactory
     {
-        // 此工厂做两件事情
-        // 制造颜色
-        public abstract Color getColor(String color);
-        // 制造形状
-        public abstract Shape getShape(String shape);
+        // 设置颜色
+        public abstract Color SetColor(String color);
+        // 设置形状
+        public abstract Shape SetShape(String shape);
     }
     // 具体工厂shape
     public class ShapeFactory : AbstractFactory
     {
-        public override Shape getShape(String shapeType)
+        public override Shape SetShape(String shapeType)
         {
             if (shapeType == null)
             {
@@ -102,7 +106,7 @@ namespace DesignPatternStudy.Patterns.AbstractFactory
             return null;
         }
 
-        public override Color getColor(String color)
+        public override Color SetColor(String color)
         {
             return null;
         }
@@ -113,12 +117,12 @@ namespace DesignPatternStudy.Patterns.AbstractFactory
     public class ColorFactory : AbstractFactory
     {
         // 重新1
-        public override Shape getShape(String shapeType)
+        public override Shape SetShape(String shapeType)
         {
             return null;
         }
         // 重写2
-        public override Color getColor(String color)
+        public override Color SetColor(String color)
         {
             if (color == null)
             {

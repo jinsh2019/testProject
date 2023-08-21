@@ -7,11 +7,13 @@ using static System.Console;
 /// </summary>
 namespace DesignPatternStudy.Patterns
 {
+    // 对外部接口显示出一样的方法名
     public interface IMediaPlayer
     {
         void play(String audioType, String fileName);
     }
 
+    // 封装了不同的接口
     interface IAdvancedMediaPlayer
     {
         public void playVlc(String fileName);
@@ -64,7 +66,7 @@ namespace DesignPatternStudy.Patterns
             }
         }
 
-
+        // 构造函数生产具体的播放器，对外显示出Play方法即可（最外部）
         public void play(String audioType, String fileName)
         {
             if (audioType.Equals("vlc", StringComparison.OrdinalIgnoreCase))

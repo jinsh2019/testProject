@@ -1,23 +1,20 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace July.algorithms.day11
+namespace August.algorithms.day26
 {
     internal class Patterns
     {
-        public int LastRemaining(int n, int m)
-        {
-            if (n == 1)
-                return 0;
-            return (LastRemaining(n - 1, m) + m) % m; // 递归 分解问题
-        }
-
         //503. 下一个更大元素 II
         public int[] NextGreaterElement(int[] nums)
         {
             int n = nums.Length;
             int[] res = new int[n];
             Stack<int> s = new Stack<int>();
-            for (int i = n - 1; i >= 0; i--)
+            for (int i = n - 1; i > 0; i--)
             {
                 while (s.Count != 0 && s.Peek() <= nums[i])
                 {
@@ -29,6 +26,22 @@ namespace July.algorithms.day11
             return res;
         }
 
+        public bool IsUgly(int n)
+        {
+            if (n < 1)
+                return false;
+            int[] arr = { 2, 3, 5 };
+            foreach (int item in arr)
+            {
+                while (n % item == 0)
+                {
+                    n /= item;
+                }
+            }
+            return n == 1;
+        }
+
+        // 264. 丑数 II
         public int nthUglyNumber(int n)
         {
             int[] factors = { 2, 3, 5 };
@@ -53,9 +66,11 @@ namespace July.algorithms.day11
             return ugly;
         }
 
+
         public int MininumCost(int n, int[][] connections)
         {
             UnionFind uf = new UnionFind(n + 1);
+
             Array.Sort(connections, (a, b) => a[2] - b[2]);
 
             int mst = 0;
@@ -66,23 +81,22 @@ namespace July.algorithms.day11
                 int weight = edge[2];
                 if (uf.Connected(u, v))
                     continue;
-
                 mst += weight;
                 uf.Union(u, v);
             }
+
             return uf.count == 2 ? mst : -1;
         }
 
+        // 在字符串s中找到唯一字符
+        // 时间复杂度 O(n)
+        // 空间复杂度 O(1)
         public char FirstUniqChar(string s)
         {
             if (s == null || s.Length == 0)
-            {
                 return ' ';
-            }
             if (s.Length == 1)
-            {
                 return s[0];
-            }
 
             int[] arr = new int[256];
             int index = 0;
@@ -101,91 +115,21 @@ namespace July.algorithms.day11
                     break;
                 }
             }
-
             return res == -1 ? ' ' : s[res];
         }
 
-        public int NetworkDelayTime(int[][] times, int n, int k)
-        {
-            List<int[]>[] graph = new List<int[]>[n + 1];
-            for (int i = 1; i <= n; i++)
-                graph[i] = new List<int[]>();
-
-            for (int i = 0; i <= times.Length; i++)
-            {
-                int from = times[i][0], to = times[i][1], weight = times[i][2];
-                graph[from].Add(new int[] { to, weight });
-            }
-
-            int[] distTo = dijkstra(k, graph);
-
-            int res = 0;
-            for (int i = 1; i < distTo.Length; i++)
-            {
-                if (distTo[i] == int.MaxValue)
-                    return -1;
-                res = Math.Max(res, distTo[i]);
-            }
-
-            return res;
-        }
-
-        class State
-        {
-            public int id { get; private set; } // nodeId
-            public int distFromStart { get; private set; } // 与start的距离
-            public State(int id, int distFromStart)
-            {
-                this.id = id;
-                this.distFromStart = distFromStart;
-            }
-        }
-        // 为啥使用优先级队列？
-        private int[] dijkstra(int start, List<int[]>[] graph)
-        {
-            int[] distTo = new int[graph.Length]; // 距离数组
-            Array.Fill(distTo, int.MaxValue);
-            distTo[start] = 0;
-
-            PriorityQueue<State, int> pq = new PriorityQueue<State, int>();
-            pq.Enqueue(new State(start, 0), 0);
-
-            while (pq.Count != 0)
-            {
-                State curState = pq.Dequeue();
-                int curNodeId = curState.id;
-                int curDistFromStart = curState.distFromStart;
-
-                if (curDistFromStart > distTo[curNodeId])
-                    continue;
-
-                foreach (int[] neighbor in graph[curNodeId]) // 遍历邻接表
-                {
-                    int nextNodeId = neighbor[0]; // 下一个结点
-                    int distToNextNode = distTo[curNodeId] + neighbor[1];
-
-                    if (distTo[nextNodeId] > distToNextNode) // 目前到下一个节点的距离更大时，更新距离数组。
-                    {
-                        distTo[nextNodeId] = distToNextNode;
-                        pq.Enqueue(new State(nextNodeId, distToNextNode), distToNextNode);
-                    }
-                }
-            }
-            return distTo;
-        }
-        // 647
-        public int CountSubstrings(String s)
+        // 647. 回文子串 Manacher
+        public int CountSubstrings(string s)
         {
             int n = s.Length;
             StringBuilder t = new StringBuilder("$#");
-            for (int i = 0; i < n; ++i)
+            for (int i = 0; i < n; i++)
             {
                 t.Append(s[i]);
                 t.Append('#');
             }
             n = t.Length;
             t.Append('!');
-
             int[] f = new int[n];
             int iMax = 0, rMax = 0, ans = 0;
             for (int i = 1; i < n; ++i)
@@ -209,6 +153,7 @@ namespace July.algorithms.day11
 
             return ans;
         }
+
         // 扫描线
         //253. 会议室 II
         public int MinMeetingRooms(int[][] meetings)
@@ -226,7 +171,6 @@ namespace July.algorithms.day11
 
             // 扫描过程中的计数器
             int count = 0;
-            // 双指针技巧
             int res = 0, i = 0, j = 0;
             while (i < n && j < n)
             {
@@ -242,14 +186,13 @@ namespace July.algorithms.day11
                     count--;
                     j++;
                 }
-                // 记录扫描过程中的最大值
+
                 res = Math.Max(res, count);
             }
 
             return res;
         }
-
-
+        // 394. 字符串解码
         public string DecodeString(string s)
         {
             int multi = 0;
@@ -285,44 +228,7 @@ namespace July.algorithms.day11
                 else res.Append(c); // 维护res，作为一个整体
             }
             return res.ToString();
-
-        }
-
-        public int FirstMissingPositive(int[] nums)
-        {
-            // 从 1...n
-            // 有 n+1个数字
-
-            // 1 比较特殊，首先判断是否有1
-            for (int i = 0; i < nums.Length; i++)
-            {
-                if (nums[i] != 1)
-                {
-                    return 1;
-                }
-            }
-            // 把所有负数设置为1
-            for (int i = 0; i < nums.Length; i++)
-            {
-                if (nums[i] <= 0)
-                {
-                    nums[i] = 1;
-                }
-            }
-            // 根据索引把对应的nums中的值置为负数
-            for (int i = 0; i < nums.Length; i++)
-            {
-                nums[nums[i]] = -Math.Abs(nums[nums[i]]);
-            }
-
-            for (int i = 0; i < nums.Length; i++)
-            {
-                if (nums[i] > 0)
-                    return i + 1;
-            }
-            return -1;
         }
     }
-
-
 }
+

@@ -36,7 +36,7 @@ namespace DesignPatternStudy.Patterns
         public List<Employee> getSubordinates(){
             return subordinates;
         }
-
+         
         public override string ToString(){
             return ("Employee :[ Name : " + name
             + ", dept : " + dept + ", salary :"

@@ -6,7 +6,7 @@ using static System.Console;
 namespace DesignPatternStudy.Patterns.State
 {
 
-    public interface IState
+    public interface IState 
     {
         public void doAction(Context context);
     }

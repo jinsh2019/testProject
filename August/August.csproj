@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="day11\" />
+    <Folder Include="algorithms\day11\" />
   </ItemGroup>
 
   <ItemGroup>

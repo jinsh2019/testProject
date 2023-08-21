@@ -12,7 +12,7 @@ using static System.Console;
 namespace DesignPatternStudy
 {
     // base 
-    public interface IComputerPart
+    public interface IComputerPart 
     {
         public void accept(IComputerPartVisitor computerPartVisitor);
     }
