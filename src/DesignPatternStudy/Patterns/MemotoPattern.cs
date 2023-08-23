@@ -36,7 +36,7 @@ namespace DesignPatternStudy.Patterns
         /// 添加保存对象
         /// </summary>
         /// <param name="state"></param>
-        public void add(Memento state)
+        public void Add(Memento state)
         {
             mementoList.Add(state);
         }
@@ -45,7 +45,7 @@ namespace DesignPatternStudy.Patterns
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public Memento get(int index)
+        public Memento Get(int index)
         {
             return mementoList[index];
         }

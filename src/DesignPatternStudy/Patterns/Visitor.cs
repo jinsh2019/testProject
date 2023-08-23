@@ -9,7 +9,7 @@ using static System.Console;
 /// 
 /// 适用于拥有不同的构造函数的情况
 /// </summary>
-namespace DesignPatternStudy
+namespace DesignPatternStudy 
 {
     // base 
     public interface IComputerPart 

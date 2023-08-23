@@ -3,11 +3,6 @@ using System.Runtime.CompilerServices;
 
 namespace DesignPatternStudy.Patterns
 {
-    internal class ProxyPattern
-    {
-
-    }
-
     public interface Image {
         public void Display();
     }

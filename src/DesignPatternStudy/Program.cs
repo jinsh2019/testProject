@@ -144,24 +144,37 @@ namespace DesignPatternStudy
                 WriteLine(customer4.getName());
             }
             {
-                // State 1.做事情；2.设置状态
-                /// 1. 初始化不同种类的状态
-                /// 2. 做不同的事情，同时设置状态机
-                /// 扩展： 根据状态机的不同，可以进行流动
-                Patterns.State.Context context = new Patterns.State.Context(); // 初始化状态机
+                #region MyRegion
+                //// State 1.做事情；2.设置状态
+                ///// 1. 初始化不同种类的状态
+                ///// 2. 做不同的事情，同时设置状态机
+                ///// 扩展： 根据状态机的不同，可以进行流动
+                //Patterns.State.Context context = new Patterns.State.Context(); // 初始化状态机
 
-                StartState startState = new StartState();
-                startState.doAction(context); // 设置当前状态
+                //StartState startState = new StartState();
+                //startState.doAction(context); // 设置当前状态
 
-                WriteLine(context.getState().ToString()); // 获取当前状态
+                //WriteLine(context.getState().ToString()); // 获取当前状态
 
-                StopState stopState = new StopState();
-                stopState.doAction(context); // 设置当前状态
+                //StopState stopState = new StopState();
+                //stopState.doAction(context); // 设置当前状态
 
-                WriteLine(context.getState().ToString()); // 获取当前状态
+                //WriteLine(context.getState().ToString()); // 获取当前状态 
+                #endregion
+
+                // 可以减少if else的层数,将状态作为大的层次中
+                Context zhangsan = new Context();
+
+                zhangsan.changeState(new Happy());
+                zhangsan.doSomething();
+                zhangsan.changeState(new Sad());
+                zhangsan.doSomething();
+                zhangsan.changeState(new Angry());
+                zhangsan.doSomething();
             }
 
-            {   // 发布者/订阅者
+            {   // 发布者/订阅者 与 观察者模式有区别 前者发布者不知道订阅者；后者相互知道
+                
                 // 观察者去订阅主题
                 // 当主题进行变更时，通知所有的观察者
                 Subject subject = new Subject();
@@ -176,10 +189,13 @@ namespace DesignPatternStudy
                 subject.setState(10);
             }
             {
+                // 将不同的builder传入指导者
                 Builder builder = new MacBookBuilder();
+                // 指导者对行为进行规范：1.传入builder；2.规范行为
                 Director pcDirector = new Director(builder);
                 pcDirector.construct("英特尔主板", "Retina显示器");
 
+                // 返回pad
                 Pad pad = builder.build();
                 WriteLine(pad.ToString());
             }
@@ -260,6 +276,7 @@ namespace DesignPatternStudy
 
             }
             {
+                // 华为抽象工厂
                 AbstractFactoryHW HW = new HuaWeiFactory();
                 IProduct P30 = HW.CreatePhone("P30");
                 Console.WriteLine(P30.GetName());
@@ -267,13 +284,18 @@ namespace DesignPatternStudy
                 WriteLine(mateBook15.GetName());
             }
             {
-                // Adapter
-                AudioPlayer audioPlayer = new AudioPlayer();
+                #region MyRegion
+                //// Adapter
+                //AudioPlayer audioPlayer = new AudioPlayer();
 
-                audioPlayer.play("mp3", "beyond the horizon.mp3");
-                audioPlayer.play("mp4", "alone.mp4");
-                audioPlayer.play("vlc", "far far away.vlc");
-                audioPlayer.play("avi", "mind me.avi");
+                //audioPlayer.play("mp3", "beyond the horizon.mp3");
+                //audioPlayer.play("mp4", "alone.mp4");
+                //audioPlayer.play("vlc", "far far away.vlc");
+                //audioPlayer.play("avi", "mind me.avi"); 
+                #endregion
+
+                // Adapter不对speak的功能进行扩展，仅做适配
+                new Adapter(new Speaker()).translate();
             }
             {
                 // 深浅拷贝Demo
@@ -337,17 +359,46 @@ namespace DesignPatternStudy
                 CareTaker careTaker = new CareTaker();
                 originator.State = "State #1";
                 originator.State = "State #2";
-                careTaker.add(originator.saveStateToMemento());
+                careTaker.Add(originator.saveStateToMemento());
                 originator.State = "State #3";
-                careTaker.add(originator.saveStateToMemento());
+                careTaker.Add(originator.saveStateToMemento());
                 originator.State = "State #4";
 
                 Console.WriteLine($"Current State: " + originator.State);
-                originator.getStateFromMemento(careTaker.get(0));
+                originator.getStateFromMemento(careTaker.Get(0));
                 Console.WriteLine("First saved State: " + originator.State);
 
-                originator.getStateFromMemento(careTaker.get(0));
+                originator.getStateFromMemento(careTaker.Get(0));
                 Console.WriteLine("Second saved State: " + originator.State);
+            }
+            { 
+                // client call Decorator func that extends orignal class meanwhile  add extra funcs.
+                new RobertDecorator(new FirstRobot()).doMoreThing();
+            }
+            {
+                // make subSystem easier to use
+                new Facade().prove();
+            }
+            {
+                BikeFlyWeight bike1 = BikeFlyWeightFactory.getInstance().getBike();
+                bike1.ride("ZhangSan");
+                bike1.back();
+
+                BikeFlyWeight bike2 = BikeFlyWeightFactory.getInstance().getBike();
+                bike2.ride("LiSi");
+                bike2.back();
+
+                BikeFlyWeight bike3 = BikeFlyWeightFactory.getInstance().getBike();
+                bike3.ride("WangWu");
+                bike3.back();
+            }
+            {
+                EggRobbot erDan = new EggRobbot();
+                erDan.calc();
+
+                IVisitor updatePack = new UpdateVisitor();
+                erDan.accept(updatePack);
+                erDan.calc();
             }
         }
 

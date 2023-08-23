@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using static System.Console;
-namespace DesignPatternStudy.Patterns.Factory
+namespace DesignPatternStudy.Patterns.Factory 
 {
     // https://www.runoob.com/design-pattern/factory-pattern.html
     public interface Shape

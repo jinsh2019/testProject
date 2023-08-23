@@ -4,21 +4,21 @@ using System.Text;
 using System.Threading;
 using static System.Console;
 
-namespace DesignPatternStudy.Patterns 
+namespace DesignPatternStudy.Patterns  
 {
     // Observer 把订阅者的指针传到订阅者身上，把订阅者自己挂到订阅者列表上
     // 发布者
     public class Subject
     {
         private List<Observer> observers = new List<Observer>();
-
+ 
         private int state;
 
         public int getState()
         {
             return state;
         }
-
+        // 状态改变，通知观察者
         public void setState(int state)
         {
             this.state = state;

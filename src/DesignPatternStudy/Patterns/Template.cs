@@ -5,7 +5,7 @@ using static System.Console;
 
 namespace DesignPatternStudy.Patterns
 {
-    public abstract class Game
+    public abstract class Game 
     {
         public abstract void initialize();
         public abstract void startPlay();

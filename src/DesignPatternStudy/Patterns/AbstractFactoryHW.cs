@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DesignPatternStudy.Patterns
+namespace DesignPatternStudy.Patterns 
 {
     public interface IProduct
     {

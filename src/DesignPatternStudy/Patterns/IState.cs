@@ -1,61 +1,103 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using static System.Console;
 
 namespace DesignPatternStudy.Patterns.State
 {
+    #region MyRegion
 
-    public interface IState 
+    //public interface IState 
+    //{
+    //    public void doAction(Context context);
+    //}
+
+    //public class StartState : IState
+    //{
+    //    public void doAction(Context context)
+    //    {
+    //        WriteLine("Player is in start state");
+    //        context.setState(this);
+    //    }
+
+    //    public override string ToString()
+    //    {
+    //        return "Start State";
+    //    }
+    //}
+
+    //public class StopState : IState
+    //{
+    //    public void doAction(Context context)
+    //    {
+    //        WriteLine("Player is in stop state");
+    //        context.setState(this);
+    //    }
+
+    //    public override string ToString()
+    //    {
+    //        return "Stop State";
+    //    }
+    //}
+
+    //public class Context
+    //{
+    //    private IState state;
+
+    //    public Context()
+    //    {
+    //        state = null;
+    //    }
+
+    //    public void setState(IState state)
+    //    {
+    //        this.state = state;
+    //    }
+
+    //    public IState getState()
+    //    {
+    //        return state;
+    //    }
+    //} 
+    #endregion
+
+    interface State
     {
-        public void doAction(Context context);
+        void doWork();
     }
 
-    public class StartState : IState
+    class Happy : State
     {
-        public void doAction(Context context)
+        public void doWork()
         {
-            WriteLine("Player is in start state");
-            context.setState(this);
-        }
-
-        public override string ToString()
-        {
-            return "Start State";
+            Console.WriteLine("work happily.");
         }
     }
 
-    public class StopState : IState
+    class Angry : State
     {
-        public void doAction(Context context)
+        public void doWork()
         {
-            WriteLine("Player is in stop state");
-            context.setState(this);
+            Console.WriteLine("work angrily.");
         }
-
-        public override string ToString()
+    }
+    class Sad : State
+    {
+        public void doWork()
         {
-            return "Stop State";
+            Console.WriteLine("Go Home.");
         }
     }
 
-    public class Context
+    // A Person/A Story has one state then doSomething according the state.
+    class Context
     {
-        private IState state;
-
-        public Context()
-        {
-            state = null;
-        }
-
-        public void setState(IState state)
+        private State state;
+        public void changeState(State state)
         {
             this.state = state;
         }
-
-        public IState getState()
+        public void doSomething()
         {
-            return state;
+            state.doWork();
         }
     }
 }
+

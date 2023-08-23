@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DesignPatternStudy.Patterns
+namespace DesignPatternStudy.Patterns 
 {
     public abstract class Pad
     {

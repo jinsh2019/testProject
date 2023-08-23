@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using static System.Console;
 
-namespace DesignPatternStudy.Patterns 
+namespace DesignPatternStudy.Patterns
 {
+    // 日志级别处理，需要链式的处理方式
     public abstract class AbstractLogger
     {
         public static int INFO = 1;
@@ -27,7 +28,8 @@ namespace DesignPatternStudy.Patterns
             {
                 write(message);
             }
-            if (nextLogger != null) 
+            // 检查nextLogger 是否需要处理
+            if (nextLogger != null)
             {
                 nextLogger.logMessage(level, message);
             }
