@@ -2,24 +2,24 @@
 {
     internal class MonotonicQueue
     {
-        LinkedList<int> q = new LinkedList<int>();
+        LinkedList<int> linkedList = new LinkedList<int>();
         // desc
         public void Push(int val)
         {
-            while (q.Count != 0 && q.Last() < val)
-                q.RemoveLast();
-            q.AddLast(val);
+            while (linkedList.Count != 0 && linkedList.Last != null && linkedList.Last.Value < val)
+                linkedList.RemoveLast();
+            linkedList.AddLast(val);
         }
 
         public void Pop(int val)
         {
-            if (val == q.First())
-                q.RemoveFirst();
+            if (val == linkedList.First.Value)
+                linkedList.RemoveFirst();
         }
 
         public int Max()
         {
-            return q.First();
+            return linkedList.First.Value;
         }
 
         public List<int> MaxSlidingWindow(int[] nums, int k)

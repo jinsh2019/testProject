@@ -241,16 +241,18 @@ namespace EnumTest
         static void Main(string[] args)
         {
 
-            findx(783);
-            BuyChichken();
-            sort1(new int[] { 1, 2, 5, 3, 4 });
+            //findx(783);
+            //BuyChichken();
+            //sort1(new int[] { 1, 2, 5, 3, 4 });
 
-            modify(new int[] { 6, 1, 3, 2, 4, 8 });
+            //modify(new int[] { 6, 1, 3, 2, 4, 8 });
 
-            maxSum(new int[] { 1, -2, 3, 5, -2, 6, -1 });
-            maxSum(new int[] { -2, -1 });
+            //maxSum(new int[] { 1, -2, 3, 5, -2, 6, -1 });
+            //maxSum(new int[] { -2, -1 });
 
-            product2(new int[] { 2, 3, 1, 4 });
+            //product2(new int[] { 2, 3, 1, 4 });
+            int[] nums = { 1, 2, 3, 4, 5 };
+            MaximizeSum(nums, 3);
             WriteLine("Hello World!");
         }
         private static void swap(int[] arr, int index1, int index2)
@@ -258,6 +260,27 @@ namespace EnumTest
             int tmp = arr[index1];
             arr[index1] = arr[index2];
             arr[index2] = tmp;
+        }
+
+
+        public static int MaximizeSum(int[] nums, int k)
+        {
+            int n = nums.Length;
+            int ans = 0;
+            while (k-- != 0)
+            {
+                int maxIdx = 0;
+                for (int i = 1; i < n; i++)
+                {
+                    if (nums[i] > nums[maxIdx])
+                    {
+                        maxIdx = i;
+                    }
+                }
+                ans += nums[maxIdx];
+                nums[maxIdx] += 1;
+            }
+            return ans;
         }
     }
 }

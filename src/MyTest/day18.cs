@@ -1,16 +1,16 @@
 ﻿using CDS;
-using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyTest
 {
     public class day18
     {
         // 单调栈 [2,1,2,4,3] -> [4,2,4,-1,-1]
+        /// <summary>
+        /// 503. 下一个更大元素 II
+        /// </summary>
+        /// <param name="nums"></param>
+        /// <returns></returns>
         public int[] NextGreaterElement(int[] nums)
         {
             int[] res = new int[nums.Length];
@@ -31,6 +31,11 @@ namespace MyTest
             return res;
         }
 
+        /// <summary>
+        /// 739. 每日温度
+        /// </summary>
+        /// <param name="temperatures"></param>
+        /// <returns></returns>
         public int[] DailyTemperatures(int[] temperatures)
         {
             int[] res = new int[temperatures.Length];

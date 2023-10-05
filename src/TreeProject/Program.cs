@@ -453,7 +453,7 @@ namespace TreeProject
                 int size = linkedList.Count;
                 while (size-- > 0)
                 {
-                    Node cur = linkedList.First();
+                    Node cur = linkedList.First.Value;
                     linkedList.RemoveFirst();
                     if (cur.left != null)
                         linkedList.AddLast(cur.left);

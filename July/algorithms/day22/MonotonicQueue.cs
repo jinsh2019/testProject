@@ -1,17 +1,19 @@
-﻿namespace July.algorithms.day22;
+﻿using System.Linq;
+
+namespace July.algorithms.day22;
 
 /// <summary>
 /// 使用linkedList 实现单调递减队列
 /// </summary>
 public class MonotonicQueue
 {
-    LinkedList<int> q = new LinkedList<int>();
+    LinkedList<int> linkedList = new LinkedList<int>();
 
     public void Push(int n)
     {
-        while (q.Count != 0 && q.Last() < n)
-            q.RemoveLast();
-        q.AddLast(n);
+        while (linkedList.Count != 0 && linkedList.Last != null && linkedList.Last.Value < n)
+            linkedList.RemoveLast();
+        linkedList.AddLast(n);
     }
     /// <summary>
     /// pop指定的Value
@@ -21,11 +23,11 @@ public class MonotonicQueue
     {
         // 如果是第一个进入window的值,执行remove操作
         // 否则window的大小是足够的
-        if (n == q.First()) 
-            q.RemoveFirst();
+        if (linkedList.First != null && n == linkedList.First.Value)
+            linkedList.RemoveFirst();
     }
 
-    public int Max() => q.First();
+    public int Max() => linkedList.First.Value;
 
     // 滑动窗口最大值
     public int[] MaxSlidingWindow(int[] nums, int k)
@@ -41,7 +43,7 @@ public class MonotonicQueue
             {
                 window.Push(nums[i]);
                 res.Add(window.Max());
-                window.Pop(nums[i - k + 1]); 
+                window.Pop(nums[i - k + 1]);
                 // 从前往后Pop出来一个，以便下次Push进去
                 // i-k+1
             }

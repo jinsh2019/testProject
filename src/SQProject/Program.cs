@@ -81,7 +81,7 @@ namespace SQProjectW
             {
                 if (lr)
                 {
-                    head = _dq.First(); _dq.RemoveFirst();
+                    head = _dq.First.Value; _dq.RemoveFirst();
                     if (head.left != null)
                     {
                         nlast = nlast == null ? head.left : nlast;

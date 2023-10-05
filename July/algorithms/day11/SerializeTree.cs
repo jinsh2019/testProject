@@ -39,7 +39,7 @@ namespace July.algorithms.day11
         {
             if (nodes.Count == 0) return null;
 
-            string first = nodes.First();
+            string first = nodes.First.Value;
             nodes.RemoveFirst();
             if (first == NULL) return null;
 

@@ -103,7 +103,7 @@ namespace JuneProject.cls
             r.Next();
 
             LinkedList<int> q = new LinkedList<int>();
-            q.Last();
+            int ans = q.Last?.Value??0;
             // q.Remove()
             //List<int> res = new List<int>();
             //res.Contains(nums);
@@ -353,7 +353,7 @@ namespace JuneProject.cls
                 return null;
 
             // logic 
-            string first = nodes.First();
+            string first = nodes.Peek(); ;
             nodes.Dequeue();
             // 需要换到另外一个结点
             if (first == NULL)

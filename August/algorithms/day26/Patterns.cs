@@ -212,12 +212,12 @@ namespace August.algorithms.day26
                 {
                     StringBuilder tmp = new StringBuilder();
 
-                    int cur_multi = stack_multi.Last();
+                    int cur_multi = stack_multi.Last.Value;
                     stack_multi.RemoveLast();
                     for (int i = 0; i < cur_multi; i++)
                         tmp.Append(res);
 
-                    string resLast = stack_res.Last();
+                    string resLast = stack_res.Last.Value;
                     stack_res.RemoveLast();
                     res = new StringBuilder(resLast + tmp);
                 }

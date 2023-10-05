@@ -5,7 +5,7 @@
         LinkedList<int> q = new LinkedList<int>();
         public void Push(int n)
         {
-            while (q.Count != 0 && q.Last() < n)
+            while (q.Count != 0 && q.Last != null && q.Last.Value < n)
             {
                 q.RemoveLast();
             }
@@ -13,14 +13,14 @@
         }
         public void Pop(int n)
         {
-            if (n == q.First())
+            if (n == q.First.Value)
             {
                 q.RemoveFirst();
             }
         }
         public int Max()
         {
-            return q.First();
+            return q.First.Value;
         }
 
         public int[] MaxSlidingWindow(int[] nums, int k)

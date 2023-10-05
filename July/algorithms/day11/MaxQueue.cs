@@ -2,39 +2,48 @@
 {
     internal class MaxQueue
     {
-        LinkedList<int> q;
-        LinkedList<int> d;
+        LinkedList<int> linkedList;
+        LinkedList<int> maxLinkedlist;
         public MaxQueue()
         {
-            q = new LinkedList<int>();
-            d = new LinkedList<int>();
+            linkedList = new LinkedList<int>();
+            maxLinkedlist = new LinkedList<int>();
         }
-
+        /// <summary>
+        /// GetMax
+        /// </summary>
+        /// <returns></returns>
         public int Max_Value()
         {
-            if (d.Count == 0)
+            if (maxLinkedlist.Count == 0)
                 return -1;
-            return d.First();
+            return maxLinkedlist.First.Value;
         }
-
-        public void Push_back(int value)
+        /// <summary>
+        /// Enqueue
+        /// </summary>
+        /// <param name="val"></param>
+        public void Push_back(int val)
         {
-            while (d.Count != 0 && d.Last() < value)
+            while (maxLinkedlist.Count != 0 && maxLinkedlist.Last != null && maxLinkedlist.Last.Value < val)
             {
-                d.RemoveLast();
+                maxLinkedlist.RemoveLast();
             }
-            d.AddLast(value);
-            q.AddLast(value);
+            maxLinkedlist.AddLast(val);
+            linkedList.AddLast(val);
         }
-
+        /// <summary>
+        /// Dequeue
+        /// </summary>
+        /// <returns></returns>
         public int Pop_front()
         {
-            if (q.Count == 0)
+            if (linkedList.Count == 0)
                 return -1;
-            int ans = q.First();
-            q.RemoveFirst();
-            if (ans == d.First())
-                d.RemoveFirst();
+            int ans = linkedList.First.Value;
+            linkedList.RemoveFirst();
+            if (ans == maxLinkedlist.First.Value)
+                maxLinkedlist.RemoveFirst();
             return ans;
         }
     }

@@ -42,7 +42,7 @@ namespace July.algorithms.day6
                 {
                     return null;
                 }
-                string first = nodes.First();
+                string first = nodes.First.Value;
                 nodes.RemoveFirst();
                 if (first == NULL)
                     return null;

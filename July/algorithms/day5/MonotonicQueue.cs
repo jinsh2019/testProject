@@ -3,25 +3,25 @@
     // 单调递增
     internal class MonotonicQueue
     {
-        LinkedList<int> q = new LinkedList<int>();
+        LinkedList<int> linkedList = new LinkedList<int>();
         public void Push(int n)
         {
-            while (q.Count != 0 && q.Last() < n)
+            while (linkedList.Count != 0 && linkedList.Last != null && linkedList.Last.Value < n)
             {
-                q.RemoveLast();
+                linkedList.RemoveLast();
             }
-            q.AddLast(n);
+            linkedList.AddLast(n);
         }
 
         public void Pop(int n)
         {
-            if (n == q.First())
-                q.RemoveFirst();
+            if (n == linkedList.First.Value)
+                linkedList.RemoveFirst();
         }
 
         public int Max()
         {
-            return q.First();
+            return linkedList.First.Value;
         }
     }
 }

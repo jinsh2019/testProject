@@ -354,7 +354,7 @@ namespace MyTest
 
             // 前序遍历位置
             // 列表最左侧就是根节点
-            string first = nodes.First();
+            string first = nodes.First.Value;
             nodes.RemoveFirst();
             if (first.Equals(NULL)) return null;
             TreeNode root = new TreeNode(int.Parse(first));

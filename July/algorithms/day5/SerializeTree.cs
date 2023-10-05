@@ -44,7 +44,7 @@ namespace July.algorithms.day5
             if (nodes.Count == 0)
                 return null;
 
-            string first = nodes.First();
+            string first = nodes.First.Value;
             nodes.RemoveFirst();
             // leaf node
             if (first == NULL)

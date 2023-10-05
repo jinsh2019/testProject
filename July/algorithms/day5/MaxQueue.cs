@@ -15,12 +15,12 @@
         {
             if (d.Count == 0)
                 return -1;
-            return d.First();
+            return d.First.Value;
         }
 
         public void Push_back(int value)
         {
-            while (d.Count != 0 && d.Last() < value)
+            while (d.Count != 0 && d.Last!=null && d.Last.Value < value)
                 d.RemoveLast();
             d.AddLast(value);
             q.AddLast(value);
@@ -30,9 +30,9 @@
         {
             if (q.Count == 0)
                 return -1;
-            int ans = q.First();
+            int ans = q.First.Value;
             q.RemoveFirst();
-            if (ans == d.First())
+            if (ans == d.First.Value)
                 d.RemoveFirst();
             return ans;
         }

@@ -15,6 +15,7 @@
             this.left = left;
             this.right = right;
         }
+        public int myIndex { get; set; }
     }
 
     public static class TreeNodeExtention

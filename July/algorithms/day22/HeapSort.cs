@@ -9,24 +9,25 @@
         /// 堆排序
         /// </summary>
         /// <param name="nums">all nums</param>
-        /// <param name="len">rest of length that need to handle</param>
+        /// <param name="n">rest of length that need to be sorted</param>
         /// <param name="i">index needed heapify</param>
-        public void heapify(int[] nums, int len, int i)
+        public void heapify(int[] nums, int n, int i)
         {
-            // max(root, left, right)
             int pIdx = i;
             int lson = i * 2 + 1;
             int rson = i * 2 + 2;
-            if (lson < len && nums[pIdx] < nums[lson])
+
+            // 判断三者最大 max(root, left, right)
+            if (lson < n && nums[pIdx] < nums[lson])
                 pIdx = lson;
 
-            if (rson < len && nums[pIdx] < nums[rson])
+            if (rson < n && nums[pIdx] < nums[rson])
                 pIdx = rson;
 
             if (pIdx != i)
             {
                 swap(nums, i, pIdx);
-                heapify(nums, len, pIdx);
+                heapify(nums, n, pIdx);
             }
         }
         /// <summary>

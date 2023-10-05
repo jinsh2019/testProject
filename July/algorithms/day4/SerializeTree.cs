@@ -43,7 +43,7 @@ namespace July.algorithms.day4
             if (nodes.Count == 0)
                 return null;
 
-            string first = nodes.First();
+            string first = nodes.First.Value;
             nodes.RemoveFirst();
 
             if (first == NULL) // 遇到NULL 就返回了
