@@ -32,7 +32,7 @@ namespace SortTest
             for (int i = 0; i < n; i++)
             {
                 int min = i;
-                for (int j = i + 1; j < n; j++)         
+                for (int j = i + 1; j < n; j++)
                 {
                     if (nums[j] < nums[min])
                     {
@@ -1623,9 +1623,10 @@ namespace SortTest
 
         /// <summary>
         /// 1493. 删掉一个元素以后全为 1 的最长子数组
-        /// 1. 左指针，右指针
+        /// 1. i左指针，j右指针
         ///     1.1 j 小于len-1 因为进去就j++，len-2+1 = len-1 数组的最后一个数
         /// 2. 右滑动
+        ///     2.1 遇到0的数量大于1时，i需要往右动一格，遇到nums[i] == 0 时，zeroCnt--
         /// 3. 左滑动
         /// 4. 算出最大距离
         /// 5. 因为带上了一个0的长度，因此需要-1
@@ -1642,7 +1643,7 @@ namespace SortTest
                 j++;                                    // 2
                 if (nums[j] == 0) zeroCnt++;
 
-                while (zeroCnt > 1)
+                while (zeroCnt > 1)                     // 2.1
                 {
                     if (nums[i] == 0) zeroCnt--;
                     ++i;                                // 3
@@ -5523,6 +5524,8 @@ namespace SortTest
         {
             return lflag ? val >= x : val > x;
         }
+
+
 
     }
 

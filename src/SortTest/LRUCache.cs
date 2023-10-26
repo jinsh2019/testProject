@@ -20,6 +20,16 @@ namespace SortTest
         public Node prev;
         public Node next;
         public Node child;
+        public Node left;
+        public Node right;
+        public List<Node> neighbors;
+        /// <summary>
+        /// 随机指针，指向的节点索引，不指向任何节点，则为空
+        /// </summary>
+        public Node random;
+        public Node(int val) {
+            this.val = val;
+        }
         public Node(int key, int val)
         {
             this.key = key;

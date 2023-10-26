@@ -1331,15 +1331,34 @@ namespace SortTest
             {
                 char[][] mat = new char[9][];
                 mat[0] = new char[] { '.', '8', '7', '6', '5', '4', '3', '2', '1' };
-                mat[1] = new char[] { '2', '.', '.', '.', '.', '.', '.', '.', '.' };
-                mat[2] = new char[] { '3', '.', '.', '.', '.', '.', '.', '.', '.' };
-                mat[3] = new char[] { '4', '.', '.', '.', '.', '.', '.', '.', '.' };
-                mat[4] = new char[] { '5', '.', '.', '.', '.', '.', '.', '.', '.' };
-                mat[5] = new char[] { '6', '.', '.', '.', '.', '.', '.', '.', '.' };
-                mat[6] = new char[] { '7', '.', '.', '.', '.', '.', '.', '.', '.' };
-                mat[7] = new char[] { '8', '.', '.', '.', '.', '.', '.', '.', '.' };
-                mat[8] = new char[] { '9', '.', '.', '.', '.', '.', '.', '.', '.' };
+                mat[1] = new char[] { '6', '.', '.', '1', '9', '5', '.', '.', '.' };
+                mat[2] = new char[] { '.', '9', '8', '.', '.', '.', '.', '6', '.' };
+                mat[3] = new char[] { '8', '.', '.', '.', '6', '.', '.', '.', '3' };
+                mat[4] = new char[] { '4', '.', '.', '8', '.', '3', '.', '.', '1' };
+                mat[5] = new char[] { '7', '.', '.', '.', '2', '.', '.', '.', '6' };
+                mat[6] = new char[] { '.', '6', '.', '.', '.', '.', '2', '8', '.' };
+                mat[7] = new char[] { '.', '.', '.', '4', '1', '9', '.', '.', '5' };
+                mat[8] = new char[] { '.', '.', '.', '.', '8', '.', '.', '7', '9' };
                 oct.IsValidSudoku(mat);
+            }
+            {
+                char[][] board = new char[9][];
+                board[0] = new char[] { '5', '3', '.', '.', '7', '.', '.', '.', '.' };
+                board[1] = new char[] { '6', '.', '.', '1', '9', '5', '.', '.', '.' };
+                board[2] = new char[] { '.', '9', '8', '.', '.', '.', '.', '6', '.' };
+                board[3] = new char[] { '8', '.', '.', '.', '6', '.', '.', '.', '3' };
+                board[4] = new char[] { '4', '.', '.', '8', '.', '3', '.', '.', '1' };
+                board[5] = new char[] { '7', '.', '.', '.', '2', '.', '.', '.', '6' };
+                board[6] = new char[] { '.', '6', '.', '.', '.', '.', '2', '8', '.' };
+                board[7] = new char[] { '.', '.', '.', '4', '1', '9', '.', '.', '5' };
+                board[8] = new char[] { '.', '.', '.', '.', '8', '.', '.', '7', '9' };
+                oct.SolveSudoku(board);
+                WriteLine();
+                foreach (var row in board)
+                {
+                    WriteLine(string.Join(",", row));
+                }
+
             }
             {
                 MonotonicStack monotonicStack = new MonotonicStack();
@@ -1384,7 +1403,7 @@ namespace SortTest
                 oct.RemoveNthFromEnd(head, 4);
             }
             {
-                oct.RecursionSum(5);
+                oct.dfs_DoAdd(5);
                 oct.IterationAdd(5);
 
                 oct.PrintReverse("hello world!".ToArray());
@@ -1393,8 +1412,734 @@ namespace SortTest
 
                 oct.ReverseWords("the sky is blue");
             }
-            //ReadKey();
+            {
+                Program p = new Program();
+                var list = p.SolveNQueens(4);
+                foreach (var li in list)
+                {
+                    foreach (var item in li)
+                    {
+                        WriteLine(item);
+                    }
+                    WriteLine("------------");
+                }
+            }
+            {
+
+                for (int i = 0; i < 9; i++)
+                {
+                    WriteLine(i / 3 + "," + i % 3);
+                    if (i % 3 == 2)
+                    {
+                        WriteLine("********");
+                    }
+                }
+            }
+            {
+                int[] nums = { 3, 6, 4, 1 };
+                CommonHelper.BuildLinkNode(nums);
+                WriteLine(string.Join(",", oct.ReverseBookList(CommonHelper.BuildLinkNode(nums))));
+            }
+            {
+                oct.MaxDepth("(1+(2*3)+((8)/4))+1");
+            }
+            {
+                char[][] board = new char[9][];
+                board[0] = new char[] { '5', '3', '.', '.', '7', '.', '.', '.', '.' };
+                board[1] = new char[] { '6', '.', '.', '1', '9', '5', '.', '.', '.' };
+                board[2] = new char[] { '.', '9', '8', '.', '.', '.', '.', '6', '.' };
+                board[3] = new char[] { '8', '.', '.', '.', '6', '.', '.', '.', '3' };
+                board[4] = new char[] { '4', '.', '.', '8', '.', '3', '.', '.', '1' };
+                board[5] = new char[] { '7', '.', '.', '.', '2', '.', '.', '.', '6' };
+                board[6] = new char[] { '.', '6', '.', '.', '.', '.', '2', '8', '.' };
+                board[7] = new char[] { '.', '.', '.', '4', '1', '9', '.', '.', '5' };
+                board[8] = new char[] { '.', '.', '.', '.', '8', '.', '.', '7', '9' };
+                SolveSudoku(board);
+                foreach (var row in board)
+                {
+                    WriteLine(string.Join(",", row));
+                }
+
+            }
+            {
+                // 环形
+                int[] nums = { 1, 2, 3 };
+                int n = nums.Length;
+                for (int i = 0; i < 2 * n; i++)
+                {
+                    Console.Write(nums[i % n]);
+                    if (i == n - 1)
+                        Console.WriteLine();
+                }
+            }
+            {
+
+                int[] nums = new int[] { 4, 5, 7, 2, 3, 1, 6 };
+                QuickSort(nums, 0, nums.Length - 1);
+            }
+            {
+                int[] nums = new int[] { 4, 5, 7, 2, 3, 1, 6 };
+                MergeSort1(nums, 0, nums.Length - 1);
+
+                WriteLine(string.Join(",", nums));
+
+            }
+            {
+                string path = @"/../";
+                var ans = oct.SimplifyPath(path);
+
+                WriteLine(ans);
+            }
+            {
+
+                oct.IsValidB("()[]{}");
+            }
+            {
+                string s = "-456";
+                int p = int.Parse(s);
+                int res = 0;
+                foreach (var c in s)
+                {
+                    res = res * 10 + (c - '0');
+                }
+            }
+            {
+                oct.Calculate("(1+(4+5+2)-3)+(6+8)");
+            }
+            {
+
+                oct.CanConstruct("aa", "aab");
+            }
+            {
+                oct.IsIsomorphic("paper", "title");
+            }
+            {
+                string[] arr = { "eat", "tea", "tan", "ate", "nat", "bat" };
+                oct.GroupAnagrams(arr);
+            }
+            {
+                int[] nums = new int[] { 1, 2, 3, 1 };
+                oct.ContainsNearbyDuplicate(nums, 3);
+            }
+            {
+                int[] nums = { 100, 4, 200, 1, 3, 2 };
+                oct.LongestConsecutive(nums);
+            }
+            {
+                int[] nums1 = { 1, 2, 3, 0, 0, 0 };
+                int[] nums2 = { 2, 5, 6 };
+                oct.Merge(nums1, 3, nums2, 3);
+            }
+            {
+                int[] nums = { -1 };
+                oct.Rotate(nums, 2);
+            }
+            {
+                // 0,0,1,1,1,1,2,3,3
+                int[] nums = { 0, 0, 1, 1, 1, 1, 2, 3, 3 };
+                oct.RemoveDuplicates1(nums);
+            }
+            {
+                int[] nums1 = { 1, 1, 2 };
+                int[] nums2 = { 1, 2, 3 };
+                oct.KSmallestPairs(nums1, nums2, 2);
+            }
+            {
+
+                oct.IsPalindrome(10);
+            }
+            {
+
+                oct.IsPalindrome("A man, a plan, a canal: Panama");
+            }
+            {
+                var l1 = CommonHelper.BuildLinkNode(new int[] { 9, 9, 9, 9, 9, 9, 9 });
+                var l2 = CommonHelper.BuildLinkNode(new int[] { 9, 9, 9, 9 });
+                oct.AddTwoNumbers(l1, l2);
+            }
+            {
+                var l1 = CommonHelper.BuildLinkNode(new int[] { 1, 2, 4 });
+                var l2 = CommonHelper.BuildLinkNode(new int[] { 1, 3, 4 });
+                oct.MergeTwoLists(l1, l2);
+            }
+            {
+
+                var l1 = CommonHelper.BuildLinkNode(new int[] { 1, 2, 3, 4, 5 });
+                oct.ReverseList1(l1);
+            }
+            {
+                var l1 = CommonHelper.BuildLinkNode(new int[] { 1, 4, 3, 2, 5, 2 });
+                oct.Partition(l1, 3);
+            }
+
+            {
+
+                oct.LetterCombinations("234");
+            }
+            {
+                WriteLine("左边界");
+                int[] nums = { 1, 1, 2, 2, 3, 4 };
+                Console.WriteLine(oct.bSearch_left_bound(nums, 3)); // 正常
+                Console.WriteLine(oct.bSearch_left_bound(nums, 0)); // 未找到 超左部分
+                Console.WriteLine(oct.bSearch_left_bound(nums, 6)); // 未找到 超右部分
+                Console.WriteLine(oct.bSearch_left_bound(nums, 2)); // 左边界
+                Console.WriteLine(oct.bSearch_left_bound(nums, 1)); // 左边界
+            }
+            {
+                WriteLine("右边界");
+                int[] nums = { 1, 1, 2, 2, 3, 4 };
+                Console.WriteLine(oct.bSearch_right_bound(nums, 3)); // 正常  4
+                Console.WriteLine(oct.bSearch_right_bound(nums, 0)); // 未找到 超左部分 -1
+                Console.WriteLine(oct.bSearch_right_bound(nums, 6)); // 未找到 超右部分 -1
+                Console.WriteLine(oct.bSearch_right_bound(nums, 2)); // 右边界 3
+                Console.WriteLine(oct.bSearch_right_bound(nums, 1)); // 右边界 1
+
+
+            }
+            {
+
+                int[] nums = { 1, 1 };
+                oct.FindPeakElement(nums);
+            }
+            {
+                int[] nums = new int[] { 1 };
+                Console.WriteLine(oct.bSearch_right_bound(nums, 1)); // 右边界 1
+            }
+
+            {
+                int[] nums = { -10, -3, 0, 5, 9 };
+
+                oct.SortedArrayToBST(nums);
+            }
+            {
+                int[] nums = { 1, 3, -1, -3, 5, 3, 6, 7 };
+                oct.MaxSlidingWindow(nums, 3);
+            }
+            {
+                //TreeNode node1 = new TreeNode(1);
+                //TreeNode node2 = new TreeNode(2);
+                //TreeNode node3 = new TreeNode(3);
+                //TreeNode node4 = new TreeNode(4);
+                //TreeNode node5 = new TreeNode(5);
+                //node3.left = node1;
+                //node3.right = node5;
+                //node5.left = node4;
+                //node4.left = node2;
+
+                TreeNode node1 = new TreeNode(1);
+                TreeNode node2 = new TreeNode(2);
+                TreeNode node3 = new TreeNode(3);
+                node1.left = node3;
+                node3.right = node2;
+
+                oct.RecoverTree(node1);
+            }
+            {
+                int[] nums = { 2, 1, 5, 6, 2, 3 };
+                oct.LargestRectangleArea(nums);
+            }
+            {
+                int[] nums = { 1, 1, 1, 2, 2, 3 };
+
+                oct.TopKFrequent(nums, 2);
+            }
+            {
+
+                oct.IsNumber("0e");
+            }
+            Warming warming = new Warming(); ;
+            {
+                warming.ClearContext();
+                warming.Partition("aab");
+            }
+            {
+                int[] nums = { 3, 2, 1, 5, 6, 4 };
+                warming.FindKthLargest(nums, 2);
+            }
+            {
+                int[] nums = { 0, 2, 3, 6 };
+                warming.InventoryManagement(nums, 2);
+            }
+            {
+                //warning.KWeakestRows(null,2);
+            }
+            {
+                warming.IsValid("){");
+            }
+            {
+                string[] tokens = new string[] { "4", "13", "5", "/", "+" };
+                warming.EvalRPN(tokens);
+            }
+            {
+                warming.LongestValidParentheses("()(())");
+            }
+            {
+                warming.SimplifyPath("/home//foo/");
+            }
+            {
+                warming.Calculate("3+2*2");
+            }
+            {
+                char[][] matrix = new char[1][];
+                matrix[0] = new char[] { '1', '0' };
+                warming.MaximalRectangle(matrix);
+            }
+            {
+                int[] nums = { 1, 10, 3, 3, 3 };
+                warming.MaxKelements(nums, 3);
+            }
+            {
+                //int[] prices = { 3, 2, 6, 5, 0, 3 };
+                int[] prices = { 1 };
+                warming.MaxProfitIV(2, prices);
+            }
+            {
+
+                warming.Convert("AB", 1);
+            }
+            {
+                warming.FourSum(new int[] { 1000000000, 1000000000, 1000000000, 1000000000 }, -294967296);
+            }
+            {
+
+                warming.IsInterleave("aabcc", "dbbca", "aadbbcbcac");
+            }
+            {
+                int[] nums = new int[] { 2, 3, 4, 6 };
+                warming.TupleSameProduct(nums);
+            }
+            {
+                warming.Divide(10, 3);
+            }
+            {
+                TreeNode node1 = new TreeNode(1);
+                TreeNode node2 = new TreeNode(2);
+                TreeNode node3 = new TreeNode(3);
+                node1.right = node2;
+                node2.left = node3;
+                warming.PreorderTraversal(node1);
+            }
+            {
+                TreeNode node3 = new TreeNode(3);
+                TreeNode node9 = new TreeNode(9);
+                TreeNode node20 = new TreeNode(20);
+                TreeNode node15 = new TreeNode(15);
+                TreeNode node7 = new TreeNode(7);
+                node3.left = node9;
+                node3.right = node20;
+                node20.left = node15;
+                node20.right = node7;
+                warming.LevelOrder(node3);
+            }
+            {
+                //TreeNode node3 = new TreeNode(3);
+                //TreeNode node9 = new TreeNode(9);
+                //TreeNode node20 = new TreeNode(20);
+                //TreeNode node15 = new TreeNode(15);
+                //TreeNode node7 = new TreeNode(7);
+                //node3.left = node9;
+                //node3.right = node20;
+                //node20.left = node15;
+                //node20.right = node7;
+
+                TreeNode node1 = new TreeNode(1);
+                TreeNode node2 = new TreeNode(2);
+                TreeNode node3 = new TreeNode(3);
+                TreeNode node4 = new TreeNode(4);
+                TreeNode node5 = new TreeNode(5);
+                node1.left = node2;
+                node2.left = node4;
+                node1.right = node3;
+                node3.right = node5;
+                warming.ZigzagLevelOrder(node1);
+            }
+            {
+                TreeNode node1 = new TreeNode(1);
+                TreeNode node2 = new TreeNode(2);
+                TreeNode node3 = new TreeNode(3);
+                TreeNode node4 = new TreeNode(4);
+                TreeNode node5 = new TreeNode(5);
+                node1.left = node2;
+                node2.right = node5;
+                node1.right = node3;
+                node3.right = node4;
+                warming.RightSideView(node1);
+            }
+            {
+                TreeNode node1 = new TreeNode(1);
+                TreeNode node6 = new TreeNode(6);
+                TreeNode node7 = new TreeNode(7);
+                TreeNode node4 = new TreeNode(4);
+                TreeNode node5 = new TreeNode(5);
+                node5.left = node1;
+                node5.right = node6;
+                node6.left = node4;
+                node6.right = node7;
+                warming.IsValidBST(node5);
+            }
+            {
+                TreeNode node1 = new TreeNode(1);
+                TreeNode node2 = new TreeNode(2);
+                TreeNode node3 = new TreeNode(3);
+                TreeNode node4 = new TreeNode(4);
+                TreeNode node5 = new TreeNode(5);
+                TreeNode node6 = new TreeNode(6);
+                TreeNode node7 = new TreeNode(7);
+                TreeNode node8 = new TreeNode(8);
+                TreeNode node9 = new TreeNode(9);
+                TreeNode node10 = new TreeNode(10);
+                node1.left = node5;
+                node5.right = node4;
+                node4.left = node9;
+                node4.right = node2;
+                node1.right = node3;
+                node3.left = node10;
+                node3.right = node6;
+                warming.AmountOfTime(node1, 3);
+            }
+            {
+                int[][] edges = new int[5][];
+                edges[0] = new int[] { 0, 2 };
+                edges[1] = new int[] { 0, 5 };
+                edges[2] = new int[] { 2, 4 };
+                edges[3] = new int[] { 1, 6 };
+                edges[4] = new int[] { 5, 4 };
+
+                warming.CountPairs(7, edges);
+            }
+            Cool _cool = new Cool();
+            {
+                int[][] mat = new int[3][];
+                mat[0] = new int[] { 1, 2, 3 };
+                mat[1] = new int[] { 4, 5, 6 };
+                mat[2] = new int[] { 7, 8, 9 };
+                _cool.DiagonalSum(mat);
+            }
+            {
+                int[][] mat = new int[4][];
+                mat[0] = new int[] { 2, 0, 0, 1 };
+                mat[1] = new int[] { 0, 3, 1, 0 };
+                mat[2] = new int[] { 0, 5, 2, 0 };
+                mat[3] = new int[] { 4, 0, 0, 2 };
+                _cool.CheckXMatrix(mat);
+            }
+            {
+                //int[][] grid = new int[4][];
+                //grid[0] = new int[] { 1, 2, 3, 4 };
+                //grid[1] = new int[] { 12, 13, 14, 5 };
+                //grid[2] = new int[] { 11, 16, 15, 6 };
+                //grid[3] = new int[] { 10, 9, 8, 7 };
+                int[][] grid = new int[1][];
+                grid[0] = new int[] { 2, 3 };
+                _cool.SpiralArray(grid);
+            }
+            {
+                string[] detail = new string[] { "7868190130M7522", "5303914400F9211", "9273338290F4010" };
+                _cool.CountSeniors(detail);
+            }
+            {
+                int[][] provinces = new int[3][];
+                provinces[0] = new int[] { 1, 1, 0 };
+                provinces[1] = new int[] { 1, 1, 0 };
+                provinces[2] = new int[] { 0, 0, 1 };
+                _cool.FindCircleNum(provinces);
+            }
+            {
+                // 1,null,2,null,3,null,4,null,null
+                TreeNode node1 = new TreeNode(1);
+                TreeNode node2 = new TreeNode(2);
+                TreeNode node3 = new TreeNode(3);
+                TreeNode node4 = new TreeNode(4);
+                node1.right = node2;
+                node2.right = node3;
+                node3.right = node4;
+                _cool.BalanceBST(node1);
+            }
+            {
+                AVL avl = new AVL();
+                TreeNode root = null;
+                //int[] nums = new int[] { 88, 70, 61, 96, 120 };      // 70
+                int[] nums = new int[] { 88, 70, 61, 96, 120, 90, 65 }; // 88
+                for (int i = 0; i < nums.Length; i++)
+                {
+                    root = avl.Insert(root, nums[i]);
+                }
+
+                WriteLine(root.val);
+                IList<IList<int>> list = CommonHelper.LevelOrder(root);
+                foreach (var l in list)
+                    WriteLine(string.Join(",", l));
+            }
+            {
+
+                char[][] board = new char[9][];
+                board[0] = new char[] { '5', '3', '.', '.', '7', '.', '.', '.', '.' };
+                board[1] = new char[] { '6', '.', '.', '1', '9', '5', '.', '.', '.' };
+                board[2] = new char[] { '.', '9', '8', '.', '.', '.', '.', '6', '.' };
+                board[3] = new char[] { '8', '.', '.', '.', '6', '.', '.', '.', '3' };
+                board[4] = new char[] { '4', '.', '.', '8', '.', '3', '.', '.', '1' };
+                board[5] = new char[] { '7', '.', '.', '.', '2', '.', '.', '.', '6' };
+                board[6] = new char[] { '.', '6', '.', '.', '.', '.', '2', '8', '.' };
+                board[7] = new char[] { '.', '.', '.', '4', '1', '9', '.', '.', '5' };
+                board[8] = new char[] { '.', '.', '.', '.', '8', '.', '.', '7', '9' };
+                _cool.SolveSudoku(board);
+            }
+            {
+                _cool.NumRollsToTarget(30, 30, 500);
+            }
+            {
+                depthSearch ds = new depthSearch();
+                int[] nums = new int[] { 2, 3, 5, 4, 1 };
+                //int[] nums = new int[] { 5,4,3,2,1,0};
+                //int[] nums = { 1, 3, 2 };
+                ds.NextPermutation(nums);
+            }
+            {
+                T1 tt = new T1();
+
+                TreeNode node1 = new TreeNode(1);
+                TreeNode node2 = new TreeNode(2);
+                TreeNode node3 = new TreeNode(3);
+                node1.left = node3;
+                node3.right = node2;
+                tt.RecoverTree(node1);
+            }
+            {
+                Codec code = new Codec();
+                TreeNode node1 = new TreeNode(1);
+                TreeNode node2 = new TreeNode(2);
+                TreeNode node3 = new TreeNode(3);
+                TreeNode node4 = new TreeNode(4);
+                TreeNode node5 = new TreeNode(5);
+                node1.left = node2;
+                node1.right = node3;
+                node3.left = node4;
+                node3.right = node5;
+                string data = code.serialize(node1);
+                code.deserialize(data);
+            }
+            {
+                T1 t1 = new T1();
+
+                t1.ConvertToTitle(25);
+            }
         }
+
+        #region 归并
+        public static void MergeSort1(int[] nums, int start, int end)
+        {
+            if (start >= end)
+                return;
+
+            int mid = (end - start) / 2 + start;
+            MergeSort1(nums, start, mid);
+            MergeSort1(nums, mid + 1, end);
+
+            Merge1(nums, start, mid, end);
+        }
+
+        public static void Merge1(int[] nums, int start, int mid, int end)
+        {
+
+            int[] tmp = new int[end - start + 1];
+            // 3p
+            int p = 0;
+            int i = start;
+            int j = mid + 1;
+            while (i <= mid && j <= end)
+            {
+                if (nums[i] <= nums[j])
+                {
+                    tmp[p] = nums[i];
+                    p++;
+                    i++;
+                }
+                if (nums[i] > nums[j])
+                {
+                    tmp[p] = nums[j];
+                    p++;
+                    j++;
+                }
+            }
+            // left
+            while (i <= mid)
+            {
+                tmp[p] = nums[i];
+                p++; i++;
+            }
+            while (j <= end)
+            {
+                tmp[p] = nums[j];
+                p++; j++;
+            }
+
+            for (int k = start; k <= end; k++)
+            {
+                nums[k] = tmp[k - start];
+            }
+        }
+        #endregion
+
+
+        #region 快排
+
+
+        public static void QuickSort(int[] nums, int start, int end)
+        {
+            if (start >= end)
+                return;
+            int pivot = QuickSortByPivot(nums, start, end);
+            QuickSort(nums, start, pivot - 1);
+            QuickSort(nums, pivot + 1, end);
+        }
+
+        // [0,1,2],3,[5,4]
+        //           
+        //         p 
+        public static int QuickSortByPivot(int[] nums, int start, int end)
+        {
+            // 2 pointer
+            int pivot = start;
+            int j = start + 1;
+            for (int i = start + 1; i <= end; i++)
+            {
+                if (nums[i] <= nums[pivot])
+                {
+                    int x = nums[j];
+                    nums[j] = nums[i];
+                    nums[i] = x;
+
+                    j++;
+                }
+            }
+            int y = nums[pivot];
+            nums[pivot] = nums[j - 1];
+            nums[j - 1] = y;
+
+            pivot = j - 1;
+            return pivot;
+
+        }
+        #endregion
+
+        #region 数独
+        public static void SolveSudoku(char[][] board)
+        {
+            backtrack(board, 0, 0);
+        }
+
+        public static bool backtrack(char[][] board, int row, int col)
+        {
+            int m = 9, n = 9;
+            // col超额，换行
+            if (col == n)
+            {
+                return backtrack(board, row + 1, 0);
+            }
+            // row 超额 出现了一个答案了
+            if (row == m)
+            {
+                return true;
+            }
+            // 非空则跳过这一列
+            if (board[row][col] != '.')
+            {
+                return backtrack(board, row, col + 1);
+            }
+            // 空则尝试[1...9]
+            for (char ch = '1'; ch <= '9'; ch++)
+            {
+                if (!IsValid(board, row, col, ch))
+                    continue;
+
+                board[row][col] = ch;
+
+                if (backtrack(board, row, col + 1))
+                    return true;
+
+                board[row][col] = '.';
+            }
+
+            return false;
+        }
+        // 是否有效数独
+        public static bool IsValid(char[][] board, int r, int c, char n)
+        {
+            for (int i = 0; i < 0; i++)
+            {
+                // 行
+                if (board[r][i] == n)
+                    return false;
+                //列
+                if (board[i][c] == n)
+                    return false;
+                // cube中
+                if (board[(r / 3) * 3 + i / 3][(c / 3) * 3 + i % 3] == n)
+                    return false;
+            }
+
+            return true;
+
+        }
+
+        #endregion
+
+
+        #region 皇后
+        IList<IList<string>> res = new List<IList<string>>();
+        public IList<IList<string>> SolveNQueens(int n)
+        {
+            IList<string> board = new List<string>();
+            for (int i = 0; i < n; i++)
+            {
+                board.Add(new string('.', n));
+            }
+            backtrack(board, 0);
+            return res;
+        }
+
+        void backtrack(IList<string> board, int row)
+        {
+            if (row == board.Count)
+            {
+                res.Add(new List<string>(board));
+                return;
+            }
+            for (int col = 0; col < board[row].Length; col++)
+            {
+                if (!isValid(board, row, col))
+                    continue;
+                board[row] = board[row].Substring(0, col) + 'Q' + board[row].Substring(col + 1);
+                backtrack(board, row + 1);
+                board[row] = board[row].Substring(0, col) + '.' + board[row].Substring(col + 1);
+            }
+        }
+
+        bool isValid(IList<string> board, int row, int col)
+        {
+            int n = board.Count;
+            for (int i = 0; i <= row; i++)
+            {
+                if (board[i][col] == 'Q')
+                    return false;
+            }
+            for (int i = row - 1, j = col + 1;
+               i >= 0 && j < n; i--, j++)
+            {
+                if (board[i][j] == 'Q')
+                    return false;
+            }
+            for (int i = row - 1, j = col - 1;
+               i >= 0 && j >= 0; i--, j--)
+            {
+                if (board[i][j] == 'Q')
+                    return false;
+            }
+
+            return true;
+        }
+        #endregion
+
 
     }
 

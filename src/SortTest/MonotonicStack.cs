@@ -19,7 +19,6 @@ namespace SortTest
         /// <returns></returns>
         public int[] MonotonicStackTemplate(int[] nums)
         {
-            Console.WriteLine();
             int n = nums.Length;
 
             int[] res = new int[n];
@@ -33,14 +32,13 @@ namespace SortTest
                 }
                 res[i] = s.Count == 0 ? -1 : s.Peek();
                 s.Push(nums[i]);
-
-                Console.WriteLine(string.Join(",", s));
             }
 
             return res;
         }
         /// <summary>
         /// 496. 下一个更大元素 I
+        /// nums2 是nums1的子集
         /// </summary>
         /// <param name="nums1"></param>
         /// <param name="nums2"></param>

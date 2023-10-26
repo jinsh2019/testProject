@@ -7,6 +7,7 @@
         public int val { get; set; }
         public TreeNode left { get; set; }
         public TreeNode right { get; set; }
+        public int height { get; set; }
         public TreeNode() { }
         public TreeNode(int val) { this.val = val; }
         public TreeNode(int val, TreeNode left, TreeNode right)
