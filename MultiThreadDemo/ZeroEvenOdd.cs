@@ -20,13 +20,9 @@ public class ZeroEvenOdd
             first.Wait();
             printNumber(0);
             if (i % 2 == 0)
-            {
                 second.Release(); // second + 1
-            }
             else
-            {
                 third.Release(); // third + 1
-            }
         }
     }
 

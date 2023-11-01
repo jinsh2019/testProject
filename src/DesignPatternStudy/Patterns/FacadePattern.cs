@@ -1,9 +1,5 @@
 ﻿namespace DesignPatternStudy.Patterns
 {
-    internal class FacadePattern
-    {
-    }
-
     class SubSystem1
     {
         public bool isTrue()

@@ -1,12 +1,9 @@
 ﻿using CDS;
+using Microsoft.VisualBasic;
 using System;
-using System.Buffers.Binary;
 using System.Collections.Generic;
-using System.Formats.Asn1;
-using System.Linq;
-using System.Security.Cryptography;
+using System.Data;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SortTest
 {
@@ -433,14 +430,14 @@ namespace SortTest
             int m = grid.Length, n = grid[0].Length;
             for (int i = 0; i < m; i++)
             {
-                dfs(grid, i, 0);        // 第一列
-                dfs(grid, i, n - 1);    // 最后一列
+                dfs_Solve(grid, i, 0);        // 第一列
+                dfs_Solve(grid, i, n - 1);    // 最后一列
             }
 
             for (int i = 0; i < n; i++)
             {
-                dfs(grid, 0, i);        // 第一行
-                dfs(grid, m - 1, i);    // 最后一行
+                dfs_Solve(grid, 0, i);        // 第一行
+                dfs_Solve(grid, m - 1, i);    // 最后一行
             }
 
             for (int i = 0; i < m; i++)
@@ -460,7 +457,7 @@ namespace SortTest
 
         }
 
-        private void dfs(char[][] grid, int i, int j)
+        private void dfs_Solve(char[][] grid, int i, int j)
         {
             int m = grid.Length, n = grid[0].Length;
             if (i < 0 || i >= m || j < 0 || j >= n) return;
@@ -468,10 +465,10 @@ namespace SortTest
             if (grid[i][j] != 'O') return;
 
             grid[i][j] = '-';
-            dfs(grid, i + 1, j);
-            dfs(grid, i - 1, j);
-            dfs(grid, i, j + 1);
-            dfs(grid, i, j - 1);
+            dfs_Solve(grid, i + 1, j);
+            dfs_Solve(grid, i - 1, j);
+            dfs_Solve(grid, i, j + 1);
+            dfs_Solve(grid, i, j - 1);
         }
 
         /// <summary>
@@ -629,7 +626,313 @@ namespace SortTest
 
             return f[n][target];
         }
-    }// class end
 
 
-}
+        /// <summary>
+        /// 1465. 切割后面积最大的蛋糕
+        /// </summary>
+        /// <param name="h"></param>
+        /// <param name="w"></param>
+        /// <param name="horizontalCuts"></param>
+        /// <param name="verticalCuts"></param>
+        /// <returns></returns>
+        public int MaxArea(int h, int w, int[] horizontalCuts, int[] verticalCuts)
+        {
+            Array.Sort(horizontalCuts);
+            Array.Sort(verticalCuts);
+            int m = horizontalCuts.Length + 1;
+            int n = verticalCuts.Length + 1;
+            int[] hPreDiff = new int[m];
+            int[] vPreDiff = new int[n];
+
+            for (int i = 0; i < m - 1; i++)
+            {
+                if (i == 0) hPreDiff[0] = horizontalCuts[i];
+                else hPreDiff[i] = horizontalCuts[i] - horizontalCuts[i - 1];
+            }
+            hPreDiff[m - 1] = h - horizontalCuts[horizontalCuts.Length - 1];
+
+            for (int i = 0; i < n - 1; i++)
+            {
+                if (i == 0) vPreDiff[0] = verticalCuts[i];
+                else vPreDiff[i] = verticalCuts[i] - verticalCuts[i - 1];
+            }
+            vPreDiff[n - 1] = w - verticalCuts[verticalCuts.Length - 1];
+
+            long ans = 0;
+            for (int i = 0; i < m; i++)
+            {
+                int hh = hPreDiff[i];
+                for (int j = 0; j < n; j++)
+                {
+                    long area = ((long)hh * (long)vPreDiff[j]) % 1000000007;
+                    ans = Math.Max(area, ans);
+                }
+            }
+            return (int)ans;
+        }
+
+
+
+        /// <summary>
+        /// 210. 课程表 II
+        /// 1.建立邻接表
+        /// 2.dfs graph
+        /// 3.因为是后序遍历,需要进行反转
+        /// 4.返回结果集
+        /// 5.遍历邻接表
+        /// 6.存在环路
+        /// 7.已访问过或有环(逐一归回去)
+        /// 8.以s为起始点进行dfs
+        /// 9.始终无环，且遍历g结束即存在完成课程的路径
+        /// 10.初始化图
+        /// 11. from  to
+        /// </summary>
+        /// <param name="numCourses"></param>
+        /// <param name="prerequisites"></param>
+        /// <returns></returns>
+        List<int> postorder = new List<int>();
+        bool hasCycle = false;
+        bool[] visited;
+        bool[] onPath;
+        public int[] FindOrder(int numCourses, int[][] prerequisites)
+        {
+            List<int>[] graph = BuildGraph(numCourses, prerequisites);  // 建立邻接表
+            visited = new bool[numCourses];
+            onPath = new bool[numCourses];
+
+            for (int i = 0; i < numCourses; i++)                        // bfs graph
+                traverse(graph, i);
+
+            if (hasCycle)
+                return new int[] { };
+
+            postorder.Reverse();                                        // 因为是后序遍历,需要进行反转
+            int[] res = new int[numCourses];
+            for (int i = 0; i < numCourses; i++)
+            {
+                res[i] = postorder[i];
+            }
+            return res;                                                 // 返回结果集
+        }
+
+        private void traverse(List<int>[] graph, int s)                 // 遍历邻接表
+        {
+            if (onPath[s])                                              // 存在环路            
+                hasCycle = true;
+
+            if (visited[s] || onPath[s])                                // 已访问过或有环(逐一归回去)
+                return;
+
+            onPath[s] = true;
+            visited[s] = true;
+
+            foreach (var t in graph[s])                                 // 以s为起始点进行dfs       
+                traverse(graph, t);
+
+            postorder.Add(s);                                           // 始终无环，且遍历g结束即存在完成课程的路径
+            onPath[s] = false;
+
+        }
+
+        private List<int>[] BuildGraph(int numCourses, int[][] prerequisites)
+        {
+            List<int>[] graph = new List<int>[numCourses];              // 初始化图
+            for (int i = 0; i < numCourses; i++)
+                graph[i] = new List<int>();
+
+            foreach (int[] v in prerequisites)                          // from  to
+            {
+                int from = v[1];
+                int to = v[0];
+                graph[from].Add(to);
+            }
+            return graph;
+        }
+
+
+        /// <summary>
+        /// 2558. 从数量最多的堆取走礼物
+        /// </summary>
+        /// <param name="gifts"></param>
+        /// <param name="k"></param>
+        /// <returns></returns>
+        public long PickGifts(int[] gifts, int k)
+        {
+            PriorityQueue<int, int> pq = new PriorityQueue<int, int>();
+            foreach (int num in gifts)
+            {
+                pq.Enqueue(num, -num);
+            }
+
+            for (int i = 0; i < k; i++)
+            {
+                var temp = pq.Dequeue();
+                if (temp != 0) temp = (int)Math.Sqrt(temp);
+                pq.Enqueue(temp, -temp);
+            }
+
+            long ans = 0;
+            while (pq.Count != 0)
+                ans += pq.Dequeue();
+
+            return ans;
+        }
+
+        /// <summary>
+        /// 721. 账户合并
+        /// 1. 初始化 map[email,idx]，如果具有相同email合并idx
+        /// 2. 初始化map[email,idx]
+        /// 3. 有相同key,合并idx
+        /// 4. 通过获取idx根节点root，找到对应的emails，把idx Map的email添加到emails中
+        /// 5. 找到对应的emails
+        /// 6. 把idx Map的email添加到emails中
+        /// 7. 更新map[idx,email]
+        /// 8. 先排序emails，再将account+emails进行组合
+        /// 9. 返回结果集
+        /// </summary>
+        /// <param name="accounts"></param>
+        /// <returns></returns>
+        public IList<IList<string>> AccountsMerge(IList<IList<string>> accounts)
+        {
+            Dictionary<string, int> emailToIdx = new Dictionary<string, int>();
+            int n = accounts.Count;
+            UnionFind myUnion = new UnionFind(n);
+            for (int i = 0; i < n; i++)                                 //  初始化 map[email,idx]，如果具有相同email合并idx
+            {
+                int cnt = accounts[i].Count;
+                for (int j = 1; j < cnt; j++)
+                {
+                    string curEmail = accounts[i][j];
+                    if (!emailToIdx.TryAdd(curEmail, i))                //  初始化map[email,idx]
+                        myUnion.Union(i, emailToIdx[curEmail]);         //  有相同key,合并idx
+                }
+            }
+
+            Dictionary<int, List<string>> idxToEmail = new Dictionary<int, List<string>>();
+            foreach (var kv in emailToIdx)                              // 通过获取idx根节点root，找到对应的emails，把idx Map的email添加到emails中
+            {
+                int idx = myUnion.Find(kv.Value);                       // 找到对应的emails                       
+                if (!idxToEmail.TryGetValue(idx, out List<string> emails))
+                    emails = new List<string>();
+                emails.Add(kv.Key);                                     // 把idx Map的email添加到emails中
+                idxToEmail[idx] = emails;                               // 更新map[idx,email]
+            }
+            // combine idx + emails
+            IList<IList<string>> res = new List<IList<string>>();       // 先排序emails，再将account+emails进行组合
+            foreach (var kv in idxToEmail)
+            {
+                List<string> emails = kv.Value;
+                emails.Sort(StringComparer.Ordinal);
+                List<string> tmp = new List<string>() { accounts[kv.Key][0] };
+                tmp.AddRange(emails);
+                res.Add(tmp);
+            }
+            return res;                                                 // 返回结果集
+        }
+
+        /// <summary>
+        /// 990. 等式方程的可满足性
+        /// 1. 初始化26个字母的连通
+        /// 2. 连通所有  == 
+        /// 3. 检查所有  !=
+        /// 4. 与连通不符，返回错误
+        /// </summary>
+        /// <param name="equations"></param>
+        /// <returns></returns>
+        public bool EquationsPossible(string[] equations)
+        {
+            UnionFind uf = new UnionFind(26);                           // 初始化26个字母的连通
+            for (int i = 0; i < equations.Length; i++)
+            {
+                if (equations[i][1] == '=')                             // 连通所有  == 
+                {
+                    char x = equations[i][0];
+                    char y = equations[i][3];
+                    uf.Union(x - 'a', y - 'a');
+                }
+            }
+
+            for (int i = 0; i < equations.Length; i++)
+            {
+                if (equations[i][1] == '!')                             // 检查所有  !=
+                {
+                    char x = equations[i][0];
+                    char y = equations[i][3];
+                    if (uf.IsConnected(x - 'a', y - 'a'))
+                        return false;                                   // 与连通不符，返回错误
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 4. 寻找两个正序数组的中位数
+        /// </summary>
+        /// <param name="nums1"></param>
+        /// <param name="nums2"></param>
+        /// <returns></returns>
+        public double FindMedianSortedArrays(int[] nums1, int[] nums2)
+        {
+            int n = nums1.Length + nums2.Length;
+            if (n % 2 == 0)
+            {
+                int left = find(nums1, 0, nums2, 0, n / 2);      // => find([2],0, [], 0, 0) 
+                int right = find(nums1, 0, nums2, 0, n / 2 + 1);  // => find([2],0, [], 0, 1)
+                return (left + right) / 2.0;
+            }
+            else
+            {
+                return find(nums1, 0, nums2, 0, n / 2 + 1);
+            }
+        }
+
+        int find(int[] nums1, int i, int[] nums2, int j, int k)
+        {
+            //if (nums1.Length - i > nums1.Length - j)                // 保证 nums1 的元素更少，方便处理
+            //    return find(nums2, j, nums1, i, k);
+
+            //if (nums1.Length == i)                                  // nums1 为空，直接取 nums2 的第 k 个元素
+            //    return nums2[j + k - 1];
+
+            //if (k == 1)                                             // k = 1 时，取两数组第一个元素的最小值
+            //    return nums2.Length == 0 ? nums1[i] : Math.Min(nums1[i], nums2[j]);
+
+            //int si = Math.Min((int)nums1.Length, i + k / 2);      // 分别对应两数组 k / 2 的下一个位置
+            //int sj = j + k - k / 2;
+            //if (nums1[si - 1] < nums2[sj - 1])
+            //    return find(nums1, si, nums2, j, k - (si - i));
+            //else
+            //    return find(nums1, i, nums2, sj, k - (sj - j));
+            return 0;
+        }
+
+        /// <summary>
+        /// 二分查找
+        /// int[] nums = new int[] { 1, 3, 4, 6, 6, 6, 7, 8, 9 };
+        /// </summary>
+        /// <param name="nums"></param>
+        /// <returns></returns>
+        public int BSearch(int[] nums, int target)
+        {
+            int l = -1, r = nums.Length;
+            while (r - l > 1)
+            {
+                int mid = l + (r - l) / 2;
+                if (IsGreen(nums[mid], target))
+                    r = mid;
+                else
+                    l = mid;
+            }
+            return r;
+        }
+        public bool IsGreen(int val, int x)
+        {
+            return val < x;
+        }
+        // val >  x  1, 3, 4,  6,  6,  6, [7], 8, 9 右超目标值
+        // val >= x  1, 3, 4, [6], 6, 6, 7, 8, 9    目标值的左边界
+        // val < x   1, 3,[4], 6,  6, 6, 7, 8, 9    左超目标值    
+        // val <= x  1, 3, 4,  6,  6, [6], 7, 8, 9  目标值的右边界
+    }
+}// class end   

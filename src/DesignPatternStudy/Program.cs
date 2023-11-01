@@ -179,14 +179,14 @@ namespace DesignPatternStudy
                 // 当主题进行变更时，通知所有的观察者
                 Subject subject = new Subject();
 
-                new HexaObserver(subject);
-                new OctalObserver(subject);
-                new BinaryObserver(subject);
+                new HexaObserver(subject);      // 16er 订阅了
+                new OctalObserver(subject);     // 10er 订阅了
+                new BinaryObserver(subject);    //  2er 订阅了
 
                 WriteLine("First state change: 15");
-                subject.setState(15);
+                subject.setState(15);           // 更改状态，并通知 notifyAllObservers
                 WriteLine("Second state change: 10");
-                subject.setState(10);
+                subject.setState(10);            // 更改状态，并通知 notifyAllObservers
             }
             {
                 // 将不同的builder传入指导者

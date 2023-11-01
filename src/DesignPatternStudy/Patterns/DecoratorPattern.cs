@@ -1,11 +1,11 @@
 ﻿namespace DesignPatternStudy.Patterns
 {
-    interface Robot
+    interface IRobot
     {
         void doSomething();
     }
 
-    class FirstRobot : Robot
+    class FirstRobot : IRobot
     {
         public void doSomething()
         {
@@ -15,10 +15,10 @@
     }
 
     // can set a
-    class RobertDecorator : Robot
+    class RobertDecorator : IRobot
     {
-        private Robot robot;
-        public RobertDecorator(Robot robot)
+        private IRobot robot;
+        public RobertDecorator(IRobot robot)
         {
             this.robot = robot;
         }

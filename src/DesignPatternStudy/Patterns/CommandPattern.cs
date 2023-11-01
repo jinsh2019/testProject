@@ -7,16 +7,6 @@ namespace DesignPatternStudy.Patterns
         public void execute();
     }
 
-    public class PrintCommand 
-    {
-        //private PrintService serviceProvider = new PrintService();
-        //private TextBox box;
-        //public void execute()
-        //{
-        //    serviceProvider.print(m)
-        //}
-    }
-
     public class PrintService
     {
         public void print(string text)

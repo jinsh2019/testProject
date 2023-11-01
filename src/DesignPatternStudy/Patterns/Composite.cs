@@ -5,7 +5,7 @@ using System.Text;
 
 
 namespace DesignPatternStudy.Patterns
-{
+{ 
     /// <summary>
     /// https://www.runoob.com/design-pattern/composite-pattern.html
     /// </summary>

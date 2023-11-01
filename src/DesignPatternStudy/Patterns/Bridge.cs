@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using static System.Console;
+﻿using static System.Console;
 
-namespace DesignPatternStudy.Patterns.Bridge   
+namespace DesignPatternStudy.Patterns.Bridge
 {
-    public interface DrawAPI
+    public interface IDraw
     {
         public void drawCircle(int radius, int x, int y);
     }
-    // 具体画法1
-    public class RedCircle : DrawAPI
+    // 红色圆
+    public class RedCircle : IDraw
     {
         public void drawCircle(int radius, int x, int y)
         {
@@ -18,8 +15,8 @@ namespace DesignPatternStudy.Patterns.Bridge
                + radius + ", x: " + x + ", " + y + "]");
         }
     }
-    // 具体画法2
-    public class GreenCircle : DrawAPI
+    // 绿色圆
+    public class GreenCircle : IDraw
     {
         public void drawCircle(int radius, int x, int y)
         {
@@ -30,8 +27,8 @@ namespace DesignPatternStudy.Patterns.Bridge
     // 抽象的画
     public abstract class Shape
     {
-        protected DrawAPI drawAPI;
-        protected Shape(DrawAPI drawAPI)
+        protected IDraw drawAPI;
+        protected Shape(IDraw drawAPI)
         {
             this.drawAPI = drawAPI;
         }
@@ -43,7 +40,7 @@ namespace DesignPatternStudy.Patterns.Bridge
     {
         private int x, y, radius;
 
-        public Circle(int x, int y, int radius, DrawAPI drawAPI) : base(drawAPI)
+        public Circle(int x, int y, int radius, IDraw drawAPI) : base(drawAPI)
         {
             this.x = x;
             this.y = y;

@@ -7,7 +7,7 @@ namespace DesignPatternStudy.Patterns
         string GetName();
     }
     #region 系列产品
-
+     
     public class P30Phone : IProduct
     {
         public string GetName()

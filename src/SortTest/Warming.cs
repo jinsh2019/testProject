@@ -1893,6 +1893,55 @@ namespace SortTest
                 }
             }
         }
+
+        /// <summary>
+        /// 207. 课程表
+        /// </summary>
+        /// <param name="numsCourses"></param>
+        /// <param name="prerequisites"></param>
+        /// <returns></returns>
+        bool[] onPath;
+        bool[] visited;
+        bool hasCycle = false;
+        public bool CanFinish(int numsCourses, int[][] prerequisites)
+        {
+            List<int>[] graph = BuildGraph(numsCourses, prerequisites);
+            visited = new bool[numsCourses];
+            onPath = new bool[numsCourses];
+
+            for (int i = 0; i < numsCourses; i++) traverse(graph, i);
+
+            return !hasCycle;
+        }
+
+        private void traverse(List<int>[] graph, int s)
+        {
+            if (onPath[s]) hasCycle = true;
+
+            if (visited[s] || hasCycle) return;
+
+            visited[s] = onPath[s] = true;
+
+            foreach (var v in graph[s]) traverse(graph, v);
+            
+            onPath[s] = false;
+        }
+
+        private List<int>[] BuildGraph(int numsCourses, int[][] prerequisites)
+        {
+            List<int>[] graph = new List<int>[numsCourses];
+            for (int i = 0; i < numsCourses; i++)
+            {
+                graph[i] = new List<int>();
+            }
+            foreach (int[] edge in prerequisites)
+            {
+                int from = edge[1];
+                int to = edge[0];
+                graph[from].Add(to);
+            }
+            return graph;
+        }
     } /// class end
 
 

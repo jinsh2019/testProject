@@ -4,9 +4,9 @@ using System.Text;
 
 namespace DesignPatternStudy.Patterns
 {
-    public class Singleton 
+    public class Singleton
     {
-        private static readonly Singleton instance = new Singleton(); 
+        private static readonly Singleton instance = new Singleton();
         private Singleton() { }
         public static Singleton getInstance() => instance;
     }

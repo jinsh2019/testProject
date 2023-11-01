@@ -6,6 +6,7 @@ using System.Buffers;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
@@ -14,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Runtime.ConstrainedExecution;
+using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading;
 using static System.Console;
@@ -975,8 +977,8 @@ namespace SortTest
                 BSearchRangeL.SearchRange(nums, 7);
             }
             {
-                int[] nums = { 1 };
-                BSearchInsertL.SearchInsert(nums, 0);
+                int[] nums = { 1, 3, 4, 6, 6, 6, 7, 8, 9 };
+                BSearchInsertL.SearchInsert(nums, 4);
             }
             {
                 int[][] mat = new int[2][];
@@ -1923,6 +1925,37 @@ namespace SortTest
 
                 t1.ConvertToTitle(25);
             }
+            {
+
+                _cool.MaxArea(1000000000, 1000000000, new int[] { 2 }, new int[] { 2 });
+            }
+            {
+                Program p = new Program();
+                p.TotalNQueens(8);
+            }
+            {
+                int[] nums = { 1, 1, 1, 1 };
+                _cool.PickGifts(nums, 4);
+            }
+            {
+                IList<IList<string>> accounts = new List<IList<string>>();
+                accounts.Add(new List<string> { "John", "johnsmith@mail.com", "john00@mail.com" });
+                accounts.Add(new List<string> { "John", "johnnybravo@mail.com" });
+                accounts.Add(new List<string> { "John", "johnsmith@mail.com", "john_newyork@mail.com" });
+                accounts.Add(new List<string> { "Mary", "mary@mail.com" });
+
+                _cool.AccountsMerge(accounts);
+            }
+            {
+                int[] nums1 = { 3, 4 };
+                int[] nums2 = { };
+                _cool.FindMedianSortedArrays(nums1, nums2);
+            }
+            {
+
+                int[] nums = new int[] { 1, 3, 4, 6, 6, 6, 7, 8, 9 };
+                _cool.BSearch(nums, 6);
+            }
         }
 
         #region 归并
@@ -2086,55 +2119,77 @@ namespace SortTest
 
 
         #region 皇后
+
+        /// <summary>
+        /// 51. N 皇后
+        /// 1. 初始化棋盘
+        /// 2. 从0行开始，递归棋盘 
+        /// 3. 返回结果集
+        /// 4. row越界，即出现一个解, 然后归出去
+        /// 5. row+1 行 
+        /// 6. 上方
+        /// 7. 右上方
+        /// 8. 左上方
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
         IList<IList<string>> res = new List<IList<string>>();
         public IList<IList<string>> SolveNQueens(int n)
         {
-            IList<string> board = new List<string>();
+            IList<StringBuilder> board = new List<StringBuilder>(); // 初始化棋盘
             for (int i = 0; i < n; i++)
-            {
-                board.Add(new string('.', n));
-            }
-            backtrack(board, 0);
-            return res;
+                board.Add(new StringBuilder(new string('.', n)));
+
+            dfs(board, 0);                                          // 从0行开始，递归棋盘 
+            return res;                                             // 返回结果集
         }
 
-        void backtrack(IList<string> board, int row)
+        public int TotalNQueens(int n)
         {
-            if (row == board.Count)
+            IList<StringBuilder> board = new List<StringBuilder>(); // 初始化棋盘
+            for (int i = 0; i < n; i++)
+                board.Add(new StringBuilder(new string('.', n)));
+
+            dfs(board, 0);                                          // 从0行开始，递归棋盘 
+            return res.Count;                                             // 返回结果集
+        }
+
+        void dfs(IList<StringBuilder> board, int row)
+        {
+            if (row >= board.Count)                                 // row越界，即出现一个解, 然后归出去
             {
-                res.Add(new List<string>(board));
+                IList<string> _board = new List<string>();
+                foreach (StringBuilder r in board) _board.Add(r.ToString());
+
+                res.Add(_board);
                 return;
             }
+
             for (int col = 0; col < board[row].Length; col++)
             {
-                if (!isValid(board, row, col))
-                    continue;
-                board[row] = board[row].Substring(0, col) + 'Q' + board[row].Substring(col + 1);
-                backtrack(board, row + 1);
-                board[row] = board[row].Substring(0, col) + '.' + board[row].Substring(col + 1);
+                if (!IsValid(board, row, col)) continue;
+
+                board[row][col] = 'Q';
+
+                dfs(board, row + 1);                                // row+1 行   
+
+                board[row][col] = '.';
             }
         }
 
-        bool isValid(IList<string> board, int row, int col)
+        bool IsValid(IList<StringBuilder> board, int row, int col)
         {
             int n = board.Count;
-            for (int i = 0; i <= row; i++)
-            {
-                if (board[i][col] == 'Q')
-                    return false;
-            }
-            for (int i = row - 1, j = col + 1;
+            for (int i = 0; i <= row; i++)                          //  上方
+                if (board[i][col] == 'Q') return false;
+
+            for (int i = row - 1, j = col + 1;                      // 右上方
                i >= 0 && j < n; i--, j++)
-            {
-                if (board[i][j] == 'Q')
-                    return false;
-            }
-            for (int i = row - 1, j = col - 1;
+                if (board[i][j] == 'Q') return false;
+
+            for (int i = row - 1, j = col - 1;                      // 左上方
                i >= 0 && j >= 0; i--, j--)
-            {
-                if (board[i][j] == 'Q')
-                    return false;
-            }
+                if (board[i][j] == 'Q') return false;
 
             return true;
         }

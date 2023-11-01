@@ -6,8 +6,8 @@ using static System.Console;
 
 namespace DesignPatternStudy.Patterns  
 {
-    // Observer 把订阅者的指针传到订阅者身上，把订阅者自己挂到订阅者列表上
-    // 发布者
+    // 观察者 Observer 1. set订阅者；2. 调用订阅者attach方法 加入列表中
+    // 发布者 Subject 1. 发布消息 setState 并通知 所有订阅者 notifyAllObservers
     public class Subject
     {
         private List<Observer> observers = new List<Observer>();

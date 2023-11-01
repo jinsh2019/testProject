@@ -111,7 +111,7 @@ namespace DesignPatternStudy.Patterns
     #endregion
 
     //https://www.bilibili.com/video/BV1Hz411e7sA/?spm_id_from=333.788&vd_source=4e306a9c5b741e5f5039fefb051598ff
-    // can abstract speaker
+
     public class Speaker
     {
         public string speak()
@@ -120,13 +120,12 @@ namespace DesignPatternStudy.Patterns
         }
     }
     // Adapter interface
-    interface Translator
+    interface ITranslator
     {
         public string translate();
     }
-    // implement Adapter interface
-    // A client can call adapter to get the translated result that it wants
-    public class Adapter : Translator
+    // 适配器做为客户端调用接口 进行适配
+    public class Adapter : ITranslator
     {
         // refered relationship
         private Speaker speaker;

@@ -5556,14 +5556,9 @@ namespace SortTest
             {
                 mid = l + (r - l) / 2;
                 if (IsGreen(nums[mid], target))
-                {
                     r = mid;
-                }
                 else
-                {
-
                     l = mid;
-                }
             }
             return r;
         }

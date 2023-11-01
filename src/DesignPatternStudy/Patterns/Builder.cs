@@ -86,7 +86,7 @@ namespace DesignPatternStudy.Patterns
         {
             return mComputer;
         }
-    }
+    } 
 
     // 指导者
     public class Director

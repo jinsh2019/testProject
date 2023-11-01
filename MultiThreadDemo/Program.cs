@@ -1,8 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using MultiThreadDemo;
 using MultiThreadDemo.DeadLockDemo;
-using System;
-using System.Threading.Tasks;
 using static System.Console;
 /*
      .Net微服务多线程MutiThread最佳实践专题(C#/.NET/.NET6/.NET5/Thread/Task/微服务）B0529
@@ -162,26 +160,26 @@ WriteLine($"CurrentThread:" + Thread.CurrentThread.ManagedThreadId);
 }
 // 1117. H2O 生成
 {
-    Action action1 = () => releaseHydrogen();
-    Action action2 = () => releaseOxygen();
+    //Action action1 = () => releaseHydrogen();
+    //Action action2 = () => releaseOxygen();
 
-    H2O h2o = new H2O();
-    int i = 20;
-    while (i != 0)
-    {
-        Thread t1 = new Thread(() =>
-        {
-            h2o.Hydrogen(action1);
-        });
+    //H2O h2o = new H2O();
+    //int i = 20;
+    //while (i != 0)
+    //{
+    //    Thread t1 = new Thread(() =>
+    //    {
+    //        h2o.Hydrogen(action1);
+    //    });
 
-        Thread t2 = new Thread(() =>
-        {
-            h2o.Oxygen(action2);
-        });
-        t1.Start();
-        t2.Start();
-        i--;
-    }
+    //    Thread t2 = new Thread(() =>
+    //    {
+    //        h2o.Oxygen(action2);
+    //    });
+    //    t1.Start();
+    //    t2.Start();
+    //    i--;
+    //}
 }
 #endregion
 
@@ -240,24 +238,215 @@ WriteLine($"CurrentThread:" + Thread.CurrentThread.ManagedThreadId);
 
 // DeadLocked
 {
-    WriteLine("Main Thread Started");
-    Account Account1001 = new Account(1001, 5000);
-    Account Account1002 = new Account(1002, 3000);
-    AccountManager accountManager1 = new AccountManager(Account1001, Account1002, 5000);
-    Thread thread1 = new Thread(accountManager1.FundTransfer1);
-    thread1.Name = "Thread1";
-    AccountManager accountManager2 = new AccountManager(Account1002, Account1001, 6000);
-    Thread thread2 = new Thread(accountManager2.FundTransfer1);
-    thread2.Name = "Thread2";
+    //WriteLine("Main Thread Started");
+    //Account Account1001 = new Account(1001, 5000);
+    //Account Account1002 = new Account(1002, 3000);
+    //AccountManager accountManager1 = new AccountManager(Account1001, Account1002, 5000);
+    //Thread thread1 = new Thread(accountManager1.FundTransfer1);
+    //thread1.Name = "Thread1";
+    //AccountManager accountManager2 = new AccountManager(Account1002, Account1001, 6000);
+    //Thread thread2 = new Thread(accountManager2.FundTransfer1);
+    //thread2.Name = "Thread2";
 
-    thread1.Start();
-    thread2.Start();
-    thread1.Join();
-    thread2.Join();
-    WriteLine("Main Thread Completed");
-    ReadKey();
+    //thread1.Start();
+    //thread2.Start();
+    //thread1.Join();
+    //thread2.Join();
+    //WriteLine("Main Thread Completed");
 }
 
+
+#region Basic Kownledge
+
+Nov _nov = new Nov();
+{
+
+    _nov.CountdonwEvent();
+}
+{
+
+
+    await _nov.CountDownEventIIAsync();
+}
+{
+    Thread t = new Thread(_nov.PrintNumber);
+    t.Start();
+    _nov.PrintNumber();
+
+}
+{
+    Thread t = new Thread(_nov.PrintNumberWithDelay);
+    t.Start();
+    _nov.PrintNumber();
+    t.Join();
+}
+{
+    Console.WriteLine("with Join");
+    Thread t = new Thread(_nov.PrintNumberWithDelay);
+    t.Start();
+    t.Join();
+    _nov.PrintNumber();
+}
+{
+    //WriteLine("Starting program...");
+    //Thread t = new Thread(_nov.PrintNumberWithDelay);
+    //t.Start();
+    //Thread.Sleep(TimeSpan.FromSeconds(0.6));
+    //t.Abort(); // not be supported
+    //WriteLine("A thread has been aborted!");
+    //Thread t1 = new Thread(_nov.PrintNumber);
+    //t1.Start();
+    //_nov.PrintNumber();
+}
+{
+    //WriteLine("Thread States Test......");
+    //Thread t = new Thread(_nov.PirntNumbersWithStatus);
+    //Thread t2 = new Thread(_nov.DoNothing);
+    //WriteLine(t.ThreadState.ToString());
+    //t2.Start();
+    //t.Start();
+    //for (int i = 1; i < 30; i++)
+    //{
+    //    WriteLine(t.ThreadState.ToString());        // Running then WaitSleepJoin
+    //}
+    //Thread.Sleep(TimeSpan.FromSeconds(6));
+    ////t.Abort();                                    // 
+    //WriteLine(t.ThreadState.ToString());            // [Abort or] WaitSleepJoin
+    //WriteLine(t2.ThreadState.ToString());           // Stopped
+
+}
+{
+    // Priority: highest
+    // Priority: Lowest
+    //Process.GetCurrentProcess().ProcessorAffinity = new IntPtr(1);
+}
+{
+    // IsBackgroud = true
+    // 所有前台进程结束之后，后台开始
+}
+{
+    // lock
+    WriteLine("Incorrect counter");
+
+    var c = new Counter();                      // 线程不安全
+
+    var t1 = new Thread(() => _nov.TestCounter(c));
+    var t2 = new Thread(() => _nov.TestCounter(c));
+    var t3 = new Thread(() => _nov.TestCounter(c));
+    t1.Start();
+    t2.Start();
+    t3.Start();
+    t1.Join();
+    t2.Join();
+    t3.Join();
+    WriteLine("Total count:{0}", c.Count);
+
+    WriteLine("------------------------------------");
+    WriteLine("Correct counter");
+
+    var c1 = new CounterWithLock();             // 线程安全
+
+    t1 = new Thread(() => _nov.TestCounter(c1));
+    t2 = new Thread(() => _nov.TestCounter(c1));
+    t3 = new Thread(() => _nov.TestCounter(c1));
+
+    t1.Start();
+    t2.Start();
+    t3.Start();
+    t1.Join();
+    t2.Join();
+    t3.Join();
+
+    WriteLine("Total count:{0}", c1.Count);
+}
+{
+    object lock1 = new object();
+    object lock2 = new object();
+
+    new Thread(() => _nov.LockTooMuch(lock1, lock2)).Start();
+
+    lock (lock2)
+    {
+        Thread.Sleep(1000);
+        WriteLine("Monitor.TryEnter allows not to get stuck, returning false after a specified time out is elapsed.");
+        if (Monitor.TryEnter(lock1, TimeSpan.FromSeconds(2))) // 等待1秒后可以获得资源
+            WriteLine("Acquired a protected resource succesfully!");
+        else
+            WriteLine("Timeout acquiring a resource!");
+    }
+    new Thread(() => _nov.LockTooMuch(lock1, lock2)).Start();
+}
+
+{
+    // 推荐使用 在线程代码内部获取异常
+    var t = new Thread(_nov.FaultyThread);
+    t.Start();
+    t.Join();
+
+    try
+    {
+        t = new Thread(_nov.BadFaultyThread);
+        t.Start();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("we won`t get here!");
+    }
+}
+{
+    var c1 = new CounterWithNoLock();             // 线程安全
+
+    var t1 = new Thread(() => _nov.TestCounter(c1));
+    var t2 = new Thread(() => _nov.TestCounter(c1));
+    var t3 = new Thread(() => _nov.TestCounter(c1));
+
+    t1.Start();
+    t2.Start();
+    t3.Start();
+    t1.Join();
+    t2.Join();
+    t3.Join();
+
+    WriteLine("Total count:{0}", c1.GetCount());
+}
+{
+    // 互斥量
+    const string MutexName = "CSharpThradingCookbook";
+
+    using (var m = new Mutex(false, MutexName))
+    {
+        if (!m.WaitOne(TimeSpan.FromSeconds(2), false))
+        {
+            Console.WriteLine("Second instance is running!");
+        }
+        else
+        {
+            Console.WriteLine("Running! 3s");
+            Thread.Sleep(TimeSpan.FromSeconds(3));
+            //Console.ReadLine();
+            m.ReleaseMutex();                   // 尽早释放有好处
+        }
+    }
+}
+{
+    // SemaphoreSlim
+    //for (int i = 0; i <= 6; i++)
+    //{
+    //    string threadName = "Thread " + i;
+    //    int secondsToWait = 2 + 2 * i;
+    //    var t = new Thread(() => _nov.AccessDatabase(threadName, secondsToWait));
+    //    t.Start();
+    //}
+}
+{
+    // AutoResetEvent
+    _nov.MainProcess();
+}
+{
+    // ManualResetEvent
+    _nov.mainTravelThroughGates();
+}
+#endregion
 ReadKey();
 
 #region 私有方法
