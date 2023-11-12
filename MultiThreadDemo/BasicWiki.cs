@@ -290,7 +290,7 @@ namespace MultiThreadDemo
     }
 
     /// <summary>
-    /// 不使用Lock， 而使用Interlocked
+    /// 不使用Lock， 而使用 Interlocked
     /// </summary>
     public class CounterWithNoLock : CounterBase
     {
